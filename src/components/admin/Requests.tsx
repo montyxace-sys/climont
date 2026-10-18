@@ -4,7 +4,7 @@ import {
   Clock, MessageCircle, ChevronDown, Inbox, Send, AlertCircle, Loader2,
   Trash2, FileText, XCircle,
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 
 type ContactRequest = {
   id: string;
@@ -20,13 +20,13 @@ type ContactRequest = {
 };
 
 const SERVICE_LABELS: Record<string, string> = {
-  instalacion: 'Instalación',
-  venta_instalacion: 'Venta e instalación de equipo',
+  instalacion: 'InstalaciÃ³n',
+  venta_instalacion: 'Venta e instalaciÃ³n de equipo',
   mantenimiento: 'Mantenimiento',
-  reparacion: 'Reparación',
-  ventilacion: 'Ventilación y extracción',
-  eficiencia: 'Eficiencia energética',
-  airzone: 'Climatización inteligente Airzone',
+  reparacion: 'ReparaciÃ³n',
+  ventilacion: 'VentilaciÃ³n y extracciÃ³n',
+  eficiencia: 'Eficiencia energÃ©tica',
+  airzone: 'ClimatizaciÃ³n inteligente Airzone',
   constructoras: 'Instalaciones y preinstalaciones para constructoras',
 };
 
@@ -35,12 +35,12 @@ const INSTALLATION_LABELS: Record<string, string> = {
   conductos: 'Centralizado por conductos',
   cassettes: 'Cassettes de techo',
   suelo_techo: 'Equipos suelo/techo',
-  fabricacion_conductos: 'Fabricación de conductos (fibra Climaver / chapa galvanizada)',
-  preinstalacion_obra: 'Preinstalación en obra nueva / nueva construcción',
-  instalacion_obra: 'Instalación completa en obra nueva',
-  ventilacion_viviendas: 'Ventilación de viviendas',
-  ventilacion_garajes: 'Ventilación de garajes',
-  airzone: 'Climatización inteligente Airzone',
+  fabricacion_conductos: 'FabricaciÃ³n de conductos (fibra Climaver / chapa galvanizada)',
+  preinstalacion_obra: 'PreinstalaciÃ³n en obra nueva / nueva construcciÃ³n',
+  instalacion_obra: 'InstalaciÃ³n completa en obra nueva',
+  ventilacion_viviendas: 'VentilaciÃ³n de viviendas',
+  ventilacion_garajes: 'VentilaciÃ³n de garajes',
+  airzone: 'ClimatizaciÃ³n inteligente Airzone',
 };
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
@@ -56,23 +56,23 @@ const STATUS_ORDER = ['pendiente', 'contactado', 'presupuestado', 'completado', 
 const REPLY_TEMPLATES: { label: string; subject: string; body: string }[] = [
   {
     label: 'Presupuesto inicial',
-    subject: 'Presupuesto de aire acondicionado - Climatizaciones Montaño, S.L.',
-    body: 'Gracias por contactar con Climatizaciones Montaño, S.L..\n\nHemos recibido tu solicitud y nos gustaría visitarte para evaluar la instalación y prepararte un presupuesto sin compromiso.\n\n¿Te viene bien que pasemos esta semana? Indícanos qué día y franja horaria te va mejor (mañana 8:00-14:00 o tarde 15:00-18:00).\n\nUn saludo,\nEquipo de Climatizaciones Montaño, S.L.',
+    subject: 'Presupuesto de aire acondicionado - Climatizaciones MontaÃ±o, S.L.',
+    body: 'Gracias por contactar con Climatizaciones MontaÃ±o, S.L..\n\nHemos recibido tu solicitud y nos gustarÃ­a visitarte para evaluar la instalaciÃ³n y prepararte un presupuesto sin compromiso.\n\nÂ¿Te viene bien que pasemos esta semana? IndÃ­canos quÃ© dÃ­a y franja horaria te va mejor (maÃ±ana 8:00-14:00 o tarde 15:00-18:00).\n\nUn saludo,\nEquipo de Climatizaciones MontaÃ±o, S.L.',
   },
   {
     label: 'Confirmar visita',
-    subject: 'Confirmación de visita técnica - Climatizaciones Montaño, S.L.',
-    body: 'Hola,\n\nConfirmamos nuestra visita técnica para el día acordado. Nuestro técnico pasará para evaluar la instalación y asesorarte sobre la mejor opción.\n\nSi necesitas cambiar la fecha o hora, contáctanos en el 676 628 348.\n\nUn saludo,\nEquipo de Climatizaciones Montaño, S.L.',
+    subject: 'ConfirmaciÃ³n de visita tÃ©cnica - Climatizaciones MontaÃ±o, S.L.',
+    body: 'Hola,\n\nConfirmamos nuestra visita tÃ©cnica para el dÃ­a acordado. Nuestro tÃ©cnico pasarÃ¡ para evaluar la instalaciÃ³n y asesorarte sobre la mejor opciÃ³n.\n\nSi necesitas cambiar la fecha o hora, contÃ¡ctanos en el 676 628 348.\n\nUn saludo,\nEquipo de Climatizaciones MontaÃ±o, S.L.',
   },
   {
     label: 'Seguimiento',
-    subject: 'Seguimiento de tu solicitud - Climatizaciones Montaño, S.L.',
-    body: 'Hola,\n\nNos ponemos en contacto contigo para dar seguimiento a tu solicitud. ¿Tienes alguna duda o necesitas información adicional?\n\nEstamos a tu disposición en el 676 628 348 o respondiendo a este email.\n\nUn saludo,\nEquipo de Climatizaciones Montaño, S.L.',
+    subject: 'Seguimiento de tu solicitud - Climatizaciones MontaÃ±o, S.L.',
+    body: 'Hola,\n\nNos ponemos en contacto contigo para dar seguimiento a tu solicitud. Â¿Tienes alguna duda o necesitas informaciÃ³n adicional?\n\nEstamos a tu disposiciÃ³n en el 676 628 348 o respondiendo a este email.\n\nUn saludo,\nEquipo de Climatizaciones MontaÃ±o, S.L.',
   },
   {
     label: 'Cierre',
-    subject: 'Gracias por confiar en Climatizaciones Montaño, S.L.',
-    body: 'Hola,\n\nGracias por confiar en Climatizaciones Montaño, S.L. para tu proyecto de climatización.\n\nSi en el futuro necesitas mantenimiento, reparación o cualquier otro servicio, no dudes en contactarnos. Recordamos que el mantenimiento periódico alarga la vida útil de tu equipo y reduce el consumo eléctrico.\n\nUn saludo,\nEquipo de Climatizaciones Montaño, S.L.',
+    subject: 'Gracias por confiar en Climatizaciones MontaÃ±o, S.L.',
+    body: 'Hola,\n\nGracias por confiar en Climatizaciones MontaÃ±o, S.L. para tu proyecto de climatizaciÃ³n.\n\nSi en el futuro necesitas mantenimiento, reparaciÃ³n o cualquier otro servicio, no dudes en contactarnos. Recordamos que el mantenimiento periÃ³dico alarga la vida Ãºtil de tu equipo y reduce el consumo elÃ©ctrico.\n\nUn saludo,\nEquipo de Climatizaciones MontaÃ±o, S.L.',
   },
 ];
 
@@ -103,7 +103,7 @@ export function Requests() {
 
     if (error) {
       console.error('Error loading requests:', error);
-      setLoadError('No se pudieron cargar las solicitudes. Revisa tu conexión e inténtalo de nuevo.');
+      setLoadError('No se pudieron cargar las solicitudes. Revisa tu conexiÃ³n e intÃ©ntalo de nuevo.');
     } else {
       setRequests(data || []);
     }
@@ -120,7 +120,7 @@ export function Requests() {
 
     if (error) {
       console.error('Error updating status:', error);
-      setStatusError('No se pudo actualizar el estado. Inténtalo de nuevo.');
+      setStatusError('No se pudo actualizar el estado. IntÃ©ntalo de nuevo.');
     } else {
       setRequests((prev) => prev.map((r) => r.id === id ? { ...r, status } : r));
       setSelected((prev) => prev ? { ...prev, status } : prev);
@@ -138,7 +138,7 @@ export function Requests() {
 
     if (error) {
       console.error('Error deleting request:', error);
-      setDeleteError('No se pudo eliminar la solicitud. Inténtalo de nuevo.');
+      setDeleteError('No se pudo eliminar la solicitud. IntÃ©ntalo de nuevo.');
       setDeleting(false);
     } else {
       setRequests((prev) => prev.filter((r) => r.id !== id));
@@ -182,7 +182,7 @@ export function Requests() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar por nombre, email, teléfono..."
+            placeholder="Buscar por nombre, email, telÃ©fono..."
             className="w-full pl-11 pr-4 py-2.5 bg-white border border-ink-200 rounded-xl text-sm text-ink-900 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all"
           />
         </div>
@@ -221,7 +221,7 @@ export function Requests() {
           <Inbox className="w-12 h-12 text-ink-300 mx-auto mb-3" />
           <p className="text-ink-500 font-medium">No hay solicitudes que mostrar</p>
           <p className="text-ink-400 text-sm mt-1">
-            {search || filterStatus !== 'all' ? 'Prueba a cambiar los filtros' : 'Las solicitudes del formulario aparecerán aquí'}
+            {search || filterStatus !== 'all' ? 'Prueba a cambiar los filtros' : 'Las solicitudes del formulario aparecerÃ¡n aquÃ­'}
           </p>
         </div>
       ) : (
@@ -371,9 +371,9 @@ function RequestDrawer({
 
   const details = [
     { icon: Mail, label: 'Email', value: request.email, href: `mailto:${request.email}` },
-    { icon: Phone, label: 'Teléfono', value: request.phone, href: `tel:${request.phone}` },
+    { icon: Phone, label: 'TelÃ©fono', value: request.phone, href: `tel:${request.phone}` },
     { icon: MessageCircle, label: 'WhatsApp', value: 'Escribir por WhatsApp', href: `https://wa.me/34${request.phone.replace(/\s/g, '')}` },
-    { icon: MapPin, label: 'Ciudad', value: request.city || '—', href: null },
+    { icon: MapPin, label: 'Ciudad', value: request.city || 'â€”', href: null },
     { icon: Calendar, label: 'Fecha', value: new Date(request.created_at).toLocaleString('es-ES', { dateStyle: 'long', timeStyle: 'short' }), href: null },
   ];
 
@@ -392,7 +392,7 @@ function RequestDrawer({
       const { data: sessionData } = await supabase.auth.getSession();
       const token = sessionData.session?.access_token;
 
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-reply-email`, {
+      const response = await fetch(`${SUPABASE_URL}/functions/v1/send-reply-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -474,7 +474,7 @@ function RequestDrawer({
 
           {request.installation_type && (
             <div>
-              <div className="text-xs text-ink-400 uppercase tracking-wide font-medium mb-1.5">Tipo de instalación</div>
+              <div className="text-xs text-ink-400 uppercase tracking-wide font-medium mb-1.5">Tipo de instalaciÃ³n</div>
               <div className="p-3 bg-ink-50 rounded-xl text-sm text-ink-800">
                 {INSTALLATION_LABELS[request.installation_type] || request.installation_type}
               </div>
@@ -586,7 +586,7 @@ function RequestDrawer({
                 </button>
 
                 <p className="text-xs text-ink-400 text-center">
-                  Se enviará a {request.email}
+                  Se enviarÃ¡ a {request.email}
                 </p>
               </div>
             )}
@@ -662,12 +662,12 @@ function DeleteConfirmDialog({
           <div className="w-12 h-12 rounded-full bg-error-50 flex items-center justify-center mb-4">
             <Trash2 className="w-6 h-6 text-error-600" />
           </div>
-          <h3 className="font-display font-bold text-lg text-ink-900 mb-2">¿Eliminar solicitud?</h3>
+          <h3 className="font-display font-bold text-lg text-ink-900 mb-2">Â¿Eliminar solicitud?</h3>
           <p className="text-sm text-ink-500 mb-1">
             Vas a eliminar la solicitud de <span className="font-semibold text-ink-700">{request.name}</span>.
           </p>
           <p className="text-sm text-ink-500 mb-6">
-            Esta acción no se puede deshacer.
+            Esta acciÃ³n no se puede deshacer.
           </p>
           {deleteError && (
             <div className="mb-4 text-xs text-error-600 bg-error-50 rounded-lg px-3 py-2">{deleteError}</div>

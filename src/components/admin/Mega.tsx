@@ -20,7 +20,7 @@ import {
 import { PdfViewer } from '@/components/admin/PdfViewer';
 import { ExcelViewer } from '@/components/admin/ExcelViewer';
 import { FileTypeIcon } from '@/components/admin/FileTypeIcon';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 
 type MegaNode = {
   id: string;
@@ -37,10 +37,10 @@ type BreadcrumbItem = {
 
 type ConnectionState = 'idle' | 'checking' | 'connected' | 'disconnected';
 
-const MEGA_FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/mega-proxy`;
+const MEGA_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/mega-proxy`;
 
 function formatBytes(bytes: number | null): string {
-  if (bytes === null || bytes === 0) return '—';
+  if (bytes === null || bytes === 0) return 'â€”';
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
@@ -48,7 +48,7 @@ function formatBytes(bytes: number | null): string {
 }
 
 function formatDate(dateStr: string | null): string {
-  if (!dateStr) return '—';
+  if (!dateStr) return 'â€”';
   return new Date(dateStr).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
@@ -114,7 +114,7 @@ export function Mega() {
       }
       const blob = await res.blob();
       if (blob.size === 0) {
-        setViewError('El archivo está vacío o no se pudo descargar');
+        setViewError('El archivo estÃ¡ vacÃ­o o no se pudo descargar');
         setViewLoading(false);
         return;
       }
@@ -135,7 +135,7 @@ export function Mega() {
             setExcelSheets(sheets);
           }
         } catch (e) {
-          setViewError('No se pudo leer el archivo Excel: ' + (e instanceof Error ? e.message : 'formato no válido'));
+          setViewError('No se pudo leer el archivo Excel: ' + (e instanceof Error ? e.message : 'formato no vÃ¡lido'));
         }
       } else {
         const url = URL.createObjectURL(blob);
@@ -270,7 +270,7 @@ export function Mega() {
 
   const handleSaveCredentials = async () => {
     if (!credentials.email.trim() || !credentials.password.trim()) {
-      setError('Email y contraseña son obligatorios');
+      setError('Email y contraseÃ±a son obligatorios');
       return;
     }
     setSavingCreds(true);
@@ -347,7 +347,7 @@ export function Mega() {
           <div className="flex-1">
             <span className="text-sm font-medium text-success-700">Cuenta MEGA conectada</span>
             {rootFileCount > 0 && (
-              <span className="text-xs text-success-600 ml-2">· {rootFileCount} elementos en raíz</span>
+              <span className="text-xs text-success-600 ml-2">Â· {rootFileCount} elementos en raÃ­z</span>
             )}
           </div>
         </div>
@@ -395,7 +395,7 @@ export function Mega() {
                 onClick={navigateToRoot}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
               >
-                <HardDrive className="w-4 h-4" /> Raíz
+                <HardDrive className="w-4 h-4" /> RaÃ­z
               </button>
               {breadcrumbs.map((crumb, i) => (
                 <div key={crumb.id} className="flex items-center gap-1.5">
@@ -412,7 +412,7 @@ export function Mega() {
             <div className="flex items-center gap-4 text-xs text-ink-400 pt-3 border-t border-ink-50">
               <span>{folders.length} carpetas</span>
               <span>{files.length} archivos</span>
-              <span>Tamaño total: {formatBytes(totalSize)}</span>
+              <span>TamaÃ±o total: {formatBytes(totalSize)}</span>
             </div>
           </div>
 
@@ -437,7 +437,7 @@ export function Mega() {
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <Cloud className="w-12 h-12 text-ink-300 mb-4" />
               <p className="text-ink-500 text-sm">
-                {searchTerm ? 'No se encontraron archivos.' : 'Esta carpeta está vacía.'}
+                {searchTerm ? 'No se encontraron archivos.' : 'Esta carpeta estÃ¡ vacÃ­a.'}
               </p>
             </div>
           ) : (
@@ -550,9 +550,9 @@ export function Mega() {
               <div className="bg-primary-50 border border-primary-200 rounded-xl p-4 flex items-start gap-3">
                 <Cloud className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-primary-700">
-                  <p className="font-medium mb-1">Conexión con MEGA</p>
+                  <p className="font-medium mb-1">ConexiÃ³n con MEGA</p>
                   <p className="text-primary-600 text-xs">
-                    Introduce el email y la contraseña de tu cuenta de MEGA.
+                    Introduce el email y la contraseÃ±a de tu cuenta de MEGA.
                     Las credenciales se guardan de forma segura y nunca se exponen en el navegador.
                   </p>
                 </div>
@@ -570,12 +570,12 @@ export function Mega() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-ink-700 mb-1.5">Contraseña</label>
+                <label className="block text-sm font-medium text-ink-700 mb-1.5">ContraseÃ±a</label>
                 <input
                   type="password"
                   value={credentials.password}
                   onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-                  placeholder="Tu contraseña de MEGA"
+                  placeholder="Tu contraseÃ±a de MEGA"
                   className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                 />
               </div>

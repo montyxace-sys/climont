@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Star, Quote, ExternalLink, Loader2 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 
 type Review = {
   id: string;
@@ -42,10 +42,10 @@ export function GoogleReviews() {
 
       // Fetch real Google rating + review count from edge function
       try {
-        const fnUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-reviews`;
+        const fnUrl = `${SUPABASE_URL}/functions/v1/google-reviews`;
         const res = await fetch(fnUrl, {
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
           },
         });
         if (res.ok) {
@@ -59,7 +59,7 @@ export function GoogleReviews() {
           }
         }
       } catch {
-        // Edge function not available — fallback to defaults
+        // Edge function not available â€” fallback to defaults
         if (!cancelled) {
           setGoogleData({ rating: 0, totalReviews: 0, mapsUrl: DEFAULT_MAPS_URL });
         }
@@ -82,7 +82,7 @@ export function GoogleReviews() {
         {/* Header */}
         <Reveal className="text-center max-w-2xl mx-auto mb-8">
           <span className="inline-block px-3 py-1 bg-primary-50 text-primary-700 text-xs font-semibold rounded-full mb-3">
-            Reseñas de Google
+            ReseÃ±as de Google
           </span>
           <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-ink-900 mb-3">
             Lo que dicen nuestros clientes
@@ -103,8 +103,8 @@ export function GoogleReviews() {
                       ))}
                     </div>
                     <span className="font-display text-xl font-bold text-ink-900">{rating.toFixed(1)}</span>
-                    <span className="text-ink-500">·</span>
-                    <span className="text-ink-600 text-sm">{reviewCount} reseñas en Google</span>
+                    <span className="text-ink-500">Â·</span>
+                    <span className="text-ink-600 text-sm">{reviewCount} reseÃ±as en Google</span>
                   </>
                 )}
               </>
@@ -116,7 +116,7 @@ export function GoogleReviews() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-primary-600 hover:text-primary-700 text-sm font-medium mt-2 transition-colors"
           >
-            Ver todas las reseñas en Google
+            Ver todas las reseÃ±as en Google
             <ExternalLink className="w-4 h-4" />
           </a>
         </Reveal>
@@ -128,14 +128,14 @@ export function GoogleReviews() {
           </div>
         ) : reviews.length === 0 ? (
           <div className="text-center py-10">
-            <p className="text-ink-400 mb-3 text-sm">Aún no hay reseñas publicadas en la web.</p>
+            <p className="text-ink-400 mb-3 text-sm">AÃºn no hay reseÃ±as publicadas en la web.</p>
             <a
               href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors"
             >
-              Ver las {reviewCount} reseñas en Google
+              Ver las {reviewCount} reseÃ±as en Google
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -188,7 +188,7 @@ export function GoogleReviews() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:-translate-y-0.5"
           >
-            Dejar tu reseña en Google
+            Dejar tu reseÃ±a en Google
             <ExternalLink className="w-4 h-4" />
           </a>
         </Reveal>

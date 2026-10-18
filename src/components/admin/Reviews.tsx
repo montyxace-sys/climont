@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Pencil, Trash2, X, Star, Eye, EyeOff, Save, MessageSquare, ArrowUp, ArrowDown, RefreshCw, CheckCircle2, AlertTriangle } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 
 type Review = {
   id: string;
@@ -59,7 +59,7 @@ export function Reviews() {
       .order('created_at', { ascending: false });
 
     if (err) {
-      setError('No se pudieron cargar las reseñas.');
+      setError('No se pudieron cargar las reseÃ±as.');
     } else {
       setReviews(data || []);
       setError(null);
@@ -101,13 +101,13 @@ export function Reviews() {
 
   const handleSave = async () => {
     if (!form.author_name.trim() || !form.review_text.trim()) {
-      setError('El nombre del autor y el texto de la reseña son obligatorios.');
+      setError('El nombre del autor y el texto de la reseÃ±a son obligatorios.');
       return;
     }
 
     const ratingNum = parseInt(form.rating);
     if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
-      setError('La valoración debe estar entre 1 y 5.');
+      setError('La valoraciÃ³n debe estar entre 1 y 5.');
       return;
     }
 
@@ -130,7 +130,7 @@ export function Reviews() {
     if (editingId) {
       const { error: err } = await supabase.from('reviews').update(payload).eq('id', editingId);
       if (err) {
-        setError('Error al actualizar la reseña.');
+        setError('Error al actualizar la reseÃ±a.');
       } else {
         closeForm();
         loadReviews();
@@ -138,7 +138,7 @@ export function Reviews() {
     } else {
       const { error: err } = await supabase.from('reviews').insert(payload);
       if (err) {
-        setError('Error al crear la reseña.');
+        setError('Error al crear la reseÃ±a.');
       } else {
         closeForm();
         loadReviews();
@@ -148,10 +148,10 @@ export function Reviews() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('¿Seguro que quieres eliminar esta reseña?')) return;
+    if (!confirm('Â¿Seguro que quieres eliminar esta reseÃ±a?')) return;
     const { error: err } = await supabase.from('reviews').delete().eq('id', id);
     if (err) {
-      setError('Error al eliminar la reseña.');
+      setError('Error al eliminar la reseÃ±a.');
     } else {
       loadReviews();
     }
@@ -192,7 +192,7 @@ export function Reviews() {
     setSyncResult(null);
     setSyncError(null);
     try {
-      const fnUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-reviews?sync=true`;
+      const fnUrl = `${SUPABASE_URL}/functions/v1/google-reviews?sync=true`;
       const { data: sessionData } = await supabase.auth.getSession();
       const token = sessionData.session?.access_token;
       const res = await fetch(fnUrl, {
@@ -223,10 +223,10 @@ export function Reviews() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold text-ink-900">Reseñas de clientes</h1>
+          <h1 className="font-display text-2xl font-bold text-ink-900">ReseÃ±as de clientes</h1>
           <p className="text-ink-500 text-sm mt-1">
-            {reviews.length} reseña{reviews.length !== 1 ? 's' : ''} en total · {reviews.filter((r) => r.is_visible).length} visibles en la web
-            {reviews.filter((r) => r.auto_synced).length > 0 && ` · ${reviews.filter((r) => r.auto_synced).length} sincronizadas de Google`}
+            {reviews.length} reseÃ±a{reviews.length !== 1 ? 's' : ''} en total Â· {reviews.filter((r) => r.is_visible).length} visibles en la web
+            {reviews.filter((r) => r.auto_synced).length > 0 && ` Â· ${reviews.filter((r) => r.auto_synced).length} sincronizadas de Google`}
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -242,7 +242,7 @@ export function Reviews() {
             onClick={openNewForm}
             className="flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-primary-500/20"
           >
-            <Plus className="w-4 h-4" /> Añadir reseña
+            <Plus className="w-4 h-4" /> AÃ±adir reseÃ±a
           </button>
         </div>
       </div>
@@ -251,9 +251,9 @@ export function Reviews() {
         <div className="bg-success-50 border border-success-200 text-success-700 text-sm rounded-xl px-4 py-3 flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
           {syncResult.added > 0
-            ? `Se importaron ${syncResult.added} reseña${syncResult.added !== 1 ? 's' : ''} nueva${syncResult.added !== 1 ? 's' : ''} de Google.`
-            : 'No hay reseñas nuevas para importar. Las reseñas existentes ya estaban sincronizadas.'}
-          {syncResult.skipped > 0 && ` (${syncResult.skipped} ya existían)`}
+            ? `Se importaron ${syncResult.added} reseÃ±a${syncResult.added !== 1 ? 's' : ''} nueva${syncResult.added !== 1 ? 's' : ''} de Google.`
+            : 'No hay reseÃ±as nuevas para importar. Las reseÃ±as existentes ya estaban sincronizadas.'}
+          {syncResult.skipped > 0 && ` (${syncResult.skipped} ya existÃ­an)`}
         </div>
       )}
 
@@ -277,12 +277,12 @@ export function Reviews() {
       ) : reviews.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <MessageSquare className="w-12 h-12 text-ink-300 mb-4" />
-          <p className="text-ink-500 text-sm mb-4">No hay reseñas todavía.</p>
+          <p className="text-ink-500 text-sm mb-4">No hay reseÃ±as todavÃ­a.</p>
           <button
             onClick={openNewForm}
             className="flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors"
           >
-            <Plus className="w-4 h-4" /> Crear la primera reseña
+            <Plus className="w-4 h-4" /> Crear la primera reseÃ±a
           </button>
         </div>
       ) : (
@@ -323,7 +323,7 @@ export function Reviews() {
                       ))}
                     </div>
                     <span className="font-semibold text-ink-900 text-sm">{r.author_name}</span>
-                    {r.review_date && <span className="text-ink-400 text-xs">· {r.review_date}</span>}
+                    {r.review_date && <span className="text-ink-400 text-xs">Â· {r.review_date}</span>}
                     {r.service_label && (
                       <span className="inline-block px-2 py-0.5 bg-primary-50 text-primary-600 text-xs font-medium rounded-full">
                         {r.service_label}
@@ -372,7 +372,7 @@ export function Reviews() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[95vh] flex flex-col">
             <div className="flex items-center justify-between px-6 py-4 border-b border-ink-100 bg-white rounded-t-2xl flex-shrink-0">
               <h2 className="font-display font-bold text-lg text-ink-900">
-                {editingId ? 'Editar reseña' : 'Nueva reseña'}
+                {editingId ? 'Editar reseÃ±a' : 'Nueva reseÃ±a'}
               </h2>
               <button
                 onClick={closeForm}
@@ -417,7 +417,7 @@ export function Reviews() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-ink-700 mb-1.5">Valoración</label>
+                <label className="block text-sm font-medium text-ink-700 mb-1.5">ValoraciÃ³n</label>
                 <div className="flex items-center gap-1.5">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <button
@@ -435,13 +435,13 @@ export function Reviews() {
 
               <div>
                 <label className="block text-sm font-medium text-ink-700 mb-1.5">
-                  Texto de la reseña <span className="text-error-500">*</span>
+                  Texto de la reseÃ±a <span className="text-error-500">*</span>
                 </label>
                 <textarea
                   value={form.review_text}
                   onChange={(e) => setForm({ ...form, review_text: e.target.value })}
                   rows={6}
-                  placeholder="Copia aquí la reseña del cliente..."
+                  placeholder="Copia aquÃ­ la reseÃ±a del cliente..."
                   className="w-full px-4 py-2.5 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors resize-y min-h-[140px]"
                 />
               </div>
@@ -464,7 +464,7 @@ export function Reviews() {
                     type="text"
                     value={form.service_label}
                     onChange={(e) => setForm({ ...form, service_label: e.target.value })}
-                    placeholder="Ej. Instalación por conductos"
+                    placeholder="Ej. InstalaciÃ³n por conductos"
                     className="w-full px-4 py-2.5 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                   />
                 </div>
@@ -509,7 +509,7 @@ export function Reviews() {
                 className="flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-primary-500/20"
               >
                 <Save className="w-4 h-4" />
-                {saving ? 'Guardando...' : 'Guardar reseña'}
+                {saving ? 'Guardando...' : 'Guardar reseÃ±a'}
               </button>
             </div>
           </div>
