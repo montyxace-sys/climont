@@ -1,0 +1,525 @@
+import { useEffect, useState, useCallback } from 'react';
+import { Plus, Pencil, Trash2, X, Star, Eye, EyeOff, Euro, Save, Package } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+
+type Product = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image_url: string | null;
+  featured: boolean;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+};
+
+type ProductForm = {
+  name: string;
+  description: string;
+  price: string;
+  category: string;
+  image_url: string;
+  featured: boolean;
+  is_active: boolean;
+  sort_order: string;
+};
+
+const EMPTY_FORM: ProductForm = {
+  name: '',
+  description: '',
+  price: '',
+  category: 'General',
+  image_url: '',
+  featured: false,
+  is_active: true,
+  sort_order: '0',
+};
+
+export function Products() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState<ProductForm>(EMPTY_FORM);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadProducts = useCallback(async () => {
+    setLoading(true);
+    const { data, error: err } = await supabase
+      .from('products')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .order('name', { ascending: true });
+
+    if (err) {
+      setError('No se pudieron cargar los productos.');
+    } else {
+      setProducts(data || []);
+      setError(null);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
+  const openNewForm = () => {
+    setForm(EMPTY_FORM);
+    setEditingId(null);
+    setShowForm(true);
+  };
+
+  const openEditForm = (p: Product) => {
+    setForm({
+      name: p.name,
+      description: p.description,
+      price: String(p.price),
+      category: p.category,
+      image_url: p.image_url || '',
+      featured: p.featured,
+      is_active: p.is_active,
+      sort_order: String(p.sort_order),
+    });
+    setEditingId(p.id);
+    setShowForm(true);
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+    setEditingId(null);
+    setForm(EMPTY_FORM);
+    setError(null);
+  };
+
+  const handleSave = async () => {
+    if (!form.name.trim() || !form.description.trim() || !form.price.trim()) {
+      setError('Nombre, descripción y precio son obligatorios.');
+      return;
+    }
+
+    const priceNum = parseFloat(form.price);
+    if (isNaN(priceNum) || priceNum < 0) {
+      setError('El precio debe ser un número válido.');
+      return;
+    }
+
+    setSaving(true);
+    setError(null);
+
+    const payload = {
+      name: form.name.trim(),
+      description: form.description.trim(),
+      price: priceNum,
+      category: form.category.trim() || 'General',
+      image_url: form.image_url.trim() || null,
+      featured: form.featured,
+      is_active: form.is_active,
+      sort_order: parseInt(form.sort_order) || 0,
+    };
+
+    if (editingId) {
+      const { error: err } = await supabase
+        .from('products')
+        .update({ ...payload, updated_at: new Date().toISOString() })
+        .eq('id', editingId);
+      if (err) {
+        setError('Error al actualizar el producto.');
+      } else {
+        closeForm();
+        loadProducts();
+      }
+    } else {
+      const { error: err } = await supabase.from('products').insert(payload);
+      if (err) {
+        setError('Error al crear el producto.');
+      } else {
+        closeForm();
+        loadProducts();
+      }
+    }
+    setSaving(false);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('¿Seguro que quieres eliminar este producto?')) return;
+    const { error: err } = await supabase.from('products').delete().eq('id', id);
+    if (err) {
+      setError('Error al eliminar el producto.');
+    } else {
+      loadProducts();
+    }
+  };
+
+  const toggleActive = async (p: Product) => {
+    const { error: err } = await supabase
+      .from('products')
+      .update({ is_active: !p.is_active, updated_at: new Date().toISOString() })
+      .eq('id', p.id);
+    if (err) {
+      setError('Error al cambiar el estado del producto.');
+    } else {
+      loadProducts();
+    }
+  };
+
+  const toggleFeatured = async (p: Product) => {
+    const { error: err } = await supabase
+      .from('products')
+      .update({ featured: !p.featured, updated_at: new Date().toISOString() })
+      .eq('id', p.id);
+    if (err) {
+      setError('Error al marcar el producto.');
+    } else {
+      loadProducts();
+    }
+  };
+
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(price);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h1 className="font-display text-2xl font-bold text-ink-900">Catálogo de productos</h1>
+          <p className="text-ink-500 text-sm mt-1">
+            {products.length} producto{products.length !== 1 ? 's' : ''} en el catálogo
+          </p>
+        </div>
+        <button
+          onClick={openNewForm}
+          className="flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-primary-500/20"
+        >
+          <Plus className="w-4 h-4" /> Añadir producto
+        </button>
+      </div>
+
+      {error && (
+        <div className="bg-error-50 border border-error-200 text-error-700 text-sm rounded-xl px-4 py-3">
+          {error}
+        </div>
+      )}
+
+      {loading ? (
+        <div className="flex items-center justify-center py-24">
+          <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-600 rounded-full animate-spin" />
+        </div>
+      ) : products.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <Package className="w-12 h-12 text-ink-300 mb-4" />
+          <p className="text-ink-500 text-sm mb-4">No hay productos en el catálogo todavía.</p>
+          <button
+            onClick={openNewForm}
+            className="flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors"
+          >
+            <Plus className="w-4 h-4" /> Crear el primer producto
+          </button>
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl border border-ink-100 shadow-sm overflow-hidden">
+          {/* Desktop table */}
+          <div className="hidden lg:block overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-ink-100 bg-ink-50/50">
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-ink-500 uppercase tracking-wide">Producto</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-ink-500 uppercase tracking-wide">Categoría</th>
+                  <th className="text-right px-5 py-3.5 text-xs font-semibold text-ink-500 uppercase tracking-wide">Precio</th>
+                  <th className="text-center px-5 py-3.5 text-xs font-semibold text-ink-500 uppercase tracking-wide">Estado</th>
+                  <th className="text-center px-5 py-3.5 text-xs font-semibold text-ink-500 uppercase tracking-wide">Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-ink-100">
+                {products.map((p) => (
+                  <tr key={p.id} className="hover:bg-ink-50/50 transition-colors">
+                    <td className="px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-ink-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                          {p.image_url ? (
+                            <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <Package className="w-5 h-5 text-ink-300" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-medium text-ink-900 text-sm flex items-center gap-2">
+                            {p.name}
+                            {p.featured && <Star className="w-3.5 h-3.5 text-warning-500 fill-warning-500" />}
+                          </div>
+                          <div className="text-xs text-ink-400 truncate max-w-xs">{p.description}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-5 py-4">
+                      <span className="inline-block px-2.5 py-1 bg-ink-100 text-ink-600 text-xs font-medium rounded-full">
+                        {p.category}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4 text-right">
+                      <span className="font-display font-semibold text-ink-900">{formatPrice(p.price)}</span>
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="flex items-center justify-center">
+                        <button
+                          onClick={() => toggleActive(p)}
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+                            p.is_active
+                              ? 'bg-success-100 text-success-700 hover:bg-success-200'
+                              : 'bg-ink-100 text-ink-500 hover:bg-ink-200'
+                          }`}
+                        >
+                          {p.is_active ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                          {p.is_active ? 'Visible' : 'Oculto'}
+                        </button>
+                      </div>
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="flex items-center justify-center gap-2">
+                        <button
+                          onClick={() => toggleFeatured(p)}
+                          className={`p-2 rounded-lg transition-colors ${
+                            p.featured
+                              ? 'text-warning-600 hover:bg-warning-50'
+                              : 'text-ink-400 hover:bg-ink-100'
+                          }`}
+                          title={p.featured ? 'Quitar destacado' : 'Marcar destacado'}
+                        >
+                          <Star className={`w-4 h-4 ${p.featured ? 'fill-warning-500' : ''}`} />
+                        </button>
+                        <button
+                          onClick={() => openEditForm(p)}
+                          className="p-2 rounded-lg text-ink-500 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                          title="Editar"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(p.id)}
+                          className="p-2 rounded-lg text-ink-500 hover:bg-error-50 hover:text-error-600 transition-colors"
+                          title="Eliminar"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="lg:hidden divide-y divide-ink-100">
+            {products.map((p) => (
+              <div key={p.id} className="p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-lg bg-ink-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                    {p.image_url ? (
+                      <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <Package className="w-6 h-6 text-ink-300" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-ink-900 text-sm flex items-center gap-2">
+                      {p.name}
+                      {p.featured && <Star className="w-3.5 h-3.5 text-warning-500 fill-warning-500" />}
+                    </div>
+                    <div className="text-xs text-ink-400 mt-0.5">{p.category}</div>
+                  </div>
+                  <span className="font-display font-semibold text-ink-900 text-sm whitespace-nowrap">
+                    {formatPrice(p.price)}
+                  </span>
+                </div>
+                <p className="text-sm text-ink-500 mb-3 line-clamp-2">{p.description}</p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => toggleActive(p)}
+                    className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg ${
+                      p.is_active ? 'bg-success-100 text-success-700' : 'bg-ink-100 text-ink-500'
+                    }`}
+                  >
+                    {p.is_active ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                    {p.is_active ? 'Visible' : 'Oculto'}
+                  </button>
+                  <button
+                    onClick={() => toggleFeatured(p)}
+                    className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg ${
+                      p.featured ? 'bg-warning-100 text-warning-700' : 'bg-ink-100 text-ink-500'
+                    }`}
+                  >
+                    <Star className={`w-3 h-3 ${p.featured ? 'fill-warning-500' : ''}`} /> Destacado
+                  </button>
+                  <button
+                    onClick={() => openEditForm(p)}
+                    className="ml-auto p-2 rounded-lg text-ink-500 hover:bg-primary-50 hover:text-primary-600"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    className="p-2 rounded-lg text-ink-500 hover:bg-error-50 hover:text-error-600"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Form modal */}
+      {showForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-950/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-ink-100 sticky top-0 bg-white rounded-t-2xl z-10">
+              <h2 className="font-display font-bold text-lg text-ink-900">
+                {editingId ? 'Editar producto' : 'Nuevo producto'}
+              </h2>
+              <button
+                onClick={closeForm}
+                className="p-2 rounded-lg text-ink-400 hover:bg-ink-100 hover:text-ink-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-5">
+              {error && (
+                <div className="bg-error-50 border border-error-200 text-error-700 text-sm rounded-xl px-4 py-3">
+                  {error}
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-medium text-ink-700 mb-1.5">
+                  Nombre <span className="text-error-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder="Ej. Split Daikin 3500 frigorías"
+                  className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-ink-700 mb-1.5">
+                  Descripción <span className="text-error-500">*</span>
+                </label>
+                <textarea
+                  value={form.description}
+                  onChange={(e) => setForm({ ...form, description: e.target.value })}
+                  rows={3}
+                  placeholder="Descripción del producto, características, qué incluye..."
+                  className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none"
+                />
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-medium text-ink-700 mb-1.5">
+                    Precio (€) <span className="text-error-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Euro className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400" />
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={form.price}
+                      onChange={(e) => setForm({ ...form, price: e.target.value })}
+                      placeholder="0.00"
+                      className="w-full pl-10 pr-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-ink-700 mb-1.5">Categoría</label>
+                  <input
+                    type="text"
+                    value={form.category}
+                    onChange={(e) => setForm({ ...form, category: e.target.value })}
+                    placeholder="Splits, Conductos, Aerotermia..."
+                    className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-ink-700 mb-1.5">
+                  URL de imagen
+                </label>
+                <input
+                  type="text"
+                  value={form.image_url}
+                  onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                  placeholder="https://..."
+                  className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                />
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-medium text-ink-700 mb-1.5">Orden</label>
+                  <input
+                    type="number"
+                    value={form.sort_order}
+                    onChange={(e) => setForm({ ...form, sort_order: e.target.value })}
+                    placeholder="0"
+                    className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  />
+                </div>
+
+                <div className="flex items-end gap-5 pb-1">
+                  <label className="flex items-center gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={form.featured}
+                      onChange={(e) => setForm({ ...form, featured: e.target.checked })}
+                      className="w-4 h-4 rounded border-ink-300 text-primary-600 focus:ring-primary-500"
+                    />
+                    <span className="text-sm text-ink-700">Destacado</span>
+                  </label>
+                  <label className="flex items-center gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={form.is_active}
+                      onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
+                      className="w-4 h-4 rounded border-ink-300 text-primary-600 focus:ring-primary-500"
+                    />
+                    <span className="text-sm text-ink-700">Visible</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-ink-100 sticky bottom-0 bg-white rounded-b-2xl">
+              <button
+                onClick={closeForm}
+                className="px-4 py-2.5 text-sm font-medium text-ink-600 rounded-xl hover:bg-ink-100 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition-colors"
+              >
+                <Save className="w-4 h-4" />
+                {saving ? 'Guardando...' : 'Guardar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

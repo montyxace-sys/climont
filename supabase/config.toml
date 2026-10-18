@@ -1,0 +1,16 @@
+project_id = "thrwdrwsdtqxbgooshvr"
+
+[functions.send-contact-email]
+verify_jwt = false
+
+[functions.send-reply-email]
+verify_jwt = true
+
+[functions.mega-proxy]
+verify_jwt = true
+
+[functions.google-reviews]
+verify_jwt = false
+
+[functions.proton-proxy]
+verify_jwt = true
