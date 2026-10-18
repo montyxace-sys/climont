@@ -1,24 +1,14 @@
-# Force the canonical HTTPS host (301 permanent)
-http://climont.es/*       https://climont.es/:splat 301!
-http://www.climont.es/*   https://climont.es/:splat 301!
-https://www.climont.es/* https://climont.es/:splat 301!
-
 # Trailing-slash redirects to prevent duplicate-content (301 permanent)
 /servicios/           /servicios           301
 /ciudades/            /ciudades            301
 /marcas/              /marcas              301
 /blog/                /blog                301
-/blog/                /blog                301
 
 # Canonical route for the client download center
 /centro-de-descargas   /index.html          200
 
-# SPA catch-all routes
-/admin/*              /index.html          200
-/servicios/*          /index.html          200
-/ciudades/*           /index.html          200
-/marcas/*             /index.html          200
-/blog/*               /index.html          200
+# SPA routes (el fallback 404->index.html lo hace wrangler.jsonc:
+# assets.not_found_handling = single-page-application)
 /catalogo             /index.html          200
 /empleo               /index.html          200
 /codigos-de-errores   /index.html          200
@@ -26,4 +16,7 @@ https://www.climont.es/* https://climont.es/:splat 301!
 /descargar-logo       /index.html          200
 /politica-de-cookies  /index.html          200
 /aviso-legal          /index.html          200
-/*                    /index.html          200
+
+# Nota: las redirecciones de dominio canónico (http->https, www->apex)
+# se configuran en el dashboard de Cloudflare al attachar climont.es
+# (Workers Assets solo admite rutas relativas en _redirects)
