@@ -16,4 +16,20 @@ export default defineConfig({
   optimizeDeps: {
     include: ['lucide-react'],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Divide el bundle: los vendors cambian poco → se cachean mejor
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          if (id.includes('@supabase')) return 'vendor-supabase';
+          if (id.includes('react-dom') || id.includes('scheduler') || /node_modules[\\/]react[\\/]/.test(id)) return 'vendor-react';
+          if (id.includes('lucide-react')) return 'vendor-icons';
+          if (id.includes('pdfjs-dist')) return 'vendor-pdf';
+          if (id.includes('xlsx')) return 'vendor-xlsx';
+          return undefined;
+        },
+      },
+    },
+  },
 });
