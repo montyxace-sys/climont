@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 import { updateAnalyticsConsent, trackPageView } from '@/lib/analytics';
 
 function getOrCreateSessionId(): string {
@@ -27,14 +26,18 @@ export function usePageTracking(path: string) {
     const deviceType = detectDeviceType(userAgent);
     const referrer = document.referrer || null;
 
-    supabase.from('page_views').insert({
-      session_id: sessionId,
-      path,
-      referrer,
-      user_agent: userAgent,
-      device_type: deviceType,
-    }).then(({ error }) => {
-      if (error) console.error('Tracking error:', error);
+    // El SDK de Supabase se carga de forma diferida para no bloquear el
+    // render inicial de la pagina.
+    import('@/lib/supabase').then(({ supabase }) => {
+      supabase.from('page_views').insert({
+        session_id: sessionId,
+        path,
+        referrer,
+        user_agent: userAgent,
+        device_type: deviceType,
+      }).then(({ error }) => {
+        if (error) console.error('Tracking error:', error);
+      });
     });
   }, [path]);
 }

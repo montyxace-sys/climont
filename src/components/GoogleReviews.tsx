@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Star, Quote, ExternalLink, Loader2 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
-import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabaseConfig';
 
 type Review = {
   id: string;
@@ -30,6 +30,7 @@ export function GoogleReviews() {
     let cancelled = false;
 
     async function loadData() {
+      const { supabase } = await import('@/lib/supabase');
       // Load admin-managed reviews from DB
       const { data: dbReviews } = await supabase
         .from('reviews')

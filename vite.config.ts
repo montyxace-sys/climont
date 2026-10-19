@@ -21,6 +21,13 @@ export default defineConfig({
       output: {
         // Divide el bundle: los vendors cambian poco → se cachean mejor
         manualChunks(id) {
+          // El helper de precarga de Vite (modulo virtual, fuera de
+          // node_modules) acababa fusionado dentro de vendor-supabase, lo que
+          // convertia TODO el SDK de Supabase en dependencia estatica del
+          // entry y lo precargaba en la carga inicial. Lo aislamos en su
+          // propio trozo (minusculo) para que Supabase solo se descargue
+          // cuando de verdad se usa.
+          if (id.includes('preload-helper')) return 'vendor-preload';
           if (!id.includes('node_modules')) return undefined;
           if (id.includes('@supabase')) return 'vendor-supabase';
           if (id.includes('react-dom') || id.includes('scheduler') || /node_modules[\\/]react[\\/]/.test(id)) return 'vendor-react';

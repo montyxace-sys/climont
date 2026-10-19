@@ -12,7 +12,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
-import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabaseConfig';
 
 const SERVICE_OPTIONS = [
   { value: 'instalacion', label: 'InstalaciÃ³n' },
@@ -80,6 +80,7 @@ export function Contact() {
     if (!validate()) return;
 
     setStatus('loading');
+    const { supabase } = await import('@/lib/supabase');
     const { error } = await supabase.from('contact_requests').insert({
       name: form.name.trim(),
       email: form.email.trim().toLowerCase(),

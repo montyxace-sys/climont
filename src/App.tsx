@@ -12,32 +12,37 @@ import { FaqCoverage } from '@/components/FaqCoverage';
 import { BlogCTA } from '@/components/BlogCTA';
 import { Footer } from '@/components/Footer';
 import { CookieConsent } from '@/components/CookieConsent';
-import { CookiePolicy } from '@/components/CookiePolicy';
-import { LegalNotice } from '@/components/LegalNotice';
-import { ChatWidget } from '@/components/ChatWidget';
 import { FloatingPhoneButton } from '@/components/FloatingPhoneButton';
-import { ServicePage } from '@/components/ServicePage';
-import { CityPage } from '@/components/CityPage';
-import { BrandPage } from '@/components/BrandPage';
-import { BlogPage, BlogList } from '@/components/BlogPage';
-import { Catalog } from '@/components/Catalog';
-import { LogoDownload } from '@/components/LogoDownload';
-import { Careers } from '@/components/Careers';
-import { ErrorCodesPage } from '@/components/ErrorCodesPage';
-import { DownloadCenter } from '@/components/DownloadCenter';
-import { FrigoriasCalculator } from '@/components/FrigoriasCalculator';
 import { usePageTracking } from '@/hooks/usePageTracking';
 import { useSeo } from '@/hooks/useSeo';
 import { getServiceBySlug } from '@/data/services';
 import { getCityBySlug } from '@/data/cities';
 import { getBrandBySlug } from '@/data/brands';
 import { BLOG_POSTS } from '@/data/blog';
-import { loadPublishedBlogPosts } from '@/lib/blog';
 import { navigate } from '@/lib/navigate';
 
 const AdminPanel = lazy(() =>
   import('@/components/admin/AdminPanel').then((m) => ({ default: m.AdminPanel }))
 );
+
+// Paginas internas: se cargan solo cuando se visita su ruta, no en la portada.
+const ServicePage = lazy(() => import('@/components/ServicePage').then((m) => ({ default: m.ServicePage })));
+const CityPage = lazy(() => import('@/components/CityPage').then((m) => ({ default: m.CityPage })));
+const BrandPage = lazy(() => import('@/components/BrandPage').then((m) => ({ default: m.BrandPage })));
+const BlogPage = lazy(() => import('@/components/BlogPage').then((m) => ({ default: m.BlogPage })));
+const BlogList = lazy(() => import('@/components/BlogPage').then((m) => ({ default: m.BlogList })));
+const Catalog = lazy(() => import('@/components/Catalog').then((m) => ({ default: m.Catalog })));
+const LogoDownload = lazy(() => import('@/components/LogoDownload').then((m) => ({ default: m.LogoDownload })));
+const Careers = lazy(() => import('@/components/Careers').then((m) => ({ default: m.Careers })));
+const ErrorCodesPage = lazy(() => import('@/components/ErrorCodesPage').then((m) => ({ default: m.ErrorCodesPage })));
+const DownloadCenter = lazy(() => import('@/components/DownloadCenter').then((m) => ({ default: m.DownloadCenter })));
+const FrigoriasCalculator = lazy(() => import('@/components/FrigoriasCalculator').then((m) => ({ default: m.FrigoriasCalculator })));
+const CookiePolicy = lazy(() => import('@/components/CookiePolicy').then((m) => ({ default: m.CookiePolicy })));
+const LegalNotice = lazy(() => import('@/components/LegalNotice').then((m) => ({ default: m.LegalNotice })));
+
+// El chat flotante se carga mas tarde (en tiempo de inactividad) para no
+// competir con el contenido principal de la portada.
+const ChatWidget = lazy(() => import('@/components/ChatWidget').then((m) => ({ default: m.ChatWidget })));
 
 function normalizePath(pathname: string) {
   return pathname.replace(/\/+$/, '') || '/';
@@ -142,16 +147,29 @@ function useLinkInterceptor() {
   }, []);
 }
 
-function App() {
+function AppRoutes() {
   const path = usePathRoute();
   usePageTracking(path);
   useHashScroll(path);
   useLinkInterceptor();
   const [blogPosts, setBlogPosts] = useState(BLOG_POSTS);
+  const [chatReady, setChatReady] = useState(false);
+
+  // Carga diferida del chat: cuando el navegador esta inactivo o pasados unos
+  // segundos, para no retrasar el render inicial de la pagina.
+  useEffect(() => {
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number };
+    if (typeof w.requestIdleCallback === 'function') {
+      w.requestIdleCallback(() => setChatReady(true), { timeout: 4000 });
+      return;
+    }
+    const timer = window.setTimeout(() => setChatReady(true), 2500);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
-    loadPublishedBlogPosts().then((publishedPosts) => {
+    import('@/lib/blog').then(({ loadPublishedBlogPosts }) => loadPublishedBlogPosts()).then((publishedPosts) => {
       if (cancelled || publishedPosts.length === 0) return;
       const publishedBySlug = new Map(publishedPosts.map((post) => [post.slug, post]));
       const mergedPosts = BLOG_POSTS.map((post) => publishedBySlug.get(post.slug) || post);
@@ -410,9 +428,29 @@ function App() {
       </main>
       <Footer />
       <CookieConsent />
-      <ChatWidget />
+      {chatReady && (
+        <Suspense fallback={null}>
+          <ChatWidget />
+        </Suspense>
+      )}
       <FloatingPhoneButton />
     </div>
+  );
+}
+
+function PageLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-white text-ink-500 text-sm">
+      Cargando…
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <AppRoutes />
+    </Suspense>
   );
 }
 
