@@ -13,7 +13,7 @@ import { SERVICES } from '@/data/services';
 import { BLOG_POSTS } from '@/data/blog';
 
 const TRUST_BADGES = [
-  { icon: ShieldCheck, text: 'GarantÃ­a 3 aÃ±os' },
+  { icon: ShieldCheck, text: 'Garantía 3 años' },
   { icon: Clock, text: 'Respuesta en 24h' },
   { icon: BadgeCheck, text: 'Certificados RITE-07' },
   { icon: Users, text: '+5.000 clientes' },
@@ -24,20 +24,20 @@ const ALL_INSTALLATION_TYPES = [
   { value: 'conductos', label: 'Centralizado por conductos' },
   { value: 'cassettes', label: 'Cassettes de techo' },
   { value: 'suelo_techo', label: 'Equipos suelo/techo' },
-  { value: 'fabricacion_conductos', label: 'FabricaciÃ³n de conductos (fibra Climaver / chapa galvanizada)' },
-  { value: 'preinstalacion_obra', label: 'PreinstalaciÃ³n en obra nueva / nueva construcciÃ³n' },
-  { value: 'instalacion_obra', label: 'InstalaciÃ³n completa en obra nueva' },
-  { value: 'ventilacion_viviendas', label: 'VentilaciÃ³n de viviendas' },
-  { value: 'ventilacion_garajes', label: 'VentilaciÃ³n de garajes' },
-  { value: 'airzone', label: 'ClimatizaciÃ³n inteligente Airzone' },
+  { value: 'fabricacion_conductos', label: 'Fabricación de conductos (fibra Climaver / chapa galvanizada)' },
+  { value: 'preinstalacion_obra', label: 'Preinstalación en obra nueva / nueva construcción' },
+  { value: 'instalacion_obra', label: 'Instalación completa en obra nueva' },
+  { value: 'ventilacion_viviendas', label: 'Ventilación de viviendas' },
+  { value: 'ventilacion_garajes', label: 'Ventilación de garajes' },
+  { value: 'airzone', label: 'Climatización inteligente Airzone' },
 ];
 
 const CONTACT_INFO = [
-  { icon: Phone, label: 'TelÃ©fono', value: '676 628 348', href: 'tel:+34676628348' },
+  { icon: Phone, label: 'Teléfono', value: '676 628 348', href: 'tel:+34676628348' },
   { icon: MessageCircle, label: 'WhatsApp', value: '691 680 706', href: 'https://wa.me/34691680706' },
   { icon: Mail, label: 'Email', value: 'info@climont.es', href: 'mailto:info@climont.es' },
-  { icon: MapPin, label: 'DirecciÃ³n', value: 'AlcalÃ¡ de GuadaÃ­ra, Sevilla', href: '#' },
-  { icon: Clock, label: 'Horario', value: 'Lunâ€“Vie: 8:00â€“14:00 / 15:00â€“18:00', href: '#' },
+  { icon: MapPin, label: 'Dirección', value: 'Alcalá de Guadaíra, Sevilla', href: '#' },
+  { icon: Clock, label: 'Horario', value: 'Lun–Vie: 8:00–14:00 / 15:00–18:00', href: '#' },
 ];
 
 function buildServiceJsonLd(service: ServiceData) {
@@ -50,13 +50,13 @@ function buildServiceJsonLd(service: ServiceData) {
     provider: {
       '@type': 'HVACBusiness',
       '@id': 'https://climont.es/#business',
-      name: 'Climatizaciones MontaÃ±o, S.L.',
+      name: 'Climatizaciones Montaño, S.L.',
       telephone: '+34676628348',
       email: 'info@climont.es',
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'C/ Hacienda Guadalupe 35',
-        addressLocality: 'AlcalÃ¡ de GuadaÃ­ra',
+        addressLocality: 'Alcalá de Guadaíra',
         addressRegion: 'Sevilla',
         postalCode: '41500',
         addressCountry: 'ES',
@@ -114,8 +114,8 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
     const next: Record<string, string> = {};
     if (!form.name.trim()) next.name = 'Introduce tu nombre';
     if (!form.email.trim()) next.email = 'Introduce tu email';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Email no vÃ¡lido';
-    if (!form.phone.trim()) next.phone = 'Introduce tu telÃ©fono';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Email no válido';
+    if (!form.phone.trim()) next.phone = 'Introduce tu teléfono';
     if (!form.city.trim()) next.city = 'Introduce tu ciudad';
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -182,9 +182,9 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
           <div className="w-16 h-16 rounded-full bg-success-100 flex items-center justify-center mb-4">
             <CheckCircle2 className="w-8 h-8 text-success-600" />
           </div>
-          <h4 className="font-display text-xl font-bold text-ink-900 mb-2">Â¡Solicitud enviada!</h4>
+          <h4 className="font-display text-xl font-bold text-ink-900 mb-2">¡Solicitud enviada!</h4>
           <p className="text-ink-500 mb-6 max-w-md">
-            Gracias por escribirnos. Nuestro equipo te llamarÃ¡ en menos de 24 horas para organizar la visita tÃ©cnica.
+            Gracias por escribirnos. Nuestro equipo te llamará en menos de 24 horas para organizar la visita técnica.
           </p>
           <button onClick={() => setStatus('idle')} className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">
             Enviar otra solicitud
@@ -195,7 +195,7 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
           {status === 'error' && (
             <div className="flex items-center gap-3 p-4 bg-error-50 border border-error-200 rounded-xl text-error-700 text-sm">
               <AlertCircle className="w-5 h-5 flex-shrink-0" />
-              Ha ocurrido un error. Por favor, intÃ©ntalo de nuevo o llÃ¡manos al 676 628 348.
+              Ha ocurrido un error. Por favor, inténtalo de nuevo o llámanos al 676 628 348.
             </div>
           )}
 
@@ -209,14 +209,14 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
             <div>
               <label htmlFor="service-contact-city" className="block text-sm font-medium text-ink-700 mb-1.5">Ciudad *</label>
               <input id="service-contact-city" type="text" value={form.city} onChange={(e) => update('city', e.target.value)}
-                className={inputClass('city')} placeholder="Sevilla, AlcalÃ¡..." />
+                className={inputClass('city')} placeholder="Sevilla, Alcalá..." />
               {errors.city && <p className="mt-1 text-xs text-error-600">{errors.city}</p>}
             </div>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-5">
             <div>
-              <label htmlFor="service-contact-phone" className="block text-sm font-medium text-ink-700 mb-1.5">TelÃ©fono *</label>
+              <label htmlFor="service-contact-phone" className="block text-sm font-medium text-ink-700 mb-1.5">Teléfono *</label>
               <input id="service-contact-phone" type="tel" value={form.phone} onChange={(e) => update('phone', e.target.value)}
                 className={inputClass('phone')} placeholder="600 123 456" />
               {errors.phone && <p className="mt-1 text-xs text-error-600">{errors.phone}</p>}
@@ -231,7 +231,7 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
 
           <div>
             <label htmlFor="service-contact-installation-type" className="block text-sm font-medium text-ink-700 mb-1.5">
-              Tipo de instalaciÃ³n <span className="text-ink-400 font-normal">(opcional)</span>
+              Tipo de instalación <span className="text-ink-400 font-normal">(opcional)</span>
             </label>
             <select id="service-contact-installation-type" value={form.installation_type} onChange={(e) => update('installation_type', e.target.value)}
               className={`w-full px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all ${!form.installation_type ? 'text-ink-300' : ''}`}>
@@ -247,7 +247,7 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
             <textarea id="service-contact-message" value={form.message} onChange={(e) => update('message', e.target.value)}
               rows={4} maxLength={5000}
               className="w-full px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder-ink-300 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all resize-none"
-              placeholder="CuÃ©ntanos quÃ© necesitas..." />
+              placeholder="Cuéntanos qué necesitas..." />
           </div>
 
           <button type="submit" disabled={status === 'loading'}
@@ -258,7 +258,7 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
               <><Send className="w-5 h-5" /> Solicitar presupuesto gratis</>
             )}
           </button>
-          <p className="text-xs text-ink-400 text-center">Al enviar aceptas nuestra polÃ­tica de privacidad. No compartimos tus datos.</p>
+          <p className="text-xs text-ink-400 text-center">Al enviar aceptas nuestra política de privacidad. No compartimos tus datos.</p>
         </form>
       )}
     </div>
@@ -279,7 +279,7 @@ function ServiceFAQSection({ service }: { service: ServiceData }) {
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink-900 mb-4">
             Todo lo que necesitas saber sobre {service.shortTitle.toLowerCase()}
           </h2>
-          <p className="text-ink-500">Resolvemos las dudas mÃ¡s comunes de nuestros clientes</p>
+          <p className="text-ink-500">Resolvemos las dudas más comunes de nuestros clientes</p>
         </Reveal>
 
         <div ref={ref} className={`reveal ${isVisible ? 'is-visible' : ''} space-y-3`}>
@@ -328,7 +328,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
               <Snowflake className="w-6 h-6 text-white" />
             </div>
             <span className="font-display font-bold text-lg text-ink-900 hidden sm:inline">
-              Climatizaciones <span className="text-primary-500">MontaÃ±o</span>
+              Climatizaciones <span className="text-primary-500">Montaño</span>
             </span>
           </a>
           <a href="/#servicios" className="flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-primary-600 transition-colors">
@@ -341,7 +341,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-12 pb-20 lg:pt-20 lg:pb-32">
         <div className="absolute inset-0">
-          <img src={service.heroImage} alt={`${service.shortTitle} â€” Climatizaciones MontaÃ±o`} className="w-full h-full object-cover opacity-20" fetchPriority="high" />
+          <img src={service.heroImage} alt={`${service.shortTitle} — Climatizaciones Montaño`} className="w-full h-full object-cover opacity-20" fetchPriority="high" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-900/60" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -358,7 +358,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
             </p>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-success-500/15 border border-success-500/30 rounded-full text-success-300 text-sm font-medium mb-8">
               <CheckCircle2 className="w-4 h-4" />
-              Disponible inmediato â€” instalaciÃ³n en un mÃ¡ximo de 3 dÃ­as
+              Disponible inmediato — instalación en un máximo de 3 días
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="#contacto-servicio" className="group inline-flex items-center justify-center gap-2 px-7 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all shadow-xl shadow-primary-500/30 hover:-translate-y-0.5">
@@ -399,7 +399,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
       <section className="py-12 bg-white border-b border-ink-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-lg text-ink-600 leading-relaxed text-center">
-            {service.shortTitle} en la provincia, realizado por tÃ©cnicos certificados RITE-07 con garantÃ­a en todos los trabajos.
+            {service.shortTitle} en la provincia, realizado por técnicos certificados RITE-07 con garantía en todos los trabajos.
           </p>
         </div>
       </section>
@@ -412,7 +412,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
               Ventajas
             </span>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink-900 mb-4">
-              Por quÃ© elegir nuestro servicio de {service.shortTitle.toLowerCase()}
+              Por qué elegir nuestro servicio de {service.shortTitle.toLowerCase()}
             </h2>
             <p className="text-lg text-ink-500">
               {service.shortTitle} realizado por profesionales certificados en toda la provincia
@@ -440,7 +440,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal className="text-center mb-12">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink-900 mb-4">
-              QuÃ© incluye este servicio
+              Qué incluye este servicio
             </h2>
           </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -464,7 +464,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Reveal className="text-center mb-12">
               <span className="inline-block px-4 py-1.5 bg-primary-50 text-primary-700 text-sm font-semibold rounded-full mb-4">
-                GalerÃ­a
+                Galería
               </span>
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink-900 mb-4">
                 Nuestros trabajos de {service.shortTitle.toLowerCase()}
@@ -519,12 +519,12 @@ export function ServicePage({ service }: { service: ServiceData }) {
             {(() => {
               const serviceKeywords = service.slug === 'aerotermia' ? ['aerotermia', 'caldera', 'suelo radiante']
                 : service.slug === 'mantenimiento' ? ['mantenimiento', 'filtros', 'limpiar']
-                : service.slug === 'reparacion' ? ['reparaciÃ³n', 'averÃ­a', 'ruido']
+                : service.slug === 'reparacion' ? ['reparación', 'avería', 'ruido']
                 : service.slug === 'eficiencia' ? ['inverter', 'eficiencia', 'consume', 'bomba de calor']
-                : service.slug === 'instalacion' ? ['instalaciÃ³n', 'conductos', 'split', 'potencia', 'marca']
-                : service.slug === 'airzone' ? ['wifi', 'domÃ³tica', 'inteligente']
+                : service.slug === 'instalacion' ? ['instalación', 'conductos', 'split', 'potencia', 'marca']
+                : service.slug === 'airzone' ? ['wifi', 'domótica', 'inteligente']
                 : service.slug === 'constructoras' ? ['obra nueva', 'conductos', 'aerotermia']
-                : service.slug === 'ventilacion' ? ['ventilaciÃ³n', 'aire']
+                : service.slug === 'ventilacion' ? ['ventilación', 'aire']
                 : ['aire acondicionado'];
               const related = BLOG_POSTS.filter((p) =>
                 serviceKeywords.some((kw) =>
@@ -536,7 +536,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
                 <Reveal delay={150}>
                   <h3 className="font-display text-2xl font-bold text-ink-900 mb-6 flex items-center gap-2">
                     <ArrowRight className="w-5 h-5 text-primary-600" />
-                    ArtÃ­culos del blog relacionados
+                    Artículos del blog relacionados
                   </h3>
                   <div className="space-y-3">
                     {related.map((post) => (
@@ -591,7 +591,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
             <div className="relative px-6 py-12 lg:px-16 lg:py-16 flex flex-col lg:flex-row items-center justify-between gap-6">
               <div className="text-center lg:text-left">
                 <h2 className="font-display text-2xl lg:text-3xl font-bold text-white mb-2">
-                  Â¿Necesitas {service.shortTitle.toLowerCase()}?
+                  ¿Necesitas {service.shortTitle.toLowerCase()}?
                 </h2>
                 <p className="text-primary-100 text-base lg:text-lg">
                   Solicita tu presupuesto gratis y sin compromiso. Te respondemos en menos de 24 horas.
@@ -615,7 +615,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
               <div>
                 <h3 className="font-display text-2xl lg:text-3xl font-bold text-ink-900 mb-4">Ponte en contacto</h3>
                 <p className="text-ink-500 mb-8 leading-relaxed">
-                  Rellena el formulario y te llamaremos para organizar una visita tÃ©cnica gratis. TambiÃ©n puedes contactarnos directamente por telÃ©fono o WhatsApp.
+                  Rellena el formulario y te llamaremos para organizar una visita técnica gratis. También puedes contactarnos directamente por teléfono o WhatsApp.
                 </p>
                 <div className="space-y-4">
                   {CONTACT_INFO.map((item) => {
@@ -648,7 +648,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Snowflake className="w-5 h-5 text-primary-400" />
-            <span className="text-white/70 text-sm font-medium">Climatizaciones MontaÃ±o, S.L. â€” Sevilla</span>
+            <span className="text-white/70 text-sm font-medium">Climatizaciones Montaño, S.L. — Sevilla</span>
           </div>
           <div className="flex gap-4 text-sm text-white/50">
             <a href="/" className="hover:text-primary-400 transition-colors">Inicio</a>

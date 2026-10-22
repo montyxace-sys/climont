@@ -12,6 +12,7 @@ dist-ssr
 *.local
 
 .wrangler
+supabase/.temp
 
 .vscode/*
 !.vscode/extensions.json

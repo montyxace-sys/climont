@@ -10,22 +10,22 @@ import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { CITIES, type CityData } from '@/data/cities';
 
 const TRUST_BADGES = [
-  { icon: ShieldCheck, text: 'GarantÃ­a 3 aÃ±os' },
+  { icon: ShieldCheck, text: 'Garantía 3 años' },
   { icon: Clock, text: 'Respuesta en 24h' },
   { icon: BadgeCheck, text: 'Certificados RITE-07' },
   { icon: Users, text: '+5.000 clientes' },
 ];
 
 const SERVICE_OPTIONS = [
-  { value: 'instalacion', label: 'InstalaciÃ³n' },
+  { value: 'instalacion', label: 'Instalación' },
   { value: 'mantenimiento', label: 'Mantenimiento' },
-  { value: 'reparacion', label: 'ReparaciÃ³n' },
-  { value: 'ventilacion', label: 'VentilaciÃ³n y extracciÃ³n' },
-  { value: 'eficiencia', label: 'Eficiencia energÃ©tica' },
-  { value: 'airzone', label: 'ClimatizaciÃ³n inteligente Airzone' },
+  { value: 'reparacion', label: 'Reparación' },
+  { value: 'ventilacion', label: 'Ventilación y extracción' },
+  { value: 'eficiencia', label: 'Eficiencia energética' },
+  { value: 'airzone', label: 'Climatización inteligente Airzone' },
   { value: 'constructoras', label: 'Instalaciones y preinstalaciones para constructoras' },
   { value: 'aerotermia', label: 'Aerotermia' },
-  { value: 'solar-termica', label: 'EnergÃ­a solar tÃ©rmica' },
+  { value: 'solar-termica', label: 'Energía solar térmica' },
 ];
 
 const ALL_INSTALLATION_TYPES = [
@@ -33,38 +33,38 @@ const ALL_INSTALLATION_TYPES = [
   { value: 'conductos', label: 'Centralizado por conductos' },
   { value: 'cassettes', label: 'Cassettes de techo' },
   { value: 'suelo_techo', label: 'Equipos suelo/techo' },
-  { value: 'fabricacion_conductos', label: 'FabricaciÃ³n de conductos (fibra Climaver / chapa galvanizada)' },
-  { value: 'preinstalacion_obra', label: 'PreinstalaciÃ³n en obra nueva / nueva construcciÃ³n' },
-  { value: 'instalacion_obra', label: 'InstalaciÃ³n completa en obra nueva' },
-  { value: 'ventilacion_viviendas', label: 'VentilaciÃ³n de viviendas' },
-  { value: 'ventilacion_garajes', label: 'VentilaciÃ³n de garajes' },
-  { value: 'airzone', label: 'ClimatizaciÃ³n inteligente Airzone' },
+  { value: 'fabricacion_conductos', label: 'Fabricación de conductos (fibra Climaver / chapa galvanizada)' },
+  { value: 'preinstalacion_obra', label: 'Preinstalación en obra nueva / nueva construcción' },
+  { value: 'instalacion_obra', label: 'Instalación completa en obra nueva' },
+  { value: 'ventilacion_viviendas', label: 'Ventilación de viviendas' },
+  { value: 'ventilacion_garajes', label: 'Ventilación de garajes' },
+  { value: 'airzone', label: 'Climatización inteligente Airzone' },
 ];
 
 const CONTACT_INFO = [
-  { icon: Phone, label: 'TelÃ©fono', value: '676 628 348', href: 'tel:+34676628348' },
+  { icon: Phone, label: 'Teléfono', value: '676 628 348', href: 'tel:+34676628348' },
   { icon: MessageCircle, label: 'WhatsApp', value: '691 680 706', href: 'https://wa.me/34691680706' },
   { icon: Mail, label: 'Email', value: 'info@climont.es', href: 'mailto:info@climont.es' },
-  { icon: MapPin, label: 'DirecciÃ³n', value: 'AlcalÃ¡ de GuadaÃ­ra, Sevilla', href: '#' },
-  { icon: Clock, label: 'Horario', value: 'Lunâ€“Vie: 8:00â€“14:00 / 15:00â€“18:00', href: '#' },
+  { icon: MapPin, label: 'Dirección', value: 'Alcalá de Guadaíra, Sevilla', href: '#' },
+  { icon: Clock, label: 'Horario', value: 'Lun–Vie: 8:00–14:00 / 15:00–18:00', href: '#' },
 ];
 
 const CITY_FAQS = [
   {
-    question: 'Â¿CuÃ¡nto tardÃ¡is en llegar a {city}?',
-    answer: 'Normalmente atendemos solicitudes en {city} en menos de 24 horas. Si tienes una averÃ­a, hacemos todo lo posible por ir el mismo dÃ­a, especialmente en verano cuando el aire acondicionado es imprescindible.',
+    question: '¿Cuánto tardáis en llegar a {city}?',
+    answer: 'Normalmente atendemos solicitudes en {city} en menos de 24 horas. Si tienes una avería, hacemos todo lo posible por ir el mismo día, especialmente en verano cuando el aire acondicionado es imprescindible.',
   },
   {
-    question: 'Â¿El presupuesto es gratuito en {city}?',
-    answer: 'SÃ­, el presupuesto es totalmente gratuito y sin compromiso, sea cual sea tu localidad en la provincia de Sevilla. Organizamos una visita tÃ©cnica sin coste para evaluar tu caso en {city}.',
+    question: '¿El presupuesto es gratuito en {city}?',
+    answer: 'Sí, el presupuesto es totalmente gratuito y sin compromiso, sea cual sea tu localidad en la provincia de Sevilla. Organizamos una visita técnica sin coste para evaluar tu caso en {city}.',
   },
   {
-    question: 'Â¿QuÃ© servicios ofrecÃ©is en {city}?',
-    answer: 'Ofrecemos instalaciÃ³n de aire acondicionado (splits, conductos, cassettes), mantenimiento preventivo, reparaciÃ³n, ventilaciÃ³n, aerotermia, energÃ­a solar tÃ©rmica, climatizaciÃ³n inteligente Airzone y preinstalaciones para constructoras en {city} y toda la provincia.',
+    question: '¿Qué servicios ofrecéis en {city}?',
+    answer: 'Ofrecemos instalación de aire acondicionado (splits, conductos, cassettes), mantenimiento preventivo, reparación, ventilación, aerotermia, energía solar térmica, climatización inteligente Airzone y preinstalaciones para constructoras en {city} y toda la provincia.',
   },
   {
-    question: 'Â¿ReparÃ¡is todas las marcas en {city}?',
-    answer: 'SÃ­, reparamos todas las marcas en {city}: Daikin, Mitsubishi, Samsung, LG, Panasonic, Fujitsu, Hisense, Hitachi, Johnson y todas las demÃ¡s. Trabajamos con repuestos originales y garantÃ­a de 6 meses en cada reparaciÃ³n.',
+    question: '¿Reparáis todas las marcas en {city}?',
+    answer: 'Sí, reparamos todas las marcas en {city}: Daikin, Mitsubishi, Samsung, LG, Panasonic, Fujitsu, Hisense, Hitachi, Johnson y todas las demás. Trabajamos con repuestos originales y garantía de 6 meses en cada reparación.',
   },
 ];
 
@@ -73,13 +73,13 @@ function buildCityJsonLd(city: CityData) {
     '@context': 'https://schema.org',
     '@type': 'HVACBusiness',
     '@id': 'https://climont.es/#business',
-    name: 'Climatizaciones MontaÃ±o, S.L.',
+    name: 'Climatizaciones Montaño, S.L.',
     telephone: '+34676628348',
     email: 'info@climont.es',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'C/ Hacienda Guadalupe 35',
-      addressLocality: 'AlcalÃ¡ de GuadaÃ­ra',
+      addressLocality: 'Alcalá de Guadaíra',
       addressRegion: 'Sevilla',
       postalCode: '41500',
       addressCountry: 'ES',
@@ -143,8 +143,8 @@ function CityContactForm({ city }: { city: CityData }) {
     const next: Record<string, string> = {};
     if (!form.name.trim()) next.name = 'Introduce tu nombre';
     if (!form.email.trim()) next.email = 'Introduce tu email';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Email no vÃ¡lido';
-    if (!form.phone.trim()) next.phone = 'Introduce tu telÃ©fono';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Email no válido';
+    if (!form.phone.trim()) next.phone = 'Introduce tu teléfono';
     if (!form.city.trim()) next.city = 'Introduce tu ciudad';
     if (!form.service_type) next.service_type = 'Selecciona un servicio';
     setErrors(next);
@@ -211,9 +211,9 @@ function CityContactForm({ city }: { city: CityData }) {
           <div className="w-16 h-16 rounded-full bg-success-100 flex items-center justify-center mb-4">
             <CheckCircle2 className="w-8 h-8 text-success-600" />
           </div>
-          <h4 className="font-display text-xl font-bold text-ink-900 mb-2">Â¡Solicitud enviada!</h4>
+          <h4 className="font-display text-xl font-bold text-ink-900 mb-2">¡Solicitud enviada!</h4>
           <p className="text-ink-500 mb-6 max-w-md">
-            Gracias por escribirnos. Nuestro equipo te llamarÃ¡ en menos de 24 horas para organizar la visita tÃ©cnica en {city.name}.
+            Gracias por escribirnos. Nuestro equipo te llamará en menos de 24 horas para organizar la visita técnica en {city.name}.
           </p>
           <button onClick={() => setStatus('idle')} className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">
             Enviar otra solicitud
@@ -224,7 +224,7 @@ function CityContactForm({ city }: { city: CityData }) {
           {status === 'error' && (
             <div className="flex items-center gap-3 p-4 bg-error-50 border border-error-200 rounded-xl text-error-700 text-sm">
               <AlertCircle className="w-5 h-5 flex-shrink-0" />
-              Ha ocurrido un error. Por favor, intÃ©ntalo de nuevo o llÃ¡manos al 676 628 348.
+              Ha ocurrido un error. Por favor, inténtalo de nuevo o llámanos al 676 628 348.
             </div>
           )}
 
@@ -245,7 +245,7 @@ function CityContactForm({ city }: { city: CityData }) {
 
           <div className="grid sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-medium text-ink-700 mb-1.5">TelÃ©fono *</label>
+              <label className="block text-sm font-medium text-ink-700 mb-1.5">Teléfono *</label>
               <input type="tel" value={form.phone} onChange={(e) => update('phone', e.target.value)}
                 className={inputClass('phone')} placeholder="600 123 456" />
               {errors.phone && <p className="mt-1 text-xs text-error-600">{errors.phone}</p>}
@@ -260,7 +260,7 @@ function CityContactForm({ city }: { city: CityData }) {
 
           <div>
             <label className="block text-sm font-medium text-ink-700 mb-1.5">
-              Tipo de instalaciÃ³n <span className="text-ink-400 font-normal">(opcional)</span>
+              Tipo de instalación <span className="text-ink-400 font-normal">(opcional)</span>
             </label>
             <select value={form.installation_type} onChange={(e) => update('installation_type', e.target.value)}
               className={`w-full px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all ${!form.installation_type ? 'text-ink-300' : ''}`}>
@@ -288,7 +288,7 @@ function CityContactForm({ city }: { city: CityData }) {
             <textarea value={form.message} onChange={(e) => update('message', e.target.value)}
               rows={4} maxLength={5000}
               className="w-full px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder-ink-300 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all resize-none"
-              placeholder="CuÃ©ntanos quÃ© necesitas..." />
+              placeholder="Cuéntanos qué necesitas..." />
           </div>
 
           <button type="submit" disabled={status === 'loading'}
@@ -299,7 +299,7 @@ function CityContactForm({ city }: { city: CityData }) {
               <><Send className="w-5 h-5" /> Solicitar presupuesto gratis</>
             )}
           </button>
-          <p className="text-xs text-ink-400 text-center">Al enviar aceptas nuestra polÃ­tica de privacidad. No compartimos tus datos.</p>
+          <p className="text-xs text-ink-400 text-center">Al enviar aceptas nuestra política de privacidad. No compartimos tus datos.</p>
         </form>
       )}
     </div>
@@ -356,7 +356,7 @@ function OtherCitiesLinks({ currentSlug }: { currentSlug: string }) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center mb-10">
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink-900 mb-3">
-            TambiÃ©n damos servicio en otras zonas
+            También damos servicio en otras zonas
           </h2>
           <p className="text-ink-500">Cobertura completa en toda la provincia</p>
         </Reveal>
@@ -395,7 +395,7 @@ export function CityPage({ city }: { city: CityData }) {
               <Snowflake className="w-6 h-6 text-white" />
             </div>
             <span className="font-display font-bold text-lg text-ink-900 hidden sm:inline">
-              Climatizaciones <span className="text-primary-500">MontaÃ±o</span>
+              Climatizaciones <span className="text-primary-500">Montaño</span>
             </span>
           </a>
           <a href="/#faq" className="flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-primary-600 transition-colors">
@@ -408,7 +408,7 @@ export function CityPage({ city }: { city: CityData }) {
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-12 pb-20 lg:pt-20 lg:pb-32">
         <div className="absolute inset-0 opacity-15">
-          <img src="/office-cassette-ac.webp" alt={`InstalaciÃ³n de aire acondicionado en ${city.name}`} className="w-full h-full object-cover" />
+          <img src="/office-cassette-ac.webp" alt={`Instalación de aire acondicionado en ${city.name}`} className="w-full h-full object-cover" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-900/50" />
         <div className="absolute top-1/4 right-20 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl" />
@@ -467,13 +467,13 @@ export function CityPage({ city }: { city: CityData }) {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <Reveal>
               <span className="inline-block px-4 py-1.5 bg-primary-50 text-primary-700 text-sm font-semibold rounded-full mb-4">
-                Por quÃ© elegirnos en {city.name}
+                Por qué elegirnos en {city.name}
               </span>
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink-900 mb-6">
-                Profesionales en climatizaciÃ³n en {city.name}
+                Profesionales en climatización en {city.name}
               </h2>
               <p className="text-ink-500 leading-relaxed mb-8">
-                Somos una empresa con base en la provincia que lleva mÃ¡s de 25 aÃ±os instalando, reparando y manteniendo aire acondicionado en {city.name} y toda la comarca. Nuestro equipo de tÃ©cnicos certificados RITE-07 garantiza un trabajo profesional y duradero.
+                Somos una empresa con base en la provincia que lleva más de 25 años instalando, reparando y manteniendo aire acondicionado en {city.name} y toda la comarca. Nuestro equipo de técnicos certificados RITE-07 garantiza un trabajo profesional y duradero.
               </p>
               <div className="space-y-4">
                 {city.highlights.map((highlight) => (
@@ -496,11 +496,11 @@ export function CityPage({ city }: { city: CityData }) {
                     <span className="text-sm font-semibold text-ink-900">{city.province}</span>
                   </div>
                   <div className="flex justify-between items-center py-3 border-b border-ink-200">
-                    <span className="text-sm text-ink-500">CÃ³digo postal</span>
+                    <span className="text-sm text-ink-500">Código postal</span>
                     <span className="text-sm font-semibold text-ink-900">{city.postalCode}</span>
                   </div>
                   <div className="flex justify-between items-center py-3 border-b border-ink-200">
-                    <span className="text-sm text-ink-500">PoblaciÃ³n</span>
+                    <span className="text-sm text-ink-500">Población</span>
                     <span className="text-sm font-semibold text-ink-900">{city.population} habitantes</span>
                   </div>
                   <div className="flex justify-between items-center py-3 border-b border-ink-200">
@@ -544,16 +544,16 @@ export function CityPage({ city }: { city: CityData }) {
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink-900 mb-3">
               Servicios disponibles en {city.name}
             </h2>
-            <p className="text-ink-500">Todo lo que necesitas en climatizaciÃ³n, con garantÃ­a profesional</p>
+            <p className="text-ink-500">Todo lo que necesitas en climatización, con garantía profesional</p>
           </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { title: 'InstalaciÃ³n de aire acondicionado', desc: 'Splits, conductos, cassettes', href: '/servicios/instalacion' },
+              { title: 'Instalación de aire acondicionado', desc: 'Splits, conductos, cassettes', href: '/servicios/instalacion' },
               { title: 'Mantenimiento preventivo', desc: 'Revisiones y limpieza', href: '/servicios/mantenimiento' },
-              { title: 'ReparaciÃ³n', desc: 'DiagnÃ³stico y reparaciÃ³n de averÃ­as', href: '/servicios/reparacion' },
-              { title: 'Aerotermia', desc: 'CalefacciÃ³n y ACS eficiente', href: '/servicios/aerotermia' },
-              { title: 'VentilaciÃ³n y extracciÃ³n', desc: 'Viviendas, garajes e industrias', href: '/servicios/ventilacion' },
-              { title: 'EnergÃ­a solar tÃ©rmica', desc: 'Agua caliente con el sol', href: '/servicios/solar-termica' },
+              { title: 'Reparación', desc: 'Diagnóstico y reparación de averías', href: '/servicios/reparacion' },
+              { title: 'Aerotermia', desc: 'Calefacción y ACS eficiente', href: '/servicios/aerotermia' },
+              { title: 'Ventilación y extracción', desc: 'Viviendas, garajes e industrias', href: '/servicios/ventilacion' },
+              { title: 'Energía solar térmica', desc: 'Agua caliente con el sol', href: '/servicios/solar-termica' },
             ].map((svc) => (
               <a key={svc.title} href={svc.href} className="group p-5 bg-ink-50 rounded-2xl hover:bg-primary-50 border border-ink-100 hover:border-primary-200 transition-all">
                 <h3 className="font-display font-bold text-ink-900 text-sm mb-1 group-hover:text-primary-700 transition-colors">{svc.title}</h3>
@@ -579,7 +579,7 @@ export function CityPage({ city }: { city: CityData }) {
             <div className="relative px-6 py-12 lg:px-16 lg:py-16 flex flex-col lg:flex-row items-center justify-between gap-6">
               <div className="text-center lg:text-left">
                 <h2 className="font-display text-2xl lg:text-3xl font-bold text-white mb-2">
-                  Â¿Necesitas aire acondicionado en {city.name}?
+                  ¿Necesitas aire acondicionado en {city.name}?
                 </h2>
                 <p className="text-primary-100 text-base lg:text-lg">
                   Solicita tu presupuesto gratis y sin compromiso. Te respondemos en menos de 24 horas.
@@ -603,7 +603,7 @@ export function CityPage({ city }: { city: CityData }) {
               <div>
                 <h3 className="font-display text-2xl lg:text-3xl font-bold text-ink-900 mb-4">Ponte en contacto</h3>
                 <p className="text-ink-500 mb-8 leading-relaxed">
-                  Rellena el formulario y te llamaremos para organizar una visita tÃ©cnica gratis en {city.name}. TambiÃ©n puedes contactarnos directamente por telÃ©fono o WhatsApp.
+                  Rellena el formulario y te llamaremos para organizar una visita técnica gratis en {city.name}. También puedes contactarnos directamente por teléfono o WhatsApp.
                 </p>
                 <div className="space-y-4">
                   {CONTACT_INFO.map((item) => {
@@ -639,7 +639,7 @@ export function CityPage({ city }: { city: CityData }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Snowflake className="w-5 h-5 text-primary-400" />
-            <span className="text-white/70 text-sm font-medium">Climatizaciones MontaÃ±o, S.L. â€” {city.name}</span>
+            <span className="text-white/70 text-sm font-medium">Climatizaciones Montaño, S.L. — {city.name}</span>
           </div>
           <div className="flex gap-4 text-sm text-white/50">
             <a href="/" className="hover:text-primary-400 transition-colors">Inicio</a>

@@ -190,7 +190,7 @@ export function ProtonMail() {
           <div className="flex-1">
             <span className="text-sm font-medium text-success-700">Credenciales configuradas</span>
             {connectedUser && (
-              <span className="text-xs text-success-600 ml-2">Â· {connectedUser}</span>
+              <span className="text-xs text-success-600 ml-2">· {connectedUser}</span>
             )}
             {has2fa && (
               <span className="text-xs text-success-600 ml-2 flex items-center gap-1 inline-flex">
@@ -299,7 +299,7 @@ export function ProtonMail() {
                   <p className="text-ink-500 text-xs">
                     Para que el boton abra la app directamente, configura Proton Mail como tu
                     aplicacion de correo predeterminada en Windows:
-                    Ajustes â†’ Aplicaciones â†’ Aplicaciones predeterminadas â†’ Proton Mail â†’
+                    Ajustes → Aplicaciones → Aplicaciones predeterminadas → Proton Mail →
                     establecer como predeterminada para enlaces MAILTO.
                   </p>
                 </div>

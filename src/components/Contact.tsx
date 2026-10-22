@@ -15,15 +15,15 @@ import { Reveal } from '@/components/Reveal';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabaseConfig';
 
 const SERVICE_OPTIONS = [
-  { value: 'instalacion', label: 'InstalaciÃ³n' },
-  { value: 'venta_instalacion', label: 'Venta e instalaciÃ³n de equipo (suministrado por la empresa)' },
+  { value: 'instalacion', label: 'Instalación' },
+  { value: 'venta_instalacion', label: 'Venta e instalación de equipo (suministrado por la empresa)' },
   { value: 'mantenimiento', label: 'Mantenimiento' },
-  { value: 'reparacion', label: 'ReparaciÃ³n' },
-  { value: 'ventilacion', label: 'VentilaciÃ³n y extracciÃ³n' },
-  { value: 'eficiencia', label: 'Eficiencia energÃ©tica' },
-  { value: 'airzone', label: 'ClimatizaciÃ³n inteligente Airzone' },
+  { value: 'reparacion', label: 'Reparación' },
+  { value: 'ventilacion', label: 'Ventilación y extracción' },
+  { value: 'eficiencia', label: 'Eficiencia energética' },
+  { value: 'airzone', label: 'Climatización inteligente Airzone' },
   { value: 'aerotermia', label: 'Aerotermia' },
-  { value: 'solar-termica', label: 'EnergÃ­a solar tÃ©rmica' },
+  { value: 'solar-termica', label: 'Energía solar térmica' },
   { value: 'constructoras', label: 'Instalaciones y preinstalaciones para constructoras' },
 ];
 
@@ -32,20 +32,20 @@ const INSTALLATION_TYPES = [
   { value: 'conductos', label: 'Centralizado por conductos' },
   { value: 'cassettes', label: 'Cassettes de techo' },
   { value: 'suelo_techo', label: 'Equipos suelo/techo' },
-  { value: 'fabricacion_conductos', label: 'FabricaciÃ³n de conductos (fibra Climaver / chapa galvanizada)' },
-  { value: 'preinstalacion_obra', label: 'PreinstalaciÃ³n en obra nueva / nueva construcciÃ³n' },
-  { value: 'instalacion_obra', label: 'InstalaciÃ³n completa en obra nueva' },
-  { value: 'ventilacion_viviendas', label: 'VentilaciÃ³n de viviendas' },
-  { value: 'ventilacion_garajes', label: 'VentilaciÃ³n de garajes' },
-  { value: 'airzone', label: 'ClimatizaciÃ³n inteligente Airzone' },
+  { value: 'fabricacion_conductos', label: 'Fabricación de conductos (fibra Climaver / chapa galvanizada)' },
+  { value: 'preinstalacion_obra', label: 'Preinstalación en obra nueva / nueva construcción' },
+  { value: 'instalacion_obra', label: 'Instalación completa en obra nueva' },
+  { value: 'ventilacion_viviendas', label: 'Ventilación de viviendas' },
+  { value: 'ventilacion_garajes', label: 'Ventilación de garajes' },
+  { value: 'airzone', label: 'Climatización inteligente Airzone' },
 ];
 
 const CONTACT_INFO = [
-  { icon: Phone, label: 'TelÃ©fono', value: '676 628 348', href: 'tel:+34676628348' },
+  { icon: Phone, label: 'Teléfono', value: '676 628 348', href: 'tel:+34676628348' },
   { icon: MessageCircle, label: 'WhatsApp', value: '691 680 706', href: 'https://wa.me/34691680706' },
   { icon: Mail, label: 'Email', value: 'info@climont.es', href: 'mailto:info@climont.es' },
-  { icon: MapPin, label: 'DirecciÃ³n', value: 'C/ Hacienda Guadalupe 35, AlcalÃ¡ de GuadaÃ­ra, Sevilla', href: 'https://maps.google.com/?q=C/Hacienda+Guadalupe+35+AlcalÃ¡+de+GuadaÃ­ra+Sevilla' },
-  { icon: Clock, label: 'Horario', value: 'Lunâ€“Vie: 8:00â€“14:00 / 15:00â€“18:00', href: '#contacto' },
+  { icon: MapPin, label: 'Dirección', value: 'C/ Hacienda Guadalupe 35, Alcalá de Guadaíra, Sevilla', href: 'https://maps.google.com/?q=C/Hacienda+Guadalupe+35+Alcalá+de+Guadaíra+Sevilla' },
+  { icon: Clock, label: 'Horario', value: 'Lun–Vie: 8:00–14:00 / 15:00–18:00', href: '#contacto' },
 ];
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
@@ -67,8 +67,8 @@ export function Contact() {
     const next: Record<string, string> = {};
     if (!form.name.trim()) next.name = 'Introduce tu nombre';
     if (!form.email.trim()) next.email = 'Introduce tu email';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Email no vÃ¡lido';
-    if (!form.phone.trim()) next.phone = 'Introduce tu telÃ©fono';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Email no válido';
+    if (!form.phone.trim()) next.phone = 'Introduce tu teléfono';
     if (!form.city.trim()) next.city = 'Introduce tu ciudad';
     if (!form.service_type) next.service_type = 'Selecciona un servicio';
     setErrors(next);
@@ -140,7 +140,7 @@ export function Contact() {
             <div className="relative px-6 py-12 lg:px-16 lg:py-16 flex flex-col lg:flex-row items-center justify-between gap-6">
               <div className="text-center lg:text-left">
                 <h2 className="font-display text-2xl lg:text-3xl font-bold text-white mb-2">
-                  Â¿Necesitas instalar o reparar tu aire acondicionado?
+                  ¿Necesitas instalar o reparar tu aire acondicionado?
                 </h2>
                 <p className="text-primary-100 text-base lg:text-lg">
                   Solicita tu presupuesto gratis y sin compromiso. Te respondemos en menos de 24 horas.
@@ -183,8 +183,8 @@ export function Contact() {
                 Ponte en contacto
               </h3>
               <p className="text-ink-500 mb-8 leading-relaxed">
-                Rellena el formulario y te llamaremos para organizar una visita tÃ©cnica gratis.
-                TambiÃ©n puedes contactarnos directamente por telÃ©fono o email, como prefieras.
+                Rellena el formulario y te llamaremos para organizar una visita técnica gratis.
+                También puedes contactarnos directamente por teléfono o email, como prefieras.
               </p>
 
               <div className="space-y-4">
@@ -221,11 +221,11 @@ export function Contact() {
                     <CheckCircle2 className="w-8 h-8 text-success-600" />
                   </div>
                   <h4 className="font-display text-xl font-bold text-ink-900 mb-2">
-                    Â¡Solicitud enviada!
+                    ¡Solicitud enviada!
                   </h4>
                   <p className="text-ink-500 mb-6 max-w-md">
-                    Gracias por escribirnos. Nuestro equipo te llamarÃ¡ en menos de 24 horas para
-                    organizar la visita tÃ©cnica.
+                    Gracias por escribirnos. Nuestro equipo te llamará en menos de 24 horas para
+                    organizar la visita técnica.
                   </p>
                   <button
                     onClick={() => setStatus('idle')}
@@ -239,7 +239,7 @@ export function Contact() {
                   {status === 'error' && (
                     <div className="flex items-center gap-3 p-4 bg-error-50 border border-error-200 rounded-xl text-error-700 text-sm">
                       <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                      Ha ocurrido un error. Por favor, intÃ©ntalo de nuevo o llÃ¡manos al 676 628 348.
+                      Ha ocurrido un error. Por favor, inténtalo de nuevo o llámanos al 676 628 348.
                     </div>
                   )}
 
@@ -286,7 +286,7 @@ export function Contact() {
                     </div>
                     <div>
                       <label htmlFor="contact-phone" className="block text-sm font-medium text-ink-700 mb-1.5">
-                        TelÃ©fono *
+                        Teléfono *
                       </label>
                       <input
                         id="contact-phone"
@@ -329,7 +329,7 @@ export function Contact() {
 
                   <div>
                     <label htmlFor="contact-installation-type" className="block text-sm font-medium text-ink-700 mb-1.5">
-                      Tipo de instalaciÃ³n <span className="text-ink-400 font-normal">(opcional)</span>
+                      Tipo de instalación <span className="text-ink-400 font-normal">(opcional)</span>
                     </label>
                     <select
                       id="contact-installation-type"
@@ -337,7 +337,7 @@ export function Contact() {
                       onChange={(e) => update('installation_type', e.target.value)}
                       className={`w-full px-4 py-3 bg-ink-50 border rounded-xl text-ink-900 focus:outline-none focus:ring-2 transition-all border-ink-200 focus:ring-primary-200 focus:border-primary-400 ${!form.installation_type ? 'text-ink-300' : ''}`}
                     >
-                      <option value="">Selecciona un tipo de instalaciÃ³n</option>
+                      <option value="">Selecciona un tipo de instalación</option>
                       {INSTALLATION_TYPES.map((opt) => (
                         <option key={opt.value} value={opt.value} className="text-ink-900">
                           {opt.label}
@@ -383,7 +383,7 @@ export function Contact() {
                       rows={4}
                       maxLength={5000}
                       className="w-full px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder-ink-300 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all resize-none"
-                      placeholder="CuÃ©ntanos quÃ© necesitas: tipo de vivienda, nÃºmero de habitaciones, etc."
+                      placeholder="Cuéntanos qué necesitas: tipo de vivienda, número de habitaciones, etc."
                     />
                   </div>
 
@@ -406,7 +406,7 @@ export function Contact() {
                   </button>
 
                   <p className="text-xs text-ink-400 text-center">
-                    Al enviar aceptas nuestra polÃ­tica de privacidad. No compartimos tus datos.
+                    Al enviar aceptas nuestra política de privacidad. No compartimos tus datos.
                   </p>
                 </form>
               )}

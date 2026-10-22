@@ -96,7 +96,7 @@ export function ProtonDrive() {
 
   const handleSaveCredentials = async () => {
     if (!credentials.username.trim() || !credentials.password.trim()) {
-      setError('Email y contraseÃ±a son obligatorios');
+      setError('Email y contraseña son obligatorios');
       return;
     }
     setSavingCreds(true);
@@ -184,7 +184,7 @@ export function ProtonDrive() {
           <div className="flex-1">
             <span className="text-sm font-medium text-success-700">Credenciales configuradas</span>
             {connectedUser && (
-              <span className="text-xs text-success-600 ml-2">Â· {connectedUser}</span>
+              <span className="text-xs text-success-600 ml-2">· {connectedUser}</span>
             )}
             {has2fa && (
               <span className="text-xs text-success-600 ml-2 flex items-center gap-1 inline-flex">
