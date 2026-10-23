@@ -1,22 +1,15 @@
-# Trailing-slash redirects to prevent duplicate-content (301 permanent)
-/servicios/           /servicios           301
-/ciudades/            /ciudades            301
-/marcas/              /marcas              301
-/blog/                /blog                301
-
-# Canonical route for the client download center
-/centro-de-descargas   /index.html          200
-
-# SPA routes (el fallback 404->index.html lo hace wrangler.jsonc:
-# assets.not_found_handling = single-page-application)
-/catalogo             /index.html          200
-/empleo               /index.html          200
-/codigos-de-errores   /index.html          200
-/calculadora-frigorias /index.html         200
-/descargar-logo       /index.html          200
-/politica-de-cookies  /index.html          200
-/aviso-legal          /index.html          200
-
-# Nota: las redirecciones de dominio canónico (http->https, www->apex)
-# se configuran en el dashboard de Cloudflare al attachar climont.es
-# (Workers Assets solo admite rutas relativas en _redirects)
+# Redirecciones de Cloudflare Workers Assets.
+# Formato: origen  destino  código
+#
+# Este proyecto no necesita reglas aquí:
+#
+# - Las URLs heredadas del sitio antiguo (index.php?main_page=..., /web/catalog/,
+#   /EUR/, /index.html, /tel:...) se redirigen en worker/index.ts con 301, para
+#   poder descartar la query string original del destino.
+# - La barra final también se normaliza en worker/index.ts con un 301.
+# - Cada ruta de la SPA tiene su propio HTML prerenderizado (<ruta>.html), así
+#   que ya no hacen falta reescrituras a /index.html.
+#
+# Nota: las redirecciones de dominio canónico (http->https, www->apex) se
+# configuran en el dashboard de Cloudflare (Workers Assets solo admite rutas
+# relativas en _redirects).
