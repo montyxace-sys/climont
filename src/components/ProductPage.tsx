@@ -306,31 +306,49 @@ export function ProductPage({ id }: { id: string }) {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3 mb-6">
+            <div className="mb-6">
               {product.tech_sheet_url && (
                 <a
                   href={product.tech_sheet_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold rounded-xl transition-colors"
+                  className="group relative flex w-full items-center gap-4 overflow-hidden rounded-2xl bg-gradient-to-r from-primary-700 via-primary-600 to-primary-500 px-5 py-4 text-white shadow-lg shadow-primary-600/30 ring-1 ring-primary-700/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary-600/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 active:translate-y-0"
                 >
-                  <FileText className="w-4 h-4" /> Descargar ficha técnica
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
+                  <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25 backdrop-blur-sm">
+                    <FileText className="h-6 w-6" />
+                  </span>
+                  <span className="flex flex-col text-left leading-tight">
+                    <span className="font-display text-base font-bold sm:text-lg">Descargar ficha técnica</span>
+                    <span className="mt-0.5 text-xs font-medium text-primary-100 sm:text-[13px]">
+                      Especificaciones completas del producto
+                    </span>
+                  </span>
+                  <span className="ml-auto flex flex-shrink-0 items-center gap-2">
+                    <span className="hidden rounded-md bg-white/20 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider ring-1 ring-white/25 sm:inline">
+                      PDF
+                    </span>
+                    <Download className="h-5 w-5 transition-transform duration-200 group-hover:translate-y-0.5" />
+                  </span>
                 </a>
               )}
-              <a
-                href="tel:+34676628348"
-                className="inline-flex items-center gap-2 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-primary-500/20"
-              >
-                <Phone className="w-4 h-4" /> Llamar ahora
-              </a>
-              <a
-                href="https://wa.me/34691680706"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 bg-success-600 hover:bg-success-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-success-500/20"
-              >
-                <MessageCircle className="w-4 h-4" /> WhatsApp
-              </a>
+
+              <div className={`mt-3 flex flex-wrap gap-3 ${product.tech_sheet_url ? '' : 'mt-0'}`}>
+                <a
+                  href="tel:+34676628348"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-colors hover:bg-primary-700 sm:flex-none"
+                >
+                  <Phone className="h-4 w-4" /> Llamar ahora
+                </a>
+                <a
+                  href="https://wa.me/34691680706"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-success-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-success-500/20 transition-colors hover:bg-success-700 sm:flex-none"
+                >
+                  <MessageCircle className="h-4 w-4" /> WhatsApp
+                </a>
+              </div>
             </div>
 
             <div className="mt-auto pt-6 border-t border-ink-100 text-xs text-ink-400">

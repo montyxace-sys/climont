@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Package, Search, Euro, ImageIcon, ArrowLeft, Star } from 'lucide-react';
+import { Package, Search, Euro, ImageIcon, ArrowLeft, Star, FileText } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Header } from '@/components/Header';
 
@@ -225,9 +225,10 @@ export function Catalog() {
                             href={product.tech_sheet_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-3.5 py-2 bg-ink-100 text-ink-700 text-xs font-semibold rounded-lg hover:bg-ink-200 transition-colors"
+                            title="Descargar ficha técnica en PDF"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-primary-600 text-white text-xs font-semibold rounded-lg shadow-sm shadow-primary-500/20 hover:bg-primary-700 transition-colors"
                           >
-                            Ficha técnica
+                            <FileText className="w-3.5 h-3.5" /> Ficha PDF
                           </a>
                         )}
                         <button
