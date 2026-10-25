@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { Package, ArrowLeft, Star, Euro, ImageIcon, Download, MessageCircle, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { Package, ArrowLeft, Star, Euro, ImageIcon, Download, MessageCircle, ChevronLeft, ChevronRight, ZoomIn, Send, CheckCircle2, AlertCircle, Loader2, Phone, Mail, Tag, FileText } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabaseConfig';
 import { Header } from '@/components/Header';
 import { navigate } from '@/lib/navigate';
 
@@ -33,6 +34,10 @@ export function ProductPage({ id }: { id: string }) {
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const imgContainerRef = useRef<HTMLDivElement>(null);
 
+  const [contactStatus, setContactStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', city: '', message: '' });
+  const [contactErrors, setContactErrors] = useState<Record<string, string>>({});
+
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -56,26 +61,25 @@ export function ProductPage({ id }: { id: string }) {
         .order('sort_order', { ascending: true })
         .order('created_at', { ascending: true });
       const list = (imgs as ProductImage[]) || [];
-      // Seed with primary image if no gallery
       if (list.length === 0 && data.image_url) {
         list.push({ id: 'primary', product_id: id, image_url: data.image_url, sort_order: 0 });
       }
       setImages(list);
-      if (!activeImage && list.length > 0) setActiveImage(list[0].image_url);
+      if (!data.image_url && list.length > 0) setActiveImage(list[0].image_url);
       setLoading(false);
     })();
   }, [id]);
+
+  useEffect(() => {
+    setZooming(false);
+  }, [activeImage]);
 
   const activeIndex = images.findIndex((i) => i.image_url === activeImage);
   const hasPrev = activeIndex > 0;
   const hasNext = activeIndex >= 0 && activeIndex < images.length - 1;
 
-  const goPrev = () => {
-    if (hasPrev) setActiveImage(images[activeIndex - 1].image_url);
-  };
-  const goNext = () => {
-    if (hasNext) setActiveImage(images[activeIndex + 1].image_url);
-  };
+  const goPrev = () => { if (hasPrev) setActiveImage(images[activeIndex - 1].image_url); };
+  const goNext = () => { if (hasNext) setActiveImage(images[activeIndex + 1].image_url); };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -84,12 +88,54 @@ export function ProductPage({ id }: { id: string }) {
     setZoomPos({ x, y });
   };
 
-  useEffect(() => {
-    setZooming(false);
-  }, [activeImage]);
-
   const formatPrice = (price: number) =>
     new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(price);
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const next: Record<string, string> = {};
+    if (!contactForm.name.trim()) next.name = 'Introduce tu nombre';
+    if (!contactForm.email.trim()) next.email = 'Introduce tu email';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactForm.email)) next.email = 'Email no válido';
+    if (!contactForm.phone.trim()) next.phone = 'Introduce tu teléfono';
+    if (!contactForm.city.trim()) next.city = 'Introduce tu ciudad';
+    setContactErrors(next);
+    if (Object.keys(next).length > 0) return;
+
+    setContactStatus('loading');
+    const { error } = await supabase.from('contact_requests').insert({
+      name: contactForm.name.trim(),
+      email: contactForm.email.trim().toLowerCase(),
+      phone: contactForm.phone.trim(),
+      city: contactForm.city.trim() || null,
+      service_type: 'instalacion',
+      installation_type: null,
+      message: `[Producto: ${product?.name}] ${contactForm.message.trim()}`.trim() || null,
+    });
+    if (error) {
+      setContactStatus('error');
+      return;
+    }
+    try {
+      await fetch(`${SUPABASE_URL}/functions/v1/send-contact-email`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: contactForm.name.trim(),
+          email: contactForm.email.trim().toLowerCase(),
+          phone: contactForm.phone.trim(),
+          city: contactForm.city.trim(),
+          service_type: 'instalacion',
+          installation_type: null,
+          message: `[Producto: ${product?.name}] ${contactForm.message.trim()}`,
+        }),
+      });
+    } catch {
+      // best-effort
+    }
+    setContactStatus('success');
+    setContactForm({ name: '', email: '', phone: '', city: '', message: '' });
+  };
 
   if (loading) {
     return (
@@ -107,7 +153,7 @@ export function ProductPage({ id }: { id: string }) {
       <div className="min-h-screen bg-ink-50">
         <Header />
         <div className="flex flex-col items-center justify-center py-32 text-center px-4">
-          <Package className="w-12 h-12 text-ink-300 mb-4" />
+          <Package className="w-16 h-16 text-ink-300 mb-4" />
           <h1 className="font-display text-2xl font-bold text-ink-900 mb-2">Producto no encontrado</h1>
           <p className="text-ink-500 text-sm mb-6">{error}</p>
           <button onClick={() => navigate('/catalogo')} className="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors">
@@ -121,17 +167,26 @@ export function ProductPage({ id }: { id: string }) {
   return (
     <div className="min-h-screen bg-ink-50">
       <Header />
-      <main className="pt-20 lg:pt-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <button onClick={() => navigate('/catalogo')} className="flex items-center gap-2 text-ink-500 hover:text-primary-600 text-sm mb-6 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Volver al catálogo
-        </button>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Gallery */}
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-ink-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-2 text-sm text-ink-500">
+          <button onClick={() => navigate('/')} className="hover:text-primary-600 transition-colors">Inicio</button>
+          <span>/</span>
+          <button onClick={() => navigate('/catalogo')} className="hover:text-primary-600 transition-colors">Catálogo</button>
+          <span>/</span>
+          <span className="text-ink-900 font-medium truncate">{product.name}</span>
+        </div>
+      </div>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        {/* Product main */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Gallery column */}
           <div>
             <div
               ref={imgContainerRef}
-              className="relative aspect-[4/3] bg-white rounded-2xl border border-ink-100 overflow-hidden mb-3 flex items-center justify-center cursor-zoom-in"
+              className="relative aspect-square bg-white rounded-2xl border border-ink-100 overflow-hidden mb-4 flex items-center justify-center cursor-zoom-in shadow-sm"
               onMouseEnter={() => setZooming(true)}
               onMouseLeave={() => setZooming(false)}
               onMouseMove={handleMouseMove}
@@ -140,99 +195,98 @@ export function ProductPage({ id }: { id: string }) {
                 <img
                   src={activeImage}
                   alt={product.name}
-                  className="w-full h-full object-contain transition-transform duration-200 ease-out"
+                  className="w-full h-full object-contain transition-transform duration-200 ease-out select-none"
                   style={{
                     transform: zooming ? 'scale(2.2)' : 'scale(1)',
                     transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
                   }}
+                  draggable={false}
                 />
               ) : (
-                <ImageIcon className="w-16 h-16 text-ink-300" />
+                <ImageIcon className="w-20 h-20 text-ink-300" />
               )}
 
-              {/* Carousel arrows */}
               {images.length > 1 && (
                 <>
                   <button
                     onClick={goPrev}
                     disabled={!hasPrev}
-                    className={`absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur shadow-md flex items-center justify-center transition-all ${hasPrev ? 'text-ink-700 hover:bg-white hover:scale-105' : 'text-ink-300 cursor-not-allowed opacity-50'}`}
+                    className={`absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 backdrop-blur shadow-md flex items-center justify-center transition-all ${hasPrev ? 'text-ink-700 hover:bg-white hover:scale-105' : 'text-ink-300 cursor-not-allowed opacity-50'}`}
                     aria-label="Imagen anterior"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-6 h-6" />
                   </button>
                   <button
                     onClick={goNext}
                     disabled={!hasNext}
-                    className={`absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur shadow-md flex items-center justify-center transition-all ${hasNext ? 'text-ink-700 hover:bg-white hover:scale-105' : 'text-ink-300 cursor-not-allowed opacity-50'}`}
+                    className={`absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 backdrop-blur shadow-md flex items-center justify-center transition-all ${hasNext ? 'text-ink-700 hover:bg-white hover:scale-105' : 'text-ink-300 cursor-not-allowed opacity-50'}`}
                     aria-label="Imagen siguiente"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-6 h-6" />
                   </button>
                 </>
               )}
 
-              {/* Zoom hint */}
               {activeImage && (
-                <span className="absolute bottom-2 left-2 px-2 py-1 bg-ink-900/60 backdrop-blur text-white text-[10px] font-medium rounded-md flex items-center gap-1 pointer-events-none">
-                  <ZoomIn className="w-3 h-3" /> Pasa el ratón para ampliar
+                <span className="absolute bottom-3 left-3 px-2.5 py-1.5 bg-ink-900/60 backdrop-blur text-white text-xs font-medium rounded-md flex items-center gap-1.5 pointer-events-none">
+                  <ZoomIn className="w-3.5 h-3.5" /> Pasa el ratón para ampliar
                 </span>
               )}
 
-              {/* Counter */}
               {images.length > 1 && (
-                <span className="absolute bottom-2 right-2 px-2.5 py-1 bg-ink-900/60 backdrop-blur text-white text-xs font-medium rounded-md pointer-events-none">
+                <span className="absolute bottom-3 right-3 px-2.5 py-1.5 bg-ink-900/60 backdrop-blur text-white text-xs font-medium rounded-md pointer-events-none">
                   {activeIndex + 1} / {images.length}
                 </span>
               )}
             </div>
 
-            {/* Thumbnails */}
             {images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto">
-                {images.map((img, idx) => (
-                  <button
-                    key={img.id}
-                    onClick={() => setActiveImage(img.image_url)}
-                    className={`w-20 h-20 rounded-lg border-2 overflow-hidden flex-shrink-0 transition-all ${activeImage === img.image_url ? 'border-primary-600 ring-2 ring-primary-200' : 'border-ink-200 hover:border-primary-300'}`}
-                  >
-                    <img src={img.image_url} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* Dots */}
-            {images.length > 1 && (
-              <div className="flex justify-center gap-1.5 mt-3">
-                {images.map((img, idx) => (
-                  <button
-                    key={img.id}
-                    onClick={() => setActiveImage(img.image_url)}
-                    className={`w-2 h-2 rounded-full transition-all ${activeIndex === idx ? 'bg-primary-600 w-4' : 'bg-ink-300 hover:bg-ink-400'}`}
-                    aria-label={`Ir a imagen ${idx + 1}`}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  {images.map((img, idx) => (
+                    <button
+                      key={img.id}
+                      onClick={() => setActiveImage(img.image_url)}
+                      className={`w-20 h-20 rounded-lg border-2 overflow-hidden flex-shrink-0 transition-all ${activeImage === img.image_url ? 'border-primary-600 ring-2 ring-primary-200' : 'border-ink-200 hover:border-primary-300'}`}
+                    >
+                      <img src={img.image_url} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+                <div className="flex justify-center gap-1.5 mt-3">
+                  {images.map((img, idx) => (
+                    <button
+                      key={img.id}
+                      onClick={() => setActiveImage(img.image_url)}
+                      className={`h-2 rounded-full transition-all ${activeIndex === idx ? 'bg-primary-600 w-6' : 'bg-ink-300 hover:bg-ink-400 w-2'}`}
+                      aria-label={`Ir a imagen ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
             )}
           </div>
 
-          {/* Info */}
+          {/* Info column */}
           <div className="flex flex-col">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="px-3 py-1 bg-ink-100 text-ink-700 text-xs font-medium rounded-full">{product.category}</span>
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-ink-100 text-ink-700 text-xs font-medium rounded-full">
+                <Tag className="w-3 h-3" /> {product.category}
+              </span>
               {product.featured && (
                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-warning-100 text-warning-700 text-xs font-semibold rounded-full">
                   <Star className="w-3 h-3 fill-warning-500" /> Destacado
                 </span>
               )}
             </div>
-            <h1 className="font-display text-3xl font-bold text-ink-900 mb-4">{product.name}</h1>
-            <div className="text-ink-600 leading-relaxed mb-6 rich-content" dangerouslySetInnerHTML={{ __html: product.description }} />
+
+            <h1 className="font-display text-3xl lg:text-4xl font-bold text-ink-900 mb-4 leading-tight">{product.name}</h1>
+
+            <div className="rich-content text-ink-600 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: product.description }} />
 
             <div className="flex items-baseline gap-2 mb-6">
-              <Euro className="w-5 h-5 text-primary-600" />
-              <span className="font-display font-bold text-3xl text-ink-900">{formatPrice(product.price)}</span>
+              <Euro className="w-6 h-6 text-primary-600" />
+              <span className="font-display font-bold text-4xl text-ink-900">{formatPrice(product.price)}</span>
             </div>
 
             <div className="flex flex-wrap gap-3 mb-6">
@@ -241,27 +295,122 @@ export function ProductPage({ id }: { id: string }) {
                   href={product.tech_sheet_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold rounded-xl transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-3 bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold rounded-xl transition-colors"
                 >
-                  <Download className="w-4 h-4" /> Descargar ficha técnica
+                  <FileText className="w-4 h-4" /> Descargar ficha técnica
                 </a>
               )}
-              <button
-                onClick={() => {
-                  navigate('/');
-                  window.setTimeout(() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }), 0);
-                }}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-primary-500/20"
+              <a
+                href="tel:+34676628348"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-primary-500/20"
               >
-                <MessageCircle className="w-4 h-4" /> Consultar / Presupuesto
-              </button>
+                <Phone className="w-4 h-4" /> Llamar ahora
+              </a>
+              <a
+                href="https://wa.me/34691680706"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-success-600 hover:bg-success-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-success-500/20"
+              >
+                <MessageCircle className="w-4 h-4" /> WhatsApp
+              </a>
             </div>
 
             <div className="mt-auto pt-6 border-t border-ink-100 text-xs text-ink-400">
-              Precios orientativos con instalación incluida. Contacta con nosotros para un presupuesto personalizado.
+              Precios orientativos con instalación incluida. Contacta con nosotros para un presupuesto personalizado y sin compromiso.
             </div>
           </div>
         </div>
+
+        {/* Contact form */}
+        <section className="mt-12 bg-white rounded-2xl border border-ink-100 shadow-sm p-6 sm:p-8">
+          <div className="max-w-3xl">
+            <h2 className="font-display text-2xl font-bold text-ink-900 mb-2">Solicita información sobre este producto</h2>
+            <p className="text-ink-500 text-sm mb-6">Rellena el formulario y nos pondremos en contacto contigo para un presupuesto personalizado.</p>
+
+            {contactStatus === 'success' ? (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <CheckCircle2 className="w-12 h-12 text-success-500 mb-3" />
+                <p className="text-ink-700 font-medium">¡Mensaje enviado!</p>
+                <p className="text-ink-500 text-sm mt-1">Te responderemos lo antes posible.</p>
+                <button
+                  onClick={() => setContactStatus('idle')}
+                  className="mt-4 text-primary-600 text-sm font-medium hover:underline"
+                >
+                  Enviar otro mensaje
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleContactSubmit} className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-ink-700 mb-1">Nombre *</label>
+                    <input
+                      type="text"
+                      value={contactForm.name}
+                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                      className={`w-full px-4 py-2.5 bg-ink-50 border rounded-xl text-ink-900 focus:outline-none focus:ring-2 focus:ring-primary-500 ${contactErrors.name ? 'border-error-500' : 'border-ink-200'}`}
+                    />
+                    {contactErrors.name && <p className="text-error-600 text-xs mt-1">{contactErrors.name}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-ink-700 mb-1">Email *</label>
+                    <input
+                      type="email"
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                      className={`w-full px-4 py-2.5 bg-ink-50 border rounded-xl text-ink-900 focus:outline-none focus:ring-2 focus:ring-primary-500 ${contactErrors.email ? 'border-error-500' : 'border-ink-200'}`}
+                    />
+                    {contactErrors.email && <p className="text-error-600 text-xs mt-1">{contactErrors.email}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-ink-700 mb-1">Teléfono *</label>
+                    <input
+                      type="tel"
+                      value={contactForm.phone}
+                      onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                      className={`w-full px-4 py-2.5 bg-ink-50 border rounded-xl text-ink-900 focus:outline-none focus:ring-2 focus:ring-primary-500 ${contactErrors.phone ? 'border-error-500' : 'border-ink-200'}`}
+                    />
+                    {contactErrors.phone && <p className="text-error-600 text-xs mt-1">{contactErrors.phone}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-ink-700 mb-1">Ciudad *</label>
+                    <input
+                      type="text"
+                      value={contactForm.city}
+                      onChange={(e) => setContactForm({ ...contactForm, city: e.target.value })}
+                      className={`w-full px-4 py-2.5 bg-ink-50 border rounded-xl text-ink-900 focus:outline-none focus:ring-2 focus:ring-primary-500 ${contactErrors.city ? 'border-error-500' : 'border-ink-200'}`}
+                    />
+                    {contactErrors.city && <p className="text-error-600 text-xs mt-1">{contactErrors.city}</p>}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-ink-700 mb-1">Mensaje</label>
+                  <textarea
+                    value={contactForm.message}
+                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                    rows={3}
+                    placeholder="Cuéntanos qué necesitas..."
+                    className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
+                  />
+                </div>
+                {contactStatus === 'error' && (
+                  <div className="flex items-center gap-2 text-error-600 text-sm">
+                    <AlertCircle className="w-4 h-4" /> Error al enviar. Inténtalo de nuevo.
+                  </div>
+                )}
+                <button
+                  type="submit"
+                  disabled={contactStatus === 'loading'}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-primary-500/20"
+                >
+                  {contactStatus === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  {contactStatus === 'loading' ? 'Enviando...' : 'Enviar consulta'}
+                </button>
+              </form>
+            )}
+          </div>
+        </section>
       </main>
     </div>
   );
