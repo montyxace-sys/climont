@@ -333,10 +333,10 @@ export function ProductPage({ id }: { id: string }) {
                 </a>
               )}
 
-              <div className={`mt-3 flex flex-wrap gap-3 ${product.tech_sheet_url ? '' : 'mt-0'}`}>
+              <div className="mt-3 flex flex-wrap gap-3">
                 <a
                   href="tel:+34676628348"
-                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-colors hover:bg-primary-700 sm:flex-none"
+                  className="inline-flex min-w-[140px] flex-1 items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-colors hover:bg-primary-700"
                 >
                   <Phone className="h-4 w-4" /> Llamar ahora
                 </a>
@@ -344,9 +344,15 @@ export function ProductPage({ id }: { id: string }) {
                   href="https://wa.me/34691680706"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-success-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-success-500/20 transition-colors hover:bg-success-700 sm:flex-none"
+                  className="inline-flex min-w-[140px] flex-1 items-center justify-center gap-2 rounded-xl bg-success-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-success-500/20 transition-colors hover:bg-success-700"
                 >
                   <MessageCircle className="h-4 w-4" /> WhatsApp
+                </a>
+                <a
+                  href="mailto:info@climont.es?subject=Consulta%20sobre%20un%20producto"
+                  className="inline-flex min-w-[140px] flex-1 items-center justify-center gap-2 rounded-xl border-2 border-ink-200 bg-white px-5 py-3 text-sm font-semibold text-ink-700 transition-colors hover:border-primary-400 hover:text-primary-600"
+                >
+                  <Mail className="h-4 w-4" /> Email
                 </a>
               </div>
             </div>
