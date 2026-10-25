@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Package, ArrowLeft, Star, Euro, ImageIcon, Download, MessageCircle } from 'lucide-react';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { Package, ArrowLeft, Star, Euro, ImageIcon, Download, MessageCircle, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Header } from '@/components/Header';
 import { navigate } from '@/lib/navigate';
@@ -29,6 +29,9 @@ export function ProductPage({ id }: { id: string }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState<string | null>(null);
+  const [zooming, setZooming] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
+  const imgContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -62,6 +65,28 @@ export function ProductPage({ id }: { id: string }) {
       setLoading(false);
     })();
   }, [id]);
+
+  const activeIndex = images.findIndex((i) => i.image_url === activeImage);
+  const hasPrev = activeIndex > 0;
+  const hasNext = activeIndex >= 0 && activeIndex < images.length - 1;
+
+  const goPrev = () => {
+    if (hasPrev) setActiveImage(images[activeIndex - 1].image_url);
+  };
+  const goNext = () => {
+    if (hasNext) setActiveImage(images[activeIndex + 1].image_url);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomPos({ x, y });
+  };
+
+  useEffect(() => {
+    setZooming(false);
+  }, [activeImage]);
 
   const formatPrice = (price: number) =>
     new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(price);
@@ -104,23 +129,89 @@ export function ProductPage({ id }: { id: string }) {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Gallery */}
           <div>
-            <div className="aspect-[4/3] bg-white rounded-2xl border border-ink-100 overflow-hidden mb-3 flex items-center justify-center">
+            <div
+              ref={imgContainerRef}
+              className="relative aspect-[4/3] bg-white rounded-2xl border border-ink-100 overflow-hidden mb-3 flex items-center justify-center cursor-zoom-in"
+              onMouseEnter={() => setZooming(true)}
+              onMouseLeave={() => setZooming(false)}
+              onMouseMove={handleMouseMove}
+            >
               {activeImage ? (
-                <img src={activeImage} alt={product.name} className="w-full h-full object-contain" />
+                <img
+                  src={activeImage}
+                  alt={product.name}
+                  className="w-full h-full object-contain transition-transform duration-200 ease-out"
+                  style={{
+                    transform: zooming ? 'scale(2.2)' : 'scale(1)',
+                    transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                  }}
+                />
               ) : (
                 <ImageIcon className="w-16 h-16 text-ink-300" />
               )}
+
+              {/* Carousel arrows */}
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={goPrev}
+                    disabled={!hasPrev}
+                    className={`absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur shadow-md flex items-center justify-center transition-all ${hasPrev ? 'text-ink-700 hover:bg-white hover:scale-105' : 'text-ink-300 cursor-not-allowed opacity-50'}`}
+                    aria-label="Imagen anterior"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={goNext}
+                    disabled={!hasNext}
+                    className={`absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur shadow-md flex items-center justify-center transition-all ${hasNext ? 'text-ink-700 hover:bg-white hover:scale-105' : 'text-ink-300 cursor-not-allowed opacity-50'}`}
+                    aria-label="Imagen siguiente"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
+
+              {/* Zoom hint */}
+              {activeImage && (
+                <span className="absolute bottom-2 left-2 px-2 py-1 bg-ink-900/60 backdrop-blur text-white text-[10px] font-medium rounded-md flex items-center gap-1 pointer-events-none">
+                  <ZoomIn className="w-3 h-3" /> Pasa el ratón para ampliar
+                </span>
+              )}
+
+              {/* Counter */}
+              {images.length > 1 && (
+                <span className="absolute bottom-2 right-2 px-2.5 py-1 bg-ink-900/60 backdrop-blur text-white text-xs font-medium rounded-md pointer-events-none">
+                  {activeIndex + 1} / {images.length}
+                </span>
+              )}
             </div>
+
+            {/* Thumbnails */}
             {images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto">
-                {images.map((img) => (
+                {images.map((img, idx) => (
                   <button
                     key={img.id}
                     onClick={() => setActiveImage(img.image_url)}
-                    className={`w-20 h-20 rounded-lg border-2 overflow-hidden flex-shrink-0 transition-all ${activeImage === img.image_url ? 'border-primary-600' : 'border-ink-200 hover:border-primary-300'}`}
+                    className={`w-20 h-20 rounded-lg border-2 overflow-hidden flex-shrink-0 transition-all ${activeImage === img.image_url ? 'border-primary-600 ring-2 ring-primary-200' : 'border-ink-200 hover:border-primary-300'}`}
                   >
                     <img src={img.image_url} alt="" className="w-full h-full object-cover" />
                   </button>
+                ))}
+              </div>
+            )}
+
+            {/* Dots */}
+            {images.length > 1 && (
+              <div className="flex justify-center gap-1.5 mt-3">
+                {images.map((img, idx) => (
+                  <button
+                    key={img.id}
+                    onClick={() => setActiveImage(img.image_url)}
+                    className={`w-2 h-2 rounded-full transition-all ${activeIndex === idx ? 'bg-primary-600 w-4' : 'bg-ink-300 hover:bg-ink-400'}`}
+                    aria-label={`Ir a imagen ${idx + 1}`}
+                  />
                 ))}
               </div>
             )}
