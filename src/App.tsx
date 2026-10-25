@@ -39,6 +39,7 @@ const DownloadCenter = lazy(() => import('@/components/DownloadCenter').then((m)
 const FrigoriasCalculator = lazy(() => import('@/components/FrigoriasCalculator').then((m) => ({ default: m.FrigoriasCalculator })));
 const CookiePolicy = lazy(() => import('@/components/CookiePolicy').then((m) => ({ default: m.CookiePolicy })));
 const LegalNotice = lazy(() => import('@/components/LegalNotice').then((m) => ({ default: m.LegalNotice })));
+const ProductPage = lazy(() => import('@/components/ProductPage').then((m) => ({ default: m.ProductPage })));
 
 // El chat flotante se carga mas tarde (en tiempo de inactividad) para no
 // competir con el contenido principal de la portada.
@@ -94,7 +95,7 @@ function useHashScroll(path: string) {
 }
 
 const INTERNAL_ROUTE_PREFIXES = [
-  '/servicios/', '/ciudades/', '/marcas/', '/blog/',
+  '/servicios/', '/ciudades/', '/marcas/', '/blog/', '/productos/',
 ];
 
 const INTERNAL_EXACT_ROUTES = [
@@ -186,6 +187,9 @@ function AppRoutes() {
   const serviceSlug = serviceMatch?.[1] || '';
   const serviceData = serviceSlug ? getServiceBySlug(serviceSlug) : undefined;
   const isServicePage = !!serviceData;
+  const productMatch = path.match(/^\/productos\/(.+)$/);
+  const productSlug = productMatch?.[1] || '';
+  const isProductPage = !!productSlug;
   const cityMatch = path.match(/^\/ciudades\/(.+)$/);
   const citySlug = cityMatch?.[1] || '';
   const cityData = citySlug ? getCityBySlug(citySlug) : undefined;
@@ -205,7 +209,7 @@ function AppRoutes() {
   const isErrorCodes = path === '/codigos-de-errores';
   const isDownloadCenter = path === '/centro-de-descargas';
   const isFrigorias = path === '/calculadora-frigorias';
-  const isNotFound = !isAdmin && !isServicePage && !isCityPage && !isBrandPage && !isBlogPost && !isBlogList && !isCatalog && !isCareers && !isCookiePolicy && !isLegalNotice && !isLogoDownload && !isErrorCodes && !isDownloadCenter && !isFrigorias && path !== '/' && path !== '/index.html';
+  const isNotFound = !isAdmin && !isServicePage && !isCityPage && !isBrandPage && !isBlogPost && !isBlogList && !isCatalog && !isCareers && !isCookiePolicy && !isLegalNotice && !isLogoDownload && !isErrorCodes && !isDownloadCenter && !isFrigorias && !isProductPage && path !== '/' && path !== '/index.html';
 
   useSeo({
     title: isCookiePolicy
@@ -331,6 +335,16 @@ function AppRoutes() {
 
   if (isServicePage) {
     return <><ServicePage service={serviceData!} /><Footer /><FloatingPhoneButton /></>;
+  }
+
+  if (isProductPage) {
+    return (
+      <>
+        <ProductPage id={productSlug} />
+        <Footer />
+        <FloatingPhoneButton />
+      </>
+    );
   }
 
   if (isCityPage) {

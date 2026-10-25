@@ -16,6 +16,7 @@ type Product = {
   featured: boolean;
   is_active: boolean;
   sort_order: number;
+  image_count?: number;
 };
 
 export function Catalog() {
@@ -42,7 +43,21 @@ export function Catalog() {
     if (err) {
       setError('No se pudieron cargar los productos. Inténtalo más tarde.');
     } else {
-      setProducts(data || []);
+      const prods = (data || []) as Product[];
+      // Fetch image counts
+      const ids = prods.map((p) => p.id);
+      if (ids.length > 0) {
+        const { data: imgs } = await supabase
+          .from('product_images')
+          .select('product_id')
+          .in('product_id', ids);
+        const counts = new Map<string, number>();
+        (imgs || []).forEach((i: { product_id: string }) => {
+          counts.set(i.product_id, (counts.get(i.product_id) || 0) + 1);
+        });
+        prods.forEach((p) => { p.image_count = counts.get(p.id) || (p.image_url ? 1 : 0); });
+      }
+      setProducts(prods);
     }
     setLoading(false);
   };
@@ -164,7 +179,7 @@ export function Catalog() {
                   className="group bg-white rounded-2xl border border-ink-100 shadow-sm hover:shadow-xl hover:shadow-ink-900/5 transition-all duration-300 overflow-hidden flex flex-col"
                 >
                   {/* Image */}
-                  <div className="relative aspect-[4/3] bg-ink-100 overflow-hidden">
+                  <div className="relative aspect-[4/3] bg-ink-100 cursor-pointer" onClick={() => navigate(`/productos/${product.id}`)}>
                     {product.image_url ? (
                       <img
                         src={product.image_url}
@@ -184,11 +199,16 @@ export function Catalog() {
                     <span className="absolute top-3 right-3 px-2.5 py-1 bg-white/90 backdrop-blur text-ink-700 text-xs font-medium rounded-full shadow-sm">
                       {product.category}
                     </span>
+                    {(product.image_count || 0) > 1 && (
+                      <span className="absolute bottom-3 right-3 px-2.5 py-1 bg-ink-900/70 backdrop-blur text-white text-xs font-medium rounded-full shadow-sm">
+                        {product.image_count} fotos
+                      </span>
+                    )}
                   </div>
 
                   {/* Body */}
                   <div className="flex flex-col flex-1 p-5">
-                    <h3 className="font-display font-semibold text-ink-900 text-base mb-2 line-clamp-2">
+                    <h3 className="font-display font-semibold text-ink-900 text-base mb-2 line-clamp-2 cursor-pointer hover:text-primary-600 transition-colors" onClick={() => navigate(`/productos/${product.id}`)}>
                       {product.name}
                     </h3>
                     <p className="text-ink-500 text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
@@ -212,6 +232,12 @@ export function Catalog() {
                             Ficha técnica
                           </a>
                         )}
+                        <button
+                          onClick={() => navigate(`/productos/${product.id}`)}
+                          className="px-3.5 py-2 bg-primary-50 text-primary-700 text-xs font-semibold rounded-lg hover:bg-primary-100 transition-colors"
+                        >
+                          Ver detalles
+                        </button>
                         <button
                           onClick={() => {
                             navigate('/');

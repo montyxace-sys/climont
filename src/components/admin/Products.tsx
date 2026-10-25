@@ -16,6 +16,14 @@ type Product = {
   created_at: string;
 };
 
+type ProductImage = {
+  id: string;
+  product_id: string;
+  image_url: string;
+  sort_order: number;
+  created_at: string;
+};
+
 type ProductForm = {
   name: string;
   description: string;
@@ -51,6 +59,8 @@ export function Products() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [productImages, setProductImages] = useState<ProductImage[]>([]);
+  const [uploadingImages, setUploadingImages] = useState(false);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [pdfName, setPdfName] = useState<string | null>(null);
 
@@ -83,6 +93,7 @@ export function Products() {
     setImagePreview(null);
     setPdfFile(null);
     setPdfName(null);
+    setProductImages([]);
   };
 
   const openEditForm = (p: Product) => {
@@ -103,6 +114,9 @@ export function Products() {
     setImagePreview(p.image_url || null);
     setPdfFile(null);
     setPdfName(p.tech_sheet_url ? 'Ficha técnica actual' : null);
+    setProductImages([]);
+    // Load additional images
+    loadProductImages(p.id);
   };
 
   const closeForm = () => {
@@ -117,6 +131,7 @@ export function Products() {
     setImagePreview(null);
     setPdfFile(null);
     setPdfName(null);
+    setProductImages([]);
   };
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,6 +187,106 @@ export function Products() {
     setPdfFile(null);
     setPdfName(null);
     setForm((prev) => ({ ...prev, tech_sheet_url: '' }));
+  };
+
+  const loadProductImages = async (productId: string) => {
+    const { data, error: err } = await supabase
+      .from('product_images')
+      .select('*')
+      .eq('product_id', productId)
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: true });
+    if (err) return;
+    let imgs = (data as ProductImage[]) || [];
+    // Seed gallery with primary image_url if empty
+    if (imgs.length === 0) {
+      const { data: prod } = await supabase.from('products').select('image_url').eq('id', productId).single();
+      if (prod?.image_url) {
+        const { data: inserted } = await supabase
+          .from('product_images')
+          .insert({ product_id: productId, image_url: prod.image_url, sort_order: 0 })
+          .select()
+          .single();
+        if (inserted) imgs = [inserted as ProductImage];
+      }
+    }
+    setProductImages(imgs);
+  };
+
+  const handleImagesSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    const valid = files.filter((f) => f.type.startsWith('image/') && f.size <= 5 * 1024 * 1024);
+    if (valid.length === 0) {
+      setError('Selecciona imágenes válidas (JPG, PNG, WEBP, máx 5 MB).');
+      return;
+    }
+    if (!editingId) {
+      setError('Guarda el producto primero para poder añadir imágenes.');
+      e.target.value = '';
+      return;
+    }
+    setError(null);
+    setUploadingImages(true);
+    try {
+      for (const file of valid) {
+        const ext = file.name.split('.').pop() || 'jpg';
+        const filePath = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        const { error: upErr } = await supabase.storage
+          .from('product-images')
+          .upload(filePath, file);
+        if (upErr) throw upErr;
+        const { data: pub } = supabase.storage.from('product-images').getPublicUrl(filePath);
+        const nextOrder = productImages.length + 1;
+        const { data: inserted, error: insErr } = await supabase
+          .from('product_images')
+          .insert({ product_id: editingId, image_url: pub.publicUrl, sort_order: nextOrder })
+          .select()
+          .single();
+        if (insErr) throw insErr;
+        setProductImages((prev) => [...prev, inserted as ProductImage]);
+      }
+      // Sync primary image_url with first image
+      await syncPrimaryImage(editingId);
+    } catch (err) {
+      setError('Error al subir una o más imágenes.');
+    } finally {
+      setUploadingImages(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleRemoveProductImage = async (img: ProductImage) => {
+    if (!confirm('¿Eliminar esta imagen?')) return;
+    try {
+      // Remove from storage (extract path from URL)
+      const url = img.image_url;
+      const marker = '/product-images/';
+      const idx = url.indexOf(marker);
+      if (idx !== -1) {
+        const path = url.substring(idx + marker.length);
+        await supabase.storage.from('product-images').remove([path]);
+      }
+      await supabase.from('product_images').delete().eq('id', img.id);
+      setProductImages((prev) => prev.filter((i) => i.id !== img.id));
+      if (editingId) await syncPrimaryImage(editingId);
+    } catch {
+      setError('Error al eliminar la imagen.');
+    }
+  };
+
+  const syncPrimaryImage = async (productId: string) => {
+    const { data } = await supabase
+      .from('product_images')
+      .select('image_url')
+      .eq('product_id', productId)
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: true })
+      .limit(1);
+    const primary = data && data.length > 0 ? data[0].image_url : null;
+    await supabase.from('products').update({ image_url: primary, updated_at: new Date().toISOString() }).eq('id', productId);
+    setForm((prev) => ({ ...prev, image_url: primary || '' }));
+    setImagePreview(primary);
   };
 
   const handleSave = async () => {
@@ -259,10 +374,14 @@ export function Products() {
         loadProducts();
       }
     } else {
-      const { error: err } = await supabase.from('products').insert(payload);
+      const { data: inserted, error: err } = await supabase.from('products').insert(payload).select().single();
       if (err) {
         setError('Error al crear el producto.');
       } else {
+        // If a single image was uploaded, register it in product_images gallery
+        if (imageUrl && inserted?.id) {
+          await supabase.from('product_images').insert({ product_id: inserted.id, image_url: imageUrl, sort_order: 0 });
+        }
         closeForm();
         loadProducts();
       }
@@ -627,6 +746,52 @@ export function Products() {
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* Gallery of multiple images */}
+              <div>
+                <label className="block text-sm font-medium text-ink-700 mb-1.5">
+                  Galería de imágenes (múltiples)
+                </label>
+                {!editingId ? (
+                  <p className="text-xs text-ink-400">Guarda el producto primero para poder añadir más imágenes.</p>
+                ) : (
+                  <>
+                    <div className="flex flex-wrap gap-3 mb-3">
+                      {productImages.map((img) => (
+                        <div key={img.id} className="relative w-20 h-20 rounded-lg overflow-hidden border border-ink-200 bg-ink-100 group">
+                          <img src={img.image_url} alt="" className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveProductImage(img)}
+                            className="absolute top-1 right-1 p-1 bg-ink-950/70 text-white rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                            title="Eliminar"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ))}
+                      {uploadingImages && (
+                        <div className="w-20 h-20 rounded-lg border border-ink-200 bg-ink-50 flex items-center justify-center">
+                          <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
+                        </div>
+                      )}
+                    </div>
+                    <label className="inline-flex items-center gap-2 px-3.5 py-2 bg-primary-50 hover:bg-primary-100 text-primary-700 text-sm font-medium rounded-xl cursor-pointer transition-colors">
+                      <Upload className="w-4 h-4" />
+                      {uploadingImages ? 'Subiendo...' : 'Añadir imágenes'}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleImagesSelect}
+                        className="hidden"
+                        disabled={uploadingImages}
+                      />
+                    </label>
+                    <p className="text-xs text-ink-400 mt-1.5">Puedes seleccionar varias a la vez. JPG, PNG o WEBP. Máx 5 MB por imagen.</p>
+                  </>
+                )}
               </div>
 
               {/* Tech sheet PDF upload */}
