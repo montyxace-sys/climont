@@ -121,7 +121,7 @@ Deno.serve(async (req: Request) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: `${COMPANY_NAME} <info@climont.es>`,
+        from: `${COMPANY_NAME} <onboarding@resend.dev>`,
         to: [COMPANY_EMAIL],
         reply_to: email,
         subject,
@@ -133,7 +133,7 @@ Deno.serve(async (req: Request) => {
       const errText = await resendResponse.text();
       console.error("Error enviando email:", errText);
       return new Response(
-        JSON.stringify({ error: "Error enviando email" }),
+        JSON.stringify({ error: "Error enviando email", detail: errText }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
