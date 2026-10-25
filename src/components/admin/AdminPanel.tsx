@@ -47,8 +47,15 @@ export function AdminPanel() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-ink-950">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-ink-950">
         <div className="w-8 h-8 border-3 border-primary-700 border-t-primary-400 rounded-full animate-spin" />
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className="text-sm text-ink-500 underline-offset-4 transition-colors hover:text-ink-300 hover:underline"
+        >
+          Si tarda demasiado, recarga la página
+        </button>
       </div>
     );
   }

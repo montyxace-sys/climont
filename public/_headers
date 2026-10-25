@@ -8,6 +8,17 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-DNS-Prefetch-Control: on
 
+# El panel nunca se sirve desde caché: tras cada despliegue su HTML apunta a
+# un JS nuevo, y una copia antigua dejaría la página en blanco.
+/admin
+  Cache-Control: no-store
+
+/admin.html
+  Cache-Control: no-store
+
+/*.html
+  Cache-Control: no-cache
+
 # Cache static assets
 /*.webp
   Cache-Control: public, max-age=31536000, immutable

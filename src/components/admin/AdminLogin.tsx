@@ -17,8 +17,13 @@ export function AdminLogin({ onSignIn }: LoginProps) {
     setLoading(true);
     try {
       await onSignIn(email, password);
-    } catch {
-      setError('Email o contraseña incorrectos.');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : '';
+      setError(
+        /timeout/i.test(message)
+          ? 'El servidor no responde. Recarga la página e inténtalo de nuevo.'
+          : 'Email o contraseña incorrectos.',
+      );
     } finally {
       setLoading(false);
     }

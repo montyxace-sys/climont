@@ -14,6 +14,7 @@ import { Footer } from '@/components/Footer';
 import { CookieConsent } from '@/components/CookieConsent';
 import { FloatingPhoneButton } from '@/components/FloatingPhoneButton';
 import { usePageTracking } from '@/hooks/usePageTracking';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { useSeo } from '@/hooks/useSeo';
 import { getServiceBySlug } from '@/data/services';
 import { getCityBySlug } from '@/data/cities';
@@ -329,7 +330,9 @@ function AppRoutes() {
           </div>
         }
       >
-        <AdminPanel />
+        <ErrorBoundary label="admin">
+          <AdminPanel />
+        </ErrorBoundary>
       </Suspense>
     );
   }
