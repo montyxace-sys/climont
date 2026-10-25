@@ -12,6 +12,7 @@ type Product = {
   price: number;
   category: string;
   image_url: string | null;
+  tech_sheet_url: string | null;
   featured: boolean;
   is_active: boolean;
   sort_order: number;
@@ -200,15 +201,27 @@ export function Catalog() {
                           {formatPrice(product.price)}
                         </span>
                       </div>
-                      <button
-                        onClick={() => {
-                          navigate('/');
-                          window.setTimeout(() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }), 0);
-                        }}
-                        className="px-3.5 py-2 bg-primary-50 text-primary-700 text-xs font-semibold rounded-lg hover:bg-primary-100 transition-colors"
-                      >
-                        Consultar
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {product.tech_sheet_url && (
+                          <a
+                            href={product.tech_sheet_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3.5 py-2 bg-ink-100 text-ink-700 text-xs font-semibold rounded-lg hover:bg-ink-200 transition-colors"
+                          >
+                            Ficha técnica
+                          </a>
+                        )}
+                        <button
+                          onClick={() => {
+                            navigate('/');
+                            window.setTimeout(() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }), 0);
+                          }}
+                          className="px-3.5 py-2 bg-primary-50 text-primary-700 text-xs font-semibold rounded-lg hover:bg-primary-100 transition-colors"
+                        >
+                          Consultar
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </article>

@@ -7,7 +7,7 @@
 // son el respaldo; la clave anonima es publica por diseno (la seguridad la
 // aplican las politicas RLS de Supabase).
 export const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL ||
-  'https://thrwdrwsdtqxbgooshvr.supabase.co') as string;
+  'https://xvhyclucrnxplsanspaj.supabase.co') as string;
 
 export const SUPABASE_ANON_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY ||
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRocndkcndzZHRxeGJnb29zaHZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5NTU1NDksImV4cCI6MjEwNjUzMTU0OX0.TcylsS9f_kQJoG6rbT_sSvpQNiuLsC0t0Q1V8IKJabA') as string;
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aHljbHVjcm54cGxzYW5zcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5MTMyODQsImV4cCI6MjEwODQ4OTI4NH0.QFHdgQNNk8L-fSQ__cbKHK807QHXbGDhjk5Cxfs8csM') as string;

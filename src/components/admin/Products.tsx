@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Plus, Pencil, Trash2, X, Star, Eye, EyeOff, Euro, Save, Package } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Star, Eye, EyeOff, Euro, Save, Package, Upload, ImageIcon, Loader2, FileText } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 type Product = {
@@ -9,6 +9,7 @@ type Product = {
   price: number;
   category: string;
   image_url: string | null;
+  tech_sheet_url: string | null;
   featured: boolean;
   is_active: boolean;
   sort_order: number;
@@ -21,6 +22,7 @@ type ProductForm = {
   price: string;
   category: string;
   image_url: string;
+  tech_sheet_url: string;
   featured: boolean;
   is_active: boolean;
   sort_order: string;
@@ -32,6 +34,7 @@ const EMPTY_FORM: ProductForm = {
   price: '',
   category: 'General',
   image_url: '',
+  tech_sheet_url: '',
   featured: false,
   is_active: true,
   sort_order: '0',
@@ -45,6 +48,11 @@ export function Products() {
   const [form, setForm] = useState<ProductForm>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [pdfName, setPdfName] = useState<string | null>(null);
 
   const loadProducts = useCallback(async () => {
     setLoading(true);
@@ -71,6 +79,10 @@ export function Products() {
     setForm(EMPTY_FORM);
     setEditingId(null);
     setShowForm(true);
+    setImageFile(null);
+    setImagePreview(null);
+    setPdfFile(null);
+    setPdfName(null);
   };
 
   const openEditForm = (p: Product) => {
@@ -80,12 +92,17 @@ export function Products() {
       price: String(p.price),
       category: p.category,
       image_url: p.image_url || '',
+      tech_sheet_url: p.tech_sheet_url || '',
       featured: p.featured,
       is_active: p.is_active,
       sort_order: String(p.sort_order),
     });
     setEditingId(p.id);
     setShowForm(true);
+    setImageFile(null);
+    setImagePreview(p.image_url || null);
+    setPdfFile(null);
+    setPdfName(p.tech_sheet_url ? 'Ficha técnica actual' : null);
   };
 
   const closeForm = () => {
@@ -93,6 +110,68 @@ export function Products() {
     setEditingId(null);
     setForm(EMPTY_FORM);
     setError(null);
+    if (imagePreview && imageFile) {
+      URL.revokeObjectURL(imagePreview);
+    }
+    setImageFile(null);
+    setImagePreview(null);
+    setPdfFile(null);
+    setPdfName(null);
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setError('El archivo debe ser una imagen.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('La imagen no debe superar los 5 MB.');
+      return;
+    }
+    setError(null);
+    if (imagePreview && imageFile) {
+      URL.revokeObjectURL(imagePreview);
+    }
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+    // Clear manual URL since we'll use uploaded file
+    setForm((prev) => ({ ...prev, image_url: '' }));
+    // Reset input value to allow re-selecting same file
+    e.target.value = '';
+  };
+
+  const handleRemoveImage = () => {
+    if (imagePreview && imageFile) {
+      URL.revokeObjectURL(imagePreview);
+    }
+    setImageFile(null);
+    setImagePreview(null);
+    setForm((prev) => ({ ...prev, image_url: '' }));
+  };
+  const handlePdfSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== 'application/pdf') {
+      setError('El archivo debe ser un PDF.');
+      return;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      setError('El PDF no debe superar los 20 MB.');
+      return;
+    }
+    setError(null);
+    setPdfFile(file);
+    setPdfName(file.name);
+    setForm((prev) => ({ ...prev, tech_sheet_url: '' }));
+    e.target.value = '';
+  };
+
+  const handleRemovePdf = () => {
+    setPdfFile(null);
+    setPdfName(null);
+    setForm((prev) => ({ ...prev, tech_sheet_url: '' }));
   };
 
   const handleSave = async () => {
@@ -110,12 +189,59 @@ export function Products() {
     setSaving(true);
     setError(null);
 
+    let imageUrl: string | null = form.image_url.trim() || null;
+    let techSheetUrl: string | null = form.tech_sheet_url.trim() || null;
+
+    // Upload image if a new file is selected
+    if (imageFile) {
+      setUploadingImage(true);
+      try {
+        const ext = imageFile.name.split('.').pop() || 'jpg';
+        const filePath = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        const { error: uploadErr } = await supabase.storage
+          .from('product-images')
+          .upload(filePath, imageFile);
+        if (uploadErr) throw uploadErr;
+        const { data: pub } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(filePath);
+        imageUrl = pub.publicUrl;
+      } catch (err) {
+        setError('Error al subir la imagen.');
+        setSaving(false);
+        setUploadingImage(false);
+        return;
+      }
+      setUploadingImage(false);
+    }
+
+    // Upload PDF if a new file is selected
+    if (pdfFile) {
+      try {
+        const ext = 'pdf';
+        const filePath = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        const { error: uploadErr } = await supabase.storage
+          .from('product-docs')
+          .upload(filePath, pdfFile);
+        if (uploadErr) throw uploadErr;
+        const { data: pub } = supabase.storage
+          .from('product-docs')
+          .getPublicUrl(filePath);
+        techSheetUrl = pub.publicUrl;
+      } catch (err) {
+        setError('Error al subir la ficha técnica.');
+        setSaving(false);
+        return;
+      }
+    }
+
     const payload = {
       name: form.name.trim(),
       description: form.description.trim(),
       price: priceNum,
       category: form.category.trim() || 'General',
-      image_url: form.image_url.trim() || null,
+      image_url: imageUrl,
+      tech_sheet_url: techSheetUrl,
       featured: form.featured,
       is_active: form.is_active,
       sort_order: parseInt(form.sort_order) || 0,
@@ -249,6 +375,7 @@ export function Products() {
                           <div className="font-medium text-ink-900 text-sm flex items-center gap-2">
                             {p.name}
                             {p.featured && <Star className="w-3.5 h-3.5 text-warning-500 fill-warning-500" />}
+                            {p.tech_sheet_url && <FileText className="w-3.5 h-3.5 text-primary-500" aria-label="Tiene ficha técnica" />}
                           </div>
                           <div className="text-xs text-ink-400 truncate max-w-xs">{p.description}</div>
                         </div>
@@ -453,16 +580,92 @@ export function Products() {
                 </div>
               </div>
 
+              {/* Image upload */}
               <div>
                 <label className="block text-sm font-medium text-ink-700 mb-1.5">
-                  URL de imagen
+                  Imagen del producto
                 </label>
+                <div className="flex items-start gap-4">
+                  <div className="w-24 h-24 rounded-xl bg-ink-100 border border-ink-200 flex items-center justify-center overflow-hidden flex-shrink-0">
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Vista previa" className="w-full h-full object-cover" />
+                    ) : (
+                      <ImageIcon className="w-8 h-8 text-ink-300" />
+                    )}
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex flex-wrap gap-2">
+                      <label className="inline-flex items-center gap-2 px-3.5 py-2 bg-primary-50 hover:bg-primary-100 text-primary-700 text-sm font-medium rounded-xl cursor-pointer transition-colors">
+                        {uploadingImage ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                        {imageFile ? 'Cambiar imagen' : 'Subir imagen'}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageSelect}
+                          className="hidden"
+                          disabled={uploadingImage}
+                        />
+                      </label>
+                      {imagePreview && (
+                        <button
+                          type="button"
+                          onClick={handleRemoveImage}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-ink-100 hover:bg-error-50 text-ink-600 hover:text-error-600 text-sm font-medium rounded-xl transition-colors"
+                        >
+                          <X className="w-4 h-4" /> Quitar
+                        </button>
+                      )}
+                    </div>
+                    <p className="text-xs text-ink-400">JPG, PNG o WEBP. Máximo 5 MB. Si no subes archivo, puedes indicar una URL externa.</p>
+                    <input
+                      type="text"
+                      value={form.image_url}
+                      onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                      placeholder="O pega una URL de imagen (https://...)"
+                      disabled={!!imageFile}
+                      className="w-full px-4 py-2 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Tech sheet PDF upload */}
+              <div>
+                <label className="block text-sm font-medium text-ink-700 mb-1.5">
+                  Ficha técnica (PDF)
+                </label>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <label className="inline-flex items-center gap-2 px-3.5 py-2 bg-primary-50 hover:bg-primary-100 text-primary-700 text-sm font-medium rounded-xl cursor-pointer transition-colors">
+                    <Upload className="w-4 h-4" />
+                    {pdfFile ? 'Cambiar PDF' : 'Subir PDF'}
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      onChange={handlePdfSelect}
+                      className="hidden"
+                    />
+                  </label>
+                  {pdfName && (
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-ink-100 text-ink-700 text-sm rounded-lg">
+                      <span className="truncate max-w-[200px]">{pdfName}</span>
+                      <button
+                        type="button"
+                        onClick={handleRemovePdf}
+                        className="text-ink-400 hover:text-error-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-ink-400 mt-1.5">Solo archivos PDF. Máximo 20 MB.</p>
                 <input
                   type="text"
-                  value={form.image_url}
-                  onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-                  placeholder="https://..."
-                  className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  value={form.tech_sheet_url}
+                  onChange={(e) => setForm({ ...form, tech_sheet_url: e.target.value })}
+                  placeholder="O pega una URL del PDF (https://...)"
+                  disabled={!!pdfFile}
+                  className="mt-2 w-full px-4 py-2 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all disabled:opacity-50"
                 />
               </div>
 
