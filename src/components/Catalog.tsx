@@ -211,9 +211,7 @@ export function Catalog() {
                     <h3 className="font-display font-semibold text-ink-900 text-base mb-2 line-clamp-2 cursor-pointer hover:text-primary-600 transition-colors" onClick={() => navigate(`/productos/${product.id}`)}>
                       {product.name}
                     </h3>
-                    <p className="text-ink-500 text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
-                      {product.description}
-                    </p>
+                    <p className="text-ink-500 text-sm leading-relaxed line-clamp-3 mb-4 flex-1" dangerouslySetInnerHTML={{ __html: product.description }} />
                     <div className="flex items-center justify-between mt-auto pt-3 border-t border-ink-100">
                       <div className="flex items-baseline gap-1">
                         <Euro className="w-4 h-4 text-primary-600" />

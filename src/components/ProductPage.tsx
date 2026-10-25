@@ -137,7 +137,7 @@ export function ProductPage({ id }: { id: string }) {
               )}
             </div>
             <h1 className="font-display text-3xl font-bold text-ink-900 mb-4">{product.name}</h1>
-            <p className="text-ink-600 leading-relaxed mb-6 whitespace-pre-line">{product.description}</p>
+            <div className="text-ink-600 leading-relaxed mb-6 rich-content" dangerouslySetInnerHTML={{ __html: product.description }} />
 
             <div className="flex items-baseline gap-2 mb-6">
               <Euro className="w-5 h-5 text-primary-600" />

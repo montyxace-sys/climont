@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Pencil, Trash2, X, Star, Eye, EyeOff, Euro, Save, Package, Upload, ImageIcon, Loader2, FileText } from 'lucide-react';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { supabase } from '@/lib/supabase';
 
 type Product = {
@@ -290,7 +291,7 @@ export function Products() {
   };
 
   const handleSave = async () => {
-    if (!form.name.trim() || !form.description.trim() || !form.price.trim()) {
+    if (!form.name.trim() || !form.description.replace(/<[^>]*>/g, '').trim() || !form.price.trim()) {
       setError('Nombre, descripción y precio son obligatorios.');
       return;
     }
@@ -659,12 +660,11 @@ export function Products() {
                 <label className="block text-sm font-medium text-ink-700 mb-1.5">
                   Descripción <span className="text-error-500">*</span>
                 </label>
-                <textarea
+                <RichTextEditor
                   value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  rows={3}
+                  onChange={(html) => setForm({ ...form, description: html })}
                   placeholder="Descripción del producto, características, qué incluye..."
-                  className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none"
+                  rows={6}
                 />
               </div>
 
