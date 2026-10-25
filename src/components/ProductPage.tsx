@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { Package, ArrowLeft, Star, Euro, ImageIcon, Download, MessageCircle, ChevronLeft, ChevronRight, ZoomIn, Send, CheckCircle2, AlertCircle, Loader2, Phone, Mail, Tag, FileText } from 'lucide-react';
+import { Package, ArrowLeft, Star, Euro, ImageIcon, Download, MessageCircle, ChevronLeft, ChevronRight, ZoomIn, Send, CheckCircle2, AlertCircle, Loader2, Phone, Mail, Tag, FileText, ShieldCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabaseConfig';
 import { Header } from '@/components/Header';
@@ -293,6 +293,17 @@ export function ProductPage({ id }: { id: string }) {
             <div className="flex items-baseline gap-2 mb-6">
               <Euro className="w-6 h-6 text-primary-600" />
               <span className="font-display font-bold text-4xl text-ink-900">{formatPrice(product.price)}</span>
+            </div>
+
+            {/* Guarantee badge */}
+            <div className="flex items-center gap-3 mb-6 p-4 bg-success-50 border border-success-200 rounded-xl">
+              <div className="w-12 h-12 rounded-full bg-success-100 flex items-center justify-center flex-shrink-0">
+                <ShieldCheck className="w-6 h-6 text-success-600" />
+              </div>
+              <div>
+                <p className="font-display font-bold text-success-800 text-base">3 años de garantía total</p>
+                <p className="text-success-700 text-xs">Garantía completa en equipos e instalación. Tranquilidad asegurada.</p>
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-3 mb-6">

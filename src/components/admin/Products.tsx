@@ -62,6 +62,7 @@ export function Products() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [productImages, setProductImages] = useState<ProductImage[]>([]);
   const [uploadingImages, setUploadingImages] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [pdfName, setPdfName] = useState<string | null>(null);
 
@@ -871,6 +872,13 @@ export function Products() {
 
             <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-ink-100 sticky bottom-0 bg-white rounded-b-2xl">
               <button
+                type="button"
+                onClick={() => setShowPreview(true)}
+                className="px-4 py-2.5 text-sm font-medium text-ink-600 rounded-xl hover:bg-ink-100 transition-colors"
+              >
+                Vista previa
+              </button>
+              <button
                 onClick={closeForm}
                 className="px-4 py-2.5 text-sm font-medium text-ink-600 rounded-xl hover:bg-ink-100 transition-colors"
               >
@@ -884,6 +892,67 @@ export function Products() {
                 <Save className="w-4 h-4" />
                 {saving ? 'Guardando...' : 'Guardar'}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Preview modal */}
+      {showPreview && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-950/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-ink-100 sticky top-0 bg-white rounded-t-2xl z-10">
+              <h2 className="font-display font-bold text-lg text-ink-900">Vista previa del producto</h2>
+              <button onClick={() => setShowPreview(false)} className="p-2 rounded-lg text-ink-400 hover:bg-ink-100 hover:text-ink-600 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6">
+              <div className="grid lg:grid-cols-2 gap-6">
+                <div className="aspect-[4/3] bg-ink-100 rounded-xl overflow-hidden flex items-center justify-center">
+                  {imagePreview || form.image_url ? (
+                    <img src={imagePreview || form.image_url} alt={form.name} className="w-full h-full object-contain" />
+                  ) : (
+                    <ImageIcon className="w-12 h-12 text-ink-300" />
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <span className="inline-block w-fit px-3 py-1 bg-ink-100 text-ink-700 text-xs font-medium rounded-full mb-3">
+                    {form.category || 'General'}
+                  </span>
+                  <h3 className="font-display text-2xl font-bold text-ink-900 mb-3">{form.name || 'Nombre del producto'}</h3>
+                  <div className="rich-content text-ink-600 text-sm leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: form.description || '<p class="text-ink-400">Sin descripción</p>' }} />
+                  <div className="flex items-baseline gap-1 mb-4">
+                    <Euro className="w-4 h-4 text-primary-600" />
+                    <span className="font-display font-bold text-2xl text-ink-900">
+                      {isNaN(parseFloat(form.price)) ? '0,00 €' : new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(parseFloat(form.price))}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {form.featured && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-warning-100 text-warning-700 text-xs font-semibold rounded-full">
+                        <Star className="w-3 h-3 fill-warning-500" /> Destacado
+                      </span>
+                    )}
+                    {form.is_active ? (
+                      <span className="px-2.5 py-1 bg-success-100 text-success-700 text-xs font-medium rounded-full">Visible</span>
+                    ) : (
+                      <span className="px-2.5 py-1 bg-ink-100 text-ink-500 text-xs font-medium rounded-full">Oculto</span>
+                    )}
+                    {productImages.length > 0 && (
+                      <span className="px-2.5 py-1 bg-ink-100 text-ink-600 text-xs font-medium rounded-full">{productImages.length} imagen{productImages.length !== 1 ? 'es' : ''} en galería</span>
+                    )}
+                  </div>
+                  {form.tech_sheet_url && (
+                    <div className="mt-4 text-xs text-primary-600 flex items-center gap-1">
+                      <FileText className="w-3.5 h-3.5" /> Ficha técnica: {form.tech_sheet_url}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-ink-100 text-xs text-ink-400">
+                Esta es una aproximación. El resultado final puede variar ligeramente en el catálogo.
+              </div>
             </div>
           </div>
         </div>
