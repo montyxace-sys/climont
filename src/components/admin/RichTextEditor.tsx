@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Bold, Italic, Underline, List, ListOrdered, Link2, Heading2, Undo, Redo, Eye, Code } from 'lucide-react';
+import { Bold, Italic, Underline, List, ListOrdered, Link2, Heading2, Undo, Redo, Eye, Code, Palette } from 'lucide-react';
 
 interface RichTextEditorProps {
   value: string;
@@ -12,6 +12,8 @@ export function RichTextEditor({ value, onChange, placeholder, rows = 6 }: RichT
   const editorRef = useRef<HTMLDivElement>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showHtml, setShowHtml] = useState(false);
+  const [textColor, setTextColor] = useState('#000000');
+  const colorInputRef = useRef<HTMLInputElement>(null);
 
   // Sync external value into editor on mount / when value changes externally
   useEffect(() => {
@@ -63,6 +65,40 @@ export function RichTextEditor({ value, onChange, placeholder, rows = 6 }: RichT
         {btn(<ListOrdered className="w-4 h-4" />, 'Lista numerada', () => exec('insertOrderedList'))}
         <span className="w-px h-5 bg-ink-200 mx-1" />
         {btn(<Link2 className="w-4 h-4" />, 'Insertar enlace', insertLink)}
+        <span className="w-px h-5 bg-ink-200 mx-1" />
+        {/* Color picker */}
+        <div className="relative flex items-center gap-1">
+          <button
+            type="button"
+            title="Color del texto"
+            onClick={() => colorInputRef.current?.click()}
+            className="flex items-center gap-1 p-1.5 rounded-md text-ink-600 hover:bg-ink-100 hover:text-ink-900 transition-colors"
+          >
+            <Palette className="w-4 h-4" />
+            <span className="w-3 h-3 rounded-sm border border-ink-300" style={{ backgroundColor: textColor }} />
+          </button>
+          <input
+            ref={colorInputRef}
+            type="color"
+            value={textColor}
+            onChange={(e) => {
+              setTextColor(e.target.value);
+              exec('foreColor', e.target.value);
+            }}
+            className="absolute opacity-0 w-0 h-0 pointer-events-none"
+            tabIndex={-1}
+          />
+          {['#000000', '#dc2626', '#ea580c', '#d97706', '#16a34a', '#0891b2', '#2563eb', '#7c3aed', '#db2777'].map((c) => (
+            <button
+              key={c}
+              type="button"
+              title={c}
+              onClick={() => { setTextColor(c); exec('foreColor', c); }}
+              className="w-4 h-4 rounded-sm border border-ink-200 hover:scale-110 transition-transform"
+              style={{ backgroundColor: c }}
+            />
+          ))}
+        </div>
         <span className="w-px h-5 bg-ink-200 mx-1" />
         {btn(<Undo className="w-4 h-4" />, 'Deshacer', () => exec('undo'))}
         {btn(<Redo className="w-4 h-4" />, 'Rehacer', () => exec('redo'))}
