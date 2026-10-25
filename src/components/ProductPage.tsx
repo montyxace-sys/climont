@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabaseConfig';
 import { Header } from '@/components/Header';
 import { navigate } from '@/lib/navigate';
+import { useSeo } from '@/hooks/useSeo';
 
 type ProductImage = {
   id: string;
@@ -14,6 +15,7 @@ type ProductImage = {
 
 type Product = {
   id: string;
+  slug: string | null;
   name: string;
   description: string;
   price: number;
@@ -24,7 +26,7 @@ type Product = {
   is_active: boolean;
 };
 
-export function ProductPage({ id }: { id: string }) {
+export function ProductPage({ slug }: { slug: string }) {
   const [product, setProduct] = useState<Product | null>(null);
   const [images, setImages] = useState<ProductImage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,37 +40,58 @@ export function ProductPage({ id }: { id: string }) {
   const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', city: '', message: '' });
   const [contactErrors, setContactErrors] = useState<Record<string, string>>({});
 
+  const plainDescription = product
+    ? product.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+    : '';
+
+  useSeo({
+    disabled: !product,
+    title: product ? `${product.name} | Climatizaciones Montaño, S.L.` : undefined,
+    description: product
+      ? plainDescription.slice(0, 160) || `Producto de climatización: ${product.name}.`
+      : undefined,
+    canonicalPath: product?.slug ? `/productos/${product.slug}` : undefined,
+    ogImage: product?.image_url || undefined,
+  });
+
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const { data, error: err } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', id)
-        .eq('is_active', true)
-        .single();
+      // Acepta tanto el slug amigable (/productos/split-panasonic-...) como el
+      // UUID antiguo, para no romper enlaces ya compartidos o indexados.
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug);
+      const query = supabase.from('products').select('*').eq('is_active', true);
+      const { data, error: err } = await (isUuid ? query.eq('id', slug) : query.eq('slug', slug)).maybeSingle();
       if (err || !data) {
         setError('Producto no encontrado.');
         setLoading(false);
         return;
       }
+      // Si se ha entrado con el UUID antiguo, se deja en la barra la URL amigable.
+      if (isUuid && data.slug && typeof window !== 'undefined') {
+        const canonical = `/productos/${data.slug}`;
+        if (window.location.pathname !== canonical) {
+          window.history.replaceState(null, '', canonical);
+        }
+      }
+      const productId = data.id as string;
       setProduct(data as Product);
       setActiveImage(data.image_url);
       const { data: imgs } = await supabase
         .from('product_images')
         .select('*')
-        .eq('product_id', id)
+        .eq('product_id', productId)
         .order('sort_order', { ascending: true })
         .order('created_at', { ascending: true });
       const list = (imgs as ProductImage[]) || [];
       if (list.length === 0 && data.image_url) {
-        list.push({ id: 'primary', product_id: id, image_url: data.image_url, sort_order: 0 });
+        list.push({ id: 'primary', product_id: productId, image_url: data.image_url, sort_order: 0 });
       }
       setImages(list);
       if (!data.image_url && list.length > 0) setActiveImage(list[0].image_url);
       setLoading(false);
     })();
-  }, [id]);
+  }, [slug]);
 
   useEffect(() => {
     setZooming(false);

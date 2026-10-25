@@ -4,12 +4,13 @@
 //    (dominio canónico, evita contenido duplicado en SEO).
 // 2) Redirige con 301 las URLs heredadas del sitio antiguo (osCommerce) que
 //    siguen apareciendo en Search Console.
-// 3) Sirve la web estática (Workers Assets). Cada ruta pública tiene su propio
+// 3) Redirige con 301 los antiguos /productos/<uuid> a /productos/<slug>.
+// 4) Sirve la web estática (Workers Assets). Cada ruta pública tiene su propio
 //    HTML generado por `npm run prerender`, con title/canonical propios.
-// 4) Devuelve un 404 real (no un 200 con la portada) para URLs inexistentes.
-// 5) Excepción: /blog/<slug> admite entradas publicadas desde el panel que no
+// 5) Devuelve un 404 real (no un 200 con la portada) para URLs inexistentes.
+// 6) Excepción: /blog/<slug> admite entradas publicadas desde el panel que no
 //    existen como fichero estático; en ese caso sirve la SPA con un 200.
-// 6) Añade charset=utf-8 a HTML/JSON/JS/CSS si el asset no lo declara.
+// 7) Añade charset=utf-8 a HTML/JSON/JS/CSS si el asset no lo declara.
 
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
@@ -84,6 +85,32 @@ async function fetchAsset(
   return env.ASSETS.fetch(new Request(url.toString(), request));
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// Mapa id -> slug generado por scripts/prerender.mjs en /product-slugs.json.
+// Se carga una sola vez por instancia del Worker.
+let productSlugCache: Record<string, string> | null = null;
+
+async function productSlugMap(
+  env: Env,
+  request: Request,
+): Promise<Record<string, string> | null> {
+  if (productSlugCache) return productSlugCache;
+  try {
+    // Siempre GET: un HEAD no devuelve cuerpo y el mapa no se podría leer.
+    const url = new URL(request.url);
+    url.pathname = "/product-slugs.json";
+    url.search = "";
+    const res = await env.ASSETS.fetch(new Request(url.toString(), { method: "GET" }));
+    if (!res.ok) return null;
+    const data = (await res.json()) as Record<string, string>;
+    productSlugCache = data;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -113,7 +140,20 @@ export default {
       return Response.redirect(target.toString(), 301);
     }
 
-    // 3) Servir el asset correspondiente.
+    // 4) URLs antiguas de producto con UUID -> slug amigable (301)
+    const productMatch = url.pathname.match(/^\/productos\/([^/]+)$/);
+    if (productMatch && UUID_RE.test(productMatch[1])) {
+      const map = await productSlugMap(env, request);
+      const slug = map?.[productMatch[1]];
+      if (slug) {
+        return Response.redirect(
+          new URL(`/productos/${slug}`, `https://${CANONICAL_HOST}`).toString(),
+          301,
+        );
+      }
+    }
+
+    // 5) Servir el asset correspondiente.
     //    Con not_found_handling = "404-page", Workers Assets ya devuelve el
     //    cuerpo de 404.html y el estado 404 cuando la ruta no existe.
     const response = await env.ASSETS.fetch(request);

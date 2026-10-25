@@ -298,6 +298,8 @@ function AppRoutes() {
                           ? '/centro-de-descargas'
                         : isFrigorias
                           ? '/calculadora-frigorias'
+                        : isProductPage
+                          ? `/productos/${productSlug}`
                         : undefined,
     keywords: isServicePage
       ? serviceData!.keywords
@@ -313,6 +315,9 @@ function AppRoutes() {
                 ? 'códigos error aire acondicionado, códigos avería climatización, códigos Daikin, códigos Mitsubishi, códigos Samsung, códigos LG, códigos Haier, códigos Midea'
                 : 'aire acondicionado Sevilla, instalación aire acondicionado Sevilla, mantenimiento aire acondicionado Sevilla, reparación aire acondicionado Sevilla, instalador aire acondicionado Sevilla, climatización Sevilla, aerotermia Sevilla, conductos climatización Sevilla, Daikin Sevilla, Mitsubishi Sevilla, Samsung Sevilla, Panasonic Sevilla, Fujitsu Sevilla, Hitachi Sevilla, Hisense Sevilla, LG Sevilla, Johnson Sevilla, Airzone Sevilla, Climaver Sevilla, preinstalación constructoras Sevilla, ventilación Sevilla, energía solar térmica Sevilla, eficiencia energética Sevilla, presupuesto aire acondicionado Sevilla',
     noIndex: isAdmin || isCookiePolicy || isLogoDownload || isDownloadCenter || isNotFound,
+    // En fichas de producto el SEO lo aplica ProductPage cuando ya tiene los
+    // datos reales (título, descripción y canonical con el slug).
+    disabled: isProductPage,
   });
 
   if (isAdmin) {
@@ -340,7 +345,7 @@ function AppRoutes() {
   if (isProductPage) {
     return (
       <>
-        <ProductPage id={productSlug} />
+        <ProductPage slug={productSlug} />
         <Footer />
         <FloatingPhoneButton />
       </>

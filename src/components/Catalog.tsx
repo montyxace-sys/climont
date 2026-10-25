@@ -7,6 +7,7 @@ import { navigate } from '@/lib/navigate';
 
 type Product = {
   id: string;
+  slug?: string | null;
   name: string;
   description: string;
   price: number;
@@ -179,7 +180,11 @@ export function Catalog() {
                   className="group bg-white rounded-2xl border border-ink-100 shadow-sm hover:shadow-xl hover:shadow-ink-900/5 transition-all duration-300 overflow-hidden flex flex-col"
                 >
                   {/* Image */}
-                  <div className="relative aspect-[4/3] bg-ink-100 cursor-pointer" onClick={() => navigate(`/productos/${product.id}`)}>
+                  <a
+                    href={`/productos/${product.slug || product.id}`}
+                    className="relative block aspect-[4/3] bg-ink-100 overflow-hidden"
+                    aria-label={product.name}
+                  >
                     {product.image_url ? (
                       <img
                         src={product.image_url}
@@ -204,12 +209,17 @@ export function Catalog() {
                         {product.image_count} fotos
                       </span>
                     )}
-                  </div>
+                  </a>
 
                   {/* Body */}
                   <div className="flex flex-col flex-1 p-5">
-                    <h3 className="font-display font-semibold text-ink-900 text-base mb-2 line-clamp-2 cursor-pointer hover:text-primary-600 transition-colors" onClick={() => navigate(`/productos/${product.id}`)}>
-                      {product.name}
+                    <h3 className="font-display font-semibold text-ink-900 text-base mb-2 line-clamp-2">
+                      <a
+                        href={`/productos/${product.slug || product.id}`}
+                        className="hover:text-primary-600 transition-colors"
+                      >
+                        {product.name}
+                      </a>
                     </h3>
                     <p className="text-ink-500 text-sm leading-relaxed line-clamp-3 mb-4 flex-1" dangerouslySetInnerHTML={{ __html: product.description }} />
                     <div className="flex items-center justify-between mt-auto pt-3 border-t border-ink-100">
@@ -231,12 +241,12 @@ export function Catalog() {
                             <FileText className="w-3.5 h-3.5" /> Ficha PDF
                           </a>
                         )}
-                        <button
-                          onClick={() => navigate(`/productos/${product.id}`)}
+                        <a
+                          href={`/productos/${product.slug || product.id}`}
                           className="px-3.5 py-2 bg-primary-50 text-primary-700 text-xs font-semibold rounded-lg hover:bg-primary-100 transition-colors"
                         >
                           Ver detalles
-                        </button>
+                        </a>
                         <button
                           onClick={() => {
                             navigate('/');

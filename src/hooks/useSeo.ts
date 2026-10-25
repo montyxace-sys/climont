@@ -7,6 +7,8 @@ type SeoOptions = {
   keywords?: string;
   noIndex?: boolean;
   ogImage?: string;
+  /** Cuando es true no toca el <head> (otro componente se encarga). */
+  disabled?: boolean;
 };
 
 const BASE_URL = 'https://climont.es';
@@ -33,8 +35,9 @@ function setLink(rel: string, href: string) {
   el.setAttribute('href', href);
 }
 
-export function useSeo({ title, description, canonicalPath, keywords, noIndex, ogImage }: SeoOptions) {
+export function useSeo({ title, description, canonicalPath, keywords, noIndex, ogImage, disabled }: SeoOptions) {
   useEffect(() => {
+    if (disabled) return;
     const fullTitle = title || DEFAULT_TITLE;
     const desc = description || DEFAULT_DESCRIPTION;
     const normalizedCanonicalPath = canonicalPath && canonicalPath !== '/'
@@ -63,5 +66,5 @@ export function useSeo({ title, description, canonicalPath, keywords, noIndex, o
       const el = document.head.querySelector<HTMLMetaElement>('meta[name="keywords"]');
       if (el) el.remove();
     }
-  }, [title, description, canonicalPath, keywords, noIndex, ogImage]);
+  }, [title, description, canonicalPath, keywords, noIndex, ogImage, disabled]);
 }

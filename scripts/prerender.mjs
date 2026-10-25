@@ -263,7 +263,7 @@ const SUPABASE_ANON_KEY =
 
 try {
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/products?select=id,name,description,price,image_url,tech_sheet_url,featured,category&is_active=eq.true`,
+    `${SUPABASE_URL}/rest/v1/products?select=id,slug,name,description,price,image_url,tech_sheet_url,featured,category&is_active=eq.true`,
     {
       headers: {
         apikey: SUPABASE_ANON_KEY,
@@ -273,16 +273,26 @@ try {
   );
   if (res.ok) {
     const products = await res.json();
+    // Mapa id -> slug: el Worker lo usa para redirigir con 301 las URLs
+    // antiguas /productos/<uuid> a la URL amigable /productos/<slug>.
+    const slugMap = {};
     for (const product of products) {
       const desc = (product.description || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      const slug = product.slug || product.id;
+      slugMap[product.id] = slug;
       addRoute({
-        path: `/productos/${product.id}`,
+        path: `/productos/${slug}`,
         title: `${product.name} | Climatizaciones Montaño, S.L.`,
         description: desc.slice(0, 160) || `Producto de climatización: ${product.name}.`,
         image: product.image_url || DEFAULT_OG_IMAGE,
         priority: 0.6,
       });
     }
+    fs.writeFileSync(
+      path.join(distDir, 'product-slugs.json'),
+      JSON.stringify(slugMap, null, 2),
+      'utf8',
+    );
     console.log(`  Productos: ${products.length}`);
   } else {
     console.log(`  Productos: no se pudieron cargar (${res.status})`);
