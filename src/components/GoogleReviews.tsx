@@ -21,10 +21,19 @@ type GoogleData = {
 
 const DEFAULT_MAPS_URL = 'https://www.google.com/maps/place/Climatizaciones+Monta%C3%B1o,+S.L./@37.3176281,-5.8527118,17z/data=!3m1!4b1!4m6!3m5!1s0xd127b2ef43b6e99:0x96892f07f3140bbf!8m2!3d37.3176239!4d-5.8501369!16s%2Fg%2F1tdgr28l?entry=ttu';
 
+// Datos reales de la ficha de Google (4,0 ★ con 10 reseñas). Se muestran
+// mientras la función google-reviews no esté configurada o no responda; si
+// responde, sus datos sustituyen a estos automáticamente.
+const DEFAULT_GOOGLE_DATA: GoogleData = {
+  rating: 4,
+  totalReviews: 10,
+  mapsUrl: DEFAULT_MAPS_URL,
+};
+
 export function GoogleReviews() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
-  const [googleData, setGoogleData] = useState<GoogleData | null>(null);
+  const [googleData, setGoogleData] = useState<GoogleData | null>(DEFAULT_GOOGLE_DATA);
 
   useEffect(() => {
     let cancelled = false;
@@ -60,9 +69,9 @@ export function GoogleReviews() {
           }
         }
       } catch {
-        // Edge function not available — fallback to defaults
+        // Función no disponible: se mantienen los datos reales de respaldo
         if (!cancelled) {
-          setGoogleData({ rating: 0, totalReviews: 0, mapsUrl: DEFAULT_MAPS_URL });
+          setGoogleData((prev) => prev ?? DEFAULT_GOOGLE_DATA);
         }
       }
 
