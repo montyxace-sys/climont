@@ -484,4 +484,48 @@
     <priority>0.3</priority>
   </url>
 
+  <url>
+    <loc>https://climont.es/productos/e7cd74da-6327-426b-abf7-c2ddc6dfa216</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://climont.eshttps://xvhyclucrnxplsanspaj.supabase.co/storage/v1/object/public/product-images/1792925357129-mz22tv.jpg</image:loc>
+      <image:title>Split Panasonic de 3.000 frg/h Modelo KIT-BZ35-ZKE | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/productos/6b69894f-77bf-4029-a569-0171d238058d</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://climont.eshttps://xvhyclucrnxplsanspaj.supabase.co/storage/v1/object/public/product-images/1792927394561-66um76.jpg</image:loc>
+      <image:title>Split Panasonic de 2.000 frg/h Modelo KIT-BZ25-ZKE | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/productos/8d903dfd-718b-4494-ad19-8f319c264dd5</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://climont.eshttps://xvhyclucrnxplsanspaj.supabase.co/storage/v1/object/public/product-images/1792928246179-5crzhf.webp</image:loc>
+      <image:title>Split Haier Geos R+ 25 de 2.000 frg/h. | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/productos/77d5306a-af85-45a7-a60f-0af066bd698d</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://climont.eshttps://xvhyclucrnxplsanspaj.supabase.co/storage/v1/object/public/product-images/1792928812456-qiim0c.webp</image:loc>
+      <image:title>Split Haier Geos R+ 35 de 3.000 frg/h. | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
 </urlset>

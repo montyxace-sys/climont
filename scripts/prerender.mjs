@@ -255,6 +255,42 @@ const STATIC_PAGES = [
 
 for (const page of STATIC_PAGES) addRoute(page);
 
+// Productos (dinámicos desde Supabase)
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://xvhyclucrnxplsanspaj.supabase.co';
+const SUPABASE_ANON_KEY =
+  process.env.VITE_SUPABASE_ANON_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aHljbHVjcm54cGxzYW5zcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5MTMyODQsImV4cCI6MjEwODQ4OTI4NH0.QFHdgQNNk8L-fSQ__cbKHK807QHXbGDhjk5Cxfs8csM';
+
+try {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/products?select=id,name,description,price,image_url,tech_sheet_url,featured,category&is_active=eq.true`,
+    {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    },
+  );
+  if (res.ok) {
+    const products = await res.json();
+    for (const product of products) {
+      const desc = (product.description || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      addRoute({
+        path: `/productos/${product.id}`,
+        title: `${product.name} | Climatizaciones Montaño, S.L.`,
+        description: desc.slice(0, 160) || `Producto de climatización: ${product.name}.`,
+        image: product.image_url || DEFAULT_OG_IMAGE,
+        priority: 0.6,
+      });
+    }
+    console.log(`  Productos: ${products.length}`);
+  } else {
+    console.log(`  Productos: no se pudieron cargar (${res.status})`);
+  }
+} catch (err) {
+  console.log(`  Productos: error al cargar (${err.message})`);
+}
+
 // ---------------------------------------------------------------------------
 // 3. Escribir un index.html por ruta
 // ---------------------------------------------------------------------------
@@ -434,5 +470,5 @@ console.log('Prerender OK');
 console.log(`  Rutas con HTML propio : ${routes.length}`);
 console.log(`  URLs en el sitemap    : ${indexable.length}`);
 console.log(
-  `  Servicios ${countBy('/servicios/')} | Ciudades ${countBy('/ciudades/')} | Marcas ${countBy('/marcas/')} | Blog ${countBy('/blog/')}`,
+  `  Servicios ${countBy('/servicios/')} | Ciudades ${countBy('/ciudades/')} | Marcas ${countBy('/marcas/')} | Blog ${countBy('/blog/')} | Productos ${countBy('/productos/')}`,
 );
