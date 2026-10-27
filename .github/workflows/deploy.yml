@@ -36,12 +36,14 @@ jobs:
         run: npm run build
 
       - name: Publicar en Netlify
+        continue-on-error: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: npx --yes netlify-cli@latest deploy --prod --dir=dist --message "GitHub ${GITHUB_SHA::7}"
 
       - name: Publicar copia en GitHub Pages
+        if: always()
         env:
           PAGES_TOKEN: ${{ secrets.PAGES_TOKEN }}
         run: python3 scripts/deploy_pages.py
