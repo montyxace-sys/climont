@@ -305,6 +305,28 @@ try {
   console.log(`  Productos: error al cargar (${err.message})`);
 }
 
+// Redirecciones 301 de las URLs antiguas de producto (/productos/<uuid>) a la
+// URL amigable. Se escriben en dist/_redirects para que las resuelva el
+// servidor (Netlify) sin depender de JavaScript.
+{
+  const slugsPath = path.join(distDir, 'product-slugs.json');
+  const redirectsPath = path.join(distDir, '_redirects');
+  if (fs.existsSync(slugsPath) && fs.existsSync(redirectsPath)) {
+    const slugMap = JSON.parse(fs.readFileSync(slugsPath, 'utf8'));
+    const rules = Object.entries(slugMap)
+      .filter(([id, slug]) => slug && slug !== id)
+      .map(([id, slug]) => `/productos/${id}  /productos/${slug}  301`);
+    if (rules.length) {
+      fs.appendFileSync(
+        redirectsPath,
+        `\n# URLs antiguas de producto (UUID) -> slug\n${rules.join('\n')}\n`,
+        'utf8',
+      );
+      console.log(`  Redirecciones de producto: ${rules.length}`);
+    }
+  }
+}
+
 // Artículos publicados desde el panel (viven en Supabase, no en el código).
 // Sin esta parte, /blog/<slug> respondería 404 en la primera carga y no
 // aparecería en el sitemap.

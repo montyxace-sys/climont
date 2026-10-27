@@ -1,15 +1,20 @@
-# Redirecciones de Cloudflare Workers Assets.
+# Redirecciones de servidor (Netlify y, si se volviera a Cloudflare, Workers Assets).
 # Formato: origen  destino  código
 #
-# Este proyecto no necesita reglas aquí:
+# Las URLs heredadas del sitio antiguo (osCommerce) siguen apareciendo en
+# Search Console. Cada regla devuelve un 301 real, sin pasar por JavaScript.
 #
-# - Las URLs heredadas del sitio antiguo (index.php?main_page=..., /web/catalog/,
-#   /EUR/, /index.html, /tel:...) se redirigen en worker/index.ts con 301, para
-#   poder descartar la query string original del destino.
-# - La barra final también se normaliza en worker/index.ts con un 301.
-# - Cada ruta de la SPA tiene su propio HTML prerenderizado (<ruta>.html), así
-#   que ya no hacen falta reescrituras a /index.html.
-#
-# Nota: las redirecciones de dominio canónico (http->https, www->apex) se
-# configuran en el dashboard de Cloudflare (Workers Assets solo admite rutas
-# relativas en _redirects).
+# Nota: las redirecciones de producto /productos/<uuid> -> /productos/<slug>
+# se añaden solas en cada build desde scripts/prerender.mjs.
+
+/index.php     /catalogo   301
+/index.php/*   /catalogo   301
+/web/*         /catalogo   301
+/EUR/*         /catalogo   301
+/index.html    /            301
+/tel*          /            301
+
+# Entradas del blog publicadas desde el panel que todavía no tienen su HTML
+# estático: Netlify sirve la SPA (200) solo si no existe el fichero, así que
+# las rutas ya prerenderizadas conservan su HTML propio.
+/blog/*        /index.html  200

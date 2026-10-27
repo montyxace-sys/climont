@@ -186,28 +186,40 @@ export function Constructors() {
               </div>
               <div className="grid grid-cols-2 gap-2 p-2 sm:p-3 order-1 lg:order-2">
                 <img
-                  src="/images/new-work/alcala-de-guadaira/calle-san-jose/climont_imagen_profesional_1.jpg"
-                  alt="Instalación de climatización por conductos en la Calle San José de Alcalá de Guadaíra"
+                  src="/images/new-work/alcala-de-guadaira/calle-san-jose/fachada-viviendas-calle-san-jose.jpg"
+                  alt="Fachada de las viviendas de la promoción de la Calle San José en Alcalá de Guadaíra"
+                  width={1190}
+                  height={896}
                   className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl"
                   loading="lazy"
+                  decoding="async"
                 />
                 <img
-                  src="/images/new-work/alcala-de-guadaira/calle-san-jose/climont_imagen_profesional_2.jpg"
-                  alt="Equipos Daikin instalados en la Calle San José de Alcalá de Guadaíra"
+                  src="/images/new-work/alcala-de-guadaira/calle-san-jose/conductos-chapa-tuberias.jpg"
+                  alt="Conductos de chapa galvanizada y tuberías de refrigerante en la instalación de la Calle San José"
+                  width={1184}
+                  height={896}
                   className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl"
                   loading="lazy"
+                  decoding="async"
                 />
                 <img
-                  src="/images/new-work/alcala-de-guadaira/calle-san-jose/climont_imagen_profesional_3.jpg"
-                  alt="Zonificación MYSAir en la Calle San José de Alcalá de Guadaíra"
+                  src="/images/new-work/alcala-de-guadaira/calle-san-jose/koolnova-gateway-daikin-vrv.jpg"
+                  alt="Pasarela Koolnova Gateway Daikin VRV instalada en una de las viviendas de la Calle San José"
+                  width={1184}
+                  height={896}
                   className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl"
                   loading="lazy"
+                  decoding="async"
                 />
                 <img
-                  src="/images/new-work/alcala-de-guadaira/calle-san-jose/climont_imagen_profesional_4.jpg"
-                  alt="Detalle de la instalación de conductos en la Calle San José"
+                  src="/images/new-work/alcala-de-guadaira/calle-san-jose/modulo-zonificacion-mysair-ms201v.jpg"
+                  alt="Módulo de zonificación MysAir MS201V-V4 junto al conducto de impulsión en la Calle San José"
+                  width={1184}
+                  height={896}
                   className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
