@@ -209,6 +209,13 @@ const STATIC_PAGES = [
     priority: 0.6,
   },
   {
+    path: '/catalogos',
+    title: 'Catálogos y tarifas de aire acondicionado 2026 | Climatizaciones Montaño, S.L.',
+    description:
+      'Enlaces directos a catálogos y tarifas oficiales 2026 de Daikin, Mitsubishi, LG, Samsung, Panasonic, Fujitsu, Hisense, Hitachi, Airzone y otros fabricantes de aire acondicionado y climatización.',
+    priority: 0.6,
+  },
+  {
     path: '/empleo',
     title:
       '¿Eres profesional del aire acondicionado? Trabaja con nosotros | Climatizaciones Montaño',

@@ -33,6 +33,7 @@ const BrandPage = lazy(() => import('@/components/BrandPage').then((m) => ({ def
 const BlogPage = lazy(() => import('@/components/BlogPage').then((m) => ({ default: m.BlogPage })));
 const BlogList = lazy(() => import('@/components/BlogPage').then((m) => ({ default: m.BlogList })));
 const Catalog = lazy(() => import('@/components/Catalog').then((m) => ({ default: m.Catalog })));
+const CatalogosPage = lazy(() => import('@/components/CatalogosPage').then((m) => ({ default: m.CatalogosPage })));
 const LogoDownload = lazy(() => import('@/components/LogoDownload').then((m) => ({ default: m.LogoDownload })));
 const Careers = lazy(() => import('@/components/Careers').then((m) => ({ default: m.Careers })));
 const ErrorCodesPage = lazy(() => import('@/components/ErrorCodesPage').then((m) => ({ default: m.ErrorCodesPage })));
@@ -192,12 +193,13 @@ function AppRoutes() {
   const isBlogPost = !!blogData;
   const isBlogList = path === '/blog';
   const isCatalog = path === '/catalogo';
+  const isCatalogos = path === '/catalogos';
   const isCareers = path === '/empleo';
   const isLogoDownload = path === '/descargar-logo';
   const isErrorCodes = path === '/codigos-de-errores';
   const isDownloadCenter = path === '/centro-de-descargas';
   const isFrigorias = path === '/calculadora-frigorias';
-  const isNotFound = !isAdmin && !isServicePage && !isCityPage && !isBrandPage && !isBlogPost && !isBlogList && !isCatalog && !isCareers && !isCookiePolicy && !isLegalNotice && !isLogoDownload && !isErrorCodes && !isDownloadCenter && !isFrigorias && !isProductPage && path !== '/' && path !== '/index.html';
+  const isNotFound = !isAdmin && !isServicePage && !isCityPage && !isBrandPage && !isBlogPost && !isBlogList && !isCatalog && !isCatalogos && !isCareers && !isCookiePolicy && !isLegalNotice && !isLogoDownload && !isErrorCodes && !isDownloadCenter && !isFrigorias && !isProductPage && path !== '/' && path !== '/index.html';
 
   useSeo({
     title: isCookiePolicy
@@ -386,6 +388,10 @@ function AppRoutes() {
 
   if (isCatalog) {
     return <><Catalog /><Footer /><FloatingPhoneButton /></>;
+  }
+
+  if (isCatalogos) {
+    return <><CatalogosPage /><Footer /><FloatingPhoneButton /></>;
   }
 
   if (isCareers) {
