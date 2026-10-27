@@ -70,8 +70,8 @@ description: 'Instalación de aire acondicionado con equipos de última generaci
       { title: 'Garantía de 3 años', description: 'Todas nuestras instalaciones llevan 3 años de garantía total. Las piezas y reparaciones tienen 6 meses de garantía. Si algo falla, lo solucionamos sin coste.' },
     ],
     galleryImages: [
-{ src: '/office-cassette-ac.webp', alt: 'Instalación de cassette de aire acondicionado Samsung en oficina', caption: 'Cassette de techo en oficina' },
-      { src: '/conductos-climaver-plus-obra-nueva.webp', alt: 'Instalación de máquinas de conductos Hisense y LG en obra nueva', caption: 'Conductos de fibra Climaver' },
+
+      
       { src: '/images/servicios/instalacion/instalacion-01.jpg', alt: 'Trabajo de instalación de aire acondicionado realizado en Sevilla — foto 01', caption: '' },
       { src: '/images/servicios/instalacion/instalacion-02.jpg', alt: 'Trabajo de instalación de aire acondicionado realizado en Sevilla — foto 02', caption: '' },
       { src: '/images/servicios/instalacion/instalacion-03.jpg', alt: 'Trabajo de instalación de aire acondicionado realizado en Sevilla — foto 03', caption: '' },

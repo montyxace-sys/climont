@@ -190,7 +190,7 @@ export function Constructors() {
                   alt="Fachada de las viviendas de la promoción de la Calle San José en Alcalá de Guadaíra"
                   width={1190}
                   height={896}
-                  className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl"
+                  className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl transition-transform duration-500 ease-out hover:scale-110"
                   loading="lazy"
                   decoding="async"
                 />
@@ -199,7 +199,7 @@ export function Constructors() {
                   alt="Conductos de chapa galvanizada y tuberías de refrigerante en la instalación de la Calle San José"
                   width={1184}
                   height={896}
-                  className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl"
+                  className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl transition-transform duration-500 ease-out hover:scale-110"
                   loading="lazy"
                   decoding="async"
                 />
@@ -208,7 +208,7 @@ export function Constructors() {
                   alt="Pasarela Koolnova Gateway Daikin VRV instalada en una de las viviendas de la Calle San José"
                   width={1184}
                   height={896}
-                  className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl"
+                  className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl transition-transform duration-500 ease-out hover:scale-110"
                   loading="lazy"
                   decoding="async"
                 />
@@ -217,7 +217,7 @@ export function Constructors() {
                   alt="Módulo de zonificación MysAir MS201V-V4 junto al conducto de impulsión en la Calle San José"
                   width={1184}
                   height={896}
-                  className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl"
+                  className="w-full h-44 sm:h-56 lg:h-64 object-cover rounded-2xl transition-transform duration-500 ease-out hover:scale-110"
                   loading="lazy"
                   decoding="async"
                 />
