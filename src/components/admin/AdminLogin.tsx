@@ -1,15 +1,20 @@
 import { useState, type FormEvent } from 'react';
-import { Snowflake, Lock, Mail, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Snowflake, Lock, Mail, Loader2, AlertCircle, ArrowLeft, KeyRound, CheckCircle2 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 type LoginProps = {
   onSignIn: (email: string, password: string) => Promise<void>;
 };
 
+type Mode = 'login' | 'reset';
+
 export function AdminLogin({ onSignIn }: LoginProps) {
+  const [mode, setMode] = useState<Mode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [resetSent, setResetSent] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -29,6 +34,30 @@ export function AdminLogin({ onSignIn }: LoginProps) {
     }
   };
 
+  const handleReset = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/admin`,
+      });
+      if (resetError) throw resetError;
+      setResetSent(true);
+    } catch {
+      setError('No se ha podido enviar el correo. Comprueba la dirección e inténtalo de nuevo.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const switchMode = (next: Mode) => {
+    setMode(next);
+    setError('');
+    setResetSent(false);
+    setPassword('');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-ink-950 px-4 relative overflow-hidden">
       <div className="absolute inset-0 opacity-30">
@@ -42,7 +71,9 @@ export function AdminLogin({ onSignIn }: LoginProps) {
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/30 mb-4">
               <Snowflake className="w-8 h-8 text-white" />
             </div>
-            <h1 className="font-display text-xl font-bold text-white">Panel de Administración</h1>
+            <h1 className="font-display text-xl font-bold text-white">
+              {mode === 'login' ? 'Panel de Administración' : 'Recuperar contraseña'}
+            </h1>
             <p className="text-ink-400 text-sm mt-1">Climatizaciones Montaño, S.L.</p>
           </div>
 
@@ -53,52 +84,125 @@ export function AdminLogin({ onSignIn }: LoginProps) {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-ink-300 mb-1.5">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-500" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full pl-11 pr-4 py-3 bg-ink-800/60 border border-ink-700 rounded-xl text-white placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all"
-                  placeholder="admin@climont.es"
-                />
+          {mode === 'reset' && resetSent ? (
+            <div className="text-center">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-success-500/15">
+                <CheckCircle2 className="h-7 w-7 text-success-400" />
               </div>
+              <p className="text-sm text-ink-300">
+                Si <span className="font-medium text-white">{email}</span> es una cuenta de administración, recibirás un
+                correo con un enlace para elegir una nueva contraseña.
+              </p>
+              <p className="mt-2 text-xs text-ink-500">Revisa también la carpeta de spam. El enlace caduca en una hora.</p>
+              <button
+                type="button"
+                onClick={() => switchMode('login')}
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-500"
+              >
+                <ArrowLeft className="h-4 w-4" /> Volver al acceso
+              </button>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-ink-300 mb-1.5">Contraseña</label>
-              <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-500" />
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full pl-11 pr-4 py-3 bg-ink-800/60 border border-ink-700 rounded-xl text-white placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all"
-                  placeholder="••••••••"
-                />
+          ) : mode === 'login' ? (
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-ink-300 mb-1.5">Email</label>
+                <div className="relative">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-500" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full pl-11 pr-4 py-3 bg-ink-800/60 border border-ink-700 rounded-xl text-white placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all"
+                    placeholder="admin@climont.es"
+                  />
+                </div>
               </div>
-            </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 hover:bg-primary-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-lg shadow-primary-500/30"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Accediendo...
-                </>
-              ) : (
-                'Acceder al panel'
-              )}
-            </button>
-          </form>
+              <div>
+                <div className="mb-1.5 flex items-center justify-between">
+                  <label className="block text-sm font-medium text-ink-300">Contraseña</label>
+                  <button
+                    type="button"
+                    onClick={() => switchMode('reset')}
+                    className="text-xs font-medium text-primary-400 transition-colors hover:text-primary-300"
+                  >
+                    ¿La has olvidado?
+                  </button>
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-500" />
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full pl-11 pr-4 py-3 bg-ink-800/60 border border-ink-700 rounded-xl text-white placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 hover:bg-primary-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-lg shadow-primary-500/30"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Accediendo...
+                  </>
+                ) : (
+                  'Acceder al panel'
+                )}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleReset} className="space-y-5">
+              <p className="text-sm text-ink-400">
+                Escribe el email del panel y te enviaremos un enlace para crear una contraseña nueva.
+              </p>
+              <div>
+                <label className="block text-sm font-medium text-ink-300 mb-1.5">Email</label>
+                <div className="relative">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-500" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full pl-11 pr-4 py-3 bg-ink-800/60 border border-ink-700 rounded-xl text-white placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all"
+                    placeholder="admin@climont.es"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 hover:bg-primary-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-lg shadow-primary-500/30"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" /> Enviando...
+                  </>
+                ) : (
+                  <>
+                    <KeyRound className="w-5 h-5" /> Enviar enlace de recuperación
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => switchMode('login')}
+                className="flex w-full items-center justify-center gap-2 text-sm text-ink-500 transition-colors hover:text-ink-300"
+              >
+                <ArrowLeft className="w-4 h-4" /> Volver al acceso
+              </button>
+            </form>
+          )}
 
           <a
             href="/"

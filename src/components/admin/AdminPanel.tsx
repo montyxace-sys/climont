@@ -26,7 +26,7 @@ import { DownloadCenterAdmin } from '@/components/admin/DownloadCenterAdmin';
 import { BlogEditor } from '@/components/admin/BlogEditor';
 
 export function AdminPanel() {
-  const { session, loading, signIn, signOut } = useAuth();
+  const { session, loading, signIn, signOut, recovery, clearRecovery } = useAuth();
   const [tab, setTab] = useState<AdminTab>('dashboard');
   const [pendingCount, setPendingCount] = useState(0);
   const [pendingApplications, setPendingApplications] = useState(0);
@@ -65,7 +65,7 @@ export function AdminPanel() {
   }
 
   return (
-    <AdminLayout activeTab={tab} onTabChange={setTab} onSignOut={signOut} requestCount={pendingCount} applicationCount={pendingApplications}>
+    <AdminLayout activeTab={tab} onTabChange={setTab} onSignOut={signOut} requestCount={pendingCount} applicationCount={pendingApplications} recoveryMode={recovery} onRecoveryHandled={clearRecovery}>
       {tab === 'dashboard' && <Dashboard />}
       {tab === 'requests' && <Requests />}
       {tab === 'products' && <Products />}

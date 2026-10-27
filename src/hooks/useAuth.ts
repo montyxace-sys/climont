@@ -25,6 +25,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
 export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [recovery, setRecovery] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -41,7 +42,8 @@ export function useAuth() {
         if (!cancelled) setLoading(false);
       });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, newSession) => {
+      if (event === 'PASSWORD_RECOVERY') setRecovery(true);
       setSession(newSession);
       setLoading(false);
     });
@@ -65,5 +67,7 @@ export function useAuth() {
     await supabase.auth.signOut();
   }, []);
 
-  return { session, loading, signIn, signOut };
+  const clearRecovery = useCallback(() => setRecovery(false), []);
+
+  return { session, loading, signIn, signOut, recovery, clearRecovery };
 }

@@ -1,5 +1,6 @@
 import { type ReactNode, useState, useEffect } from 'react';
-import { Snowflake, LayoutDashboard, Mail, BarChart3, LogOut, ExternalLink, Search, Package, Image as ImageIcon, Wrench, FileText, Briefcase, Cloud, Grid3x3, Star, MessageCircleQuestion, HardDrive, Mail as MailIcon, FolderOpen, CloudSnow, ChevronDown, Globe, ShieldCheck, Download, Newspaper } from 'lucide-react';
+import { Snowflake, LayoutDashboard, Mail, BarChart3, LogOut, ExternalLink, Search, Package, Image as ImageIcon, Wrench, FileText, Briefcase, Cloud, Grid3x3, Star, MessageCircleQuestion, HardDrive, Mail as MailIcon, FolderOpen, CloudSnow, ChevronDown, Globe, ShieldCheck, Download, Newspaper, KeyRound } from 'lucide-react';
+import { ChangePasswordModal } from '@/components/admin/ChangePasswordModal';
 
 export type AdminTab = 'dashboard' | 'requests' | 'products' | 'reviews' | 'jobs' | 'pue' | 'applications' | 'analytics' | 'seo' | 'blog' | 'mega' | 'recursos' | 'ofimatica' | 'chatbot' | 'proton-drive' | 'proton-mail' | 'google-drive' | 'pcloud' | 'google-tools' | 'document-vault' | 'downloads';
 
@@ -10,6 +11,9 @@ type LayoutProps = {
   onSignOut: () => void;
   requestCount: number;
   applicationCount: number;
+  /** Se abre el cambio de contraseña obligatorio al llegar desde el email de recuperación. */
+  recoveryMode?: boolean;
+  onRecoveryHandled?: () => void;
 };
 
 type NavItem = { id: AdminTab; label: string; icon: typeof LayoutDashboard };
@@ -71,8 +75,18 @@ function getInitialExpanded(activeTab: AdminTab): Set<string> {
   return expanded;
 }
 
-export function AdminLayout({ children, activeTab, onTabChange, onSignOut, requestCount, applicationCount }: LayoutProps) {
+export function AdminLayout({ children, activeTab, onTabChange, onSignOut, requestCount, applicationCount, recoveryMode = false, onRecoveryHandled }: LayoutProps) {
   const [expanded, setExpanded] = useState<Set<string>>(() => getInitialExpanded(activeTab));
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (recoveryMode) setShowPassword(true);
+  }, [recoveryMode]);
+
+  const closePassword = () => {
+    setShowPassword(false);
+    onRecoveryHandled?.();
+  };
 
   useEffect(() => {
     setExpanded((prev) => {
@@ -189,6 +203,13 @@ export function AdminLayout({ children, activeTab, onTabChange, onSignOut, reque
             Ver web pública
           </a>
           <button
+            onClick={() => setShowPassword(true)}
+            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-ink-400 hover:text-white hover:bg-ink-800 transition-all"
+          >
+            <KeyRound className="w-5 h-5" />
+            Cambiar contraseña
+          </button>
+          <button
             onClick={onSignOut}
             className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-ink-400 hover:text-error-400 hover:bg-ink-800 transition-all"
           >
@@ -207,6 +228,13 @@ export function AdminLayout({ children, activeTab, onTabChange, onSignOut, reque
           <span className="font-display font-bold text-white text-sm">Climont Admin</span>
         </div>
         <div className="flex items-center gap-1">
+          <button
+            onClick={() => setShowPassword(true)}
+            aria-label="Cambiar contraseña"
+            className="p-2 text-ink-400 hover:text-white"
+          >
+            <KeyRound className="w-5 h-5" />
+          </button>
           <button
             onClick={onSignOut}
             className="p-2 text-ink-400 hover:text-error-400"
@@ -252,6 +280,8 @@ export function AdminLayout({ children, activeTab, onTabChange, onSignOut, reque
           {children}
         </div>
       </main>
+
+      <ChangePasswordModal open={showPassword} onClose={closePassword} recoveryMode={recoveryMode} />
     </div>
   );
 }
