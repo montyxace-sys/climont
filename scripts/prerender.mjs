@@ -103,6 +103,11 @@ fs.rmSync(tmpModule, { force: true });
 // ---------------------------------------------------------------------------
 // 2. Construir el catálogo de rutas con sus metadatos
 // ---------------------------------------------------------------------------
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://xvhyclucrnxplsanspaj.supabase.co';
+const SUPABASE_ANON_KEY =
+  process.env.VITE_SUPABASE_ANON_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aHljbHVjcm54cGxzYW5zcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5MTMyODQsImV4cCI6MjEwODQ4OTI4NH0.QFHdgQNNk8L-fSQ__cbKHK807QHXbGDhjk5Cxfs8csM';
+
 const routes = [];
 
 const addRoute = (route) => {
@@ -113,6 +118,7 @@ const addRoute = (route) => {
     image: route.image,
     priority: route.priority ?? 0.6,
     changefreq: route.changefreq ?? 'monthly',
+    lastmod: route.lastmod,
     noindex: route.noindex ?? false,
   });
 };
@@ -160,13 +166,14 @@ for (const brand of DATA.BRANDS) {
   });
 }
 
-// Blog (entradas estáticas; las publicadas desde el panel se sirven vía SPA)
+// Blog (entradas estáticas; las publicadas desde el panel se añaden más abajo)
 for (const post of DATA.BLOG_POSTS) {
   addRoute({
     path: `/blog/${post.slug}`,
     title: post.metaTitle,
     description: post.metaDescription,
     priority: 0.6,
+    lastmod: post.date,
   });
 }
 
@@ -256,11 +263,7 @@ const STATIC_PAGES = [
 for (const page of STATIC_PAGES) addRoute(page);
 
 // Productos (dinámicos desde Supabase)
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://xvhyclucrnxplsanspaj.supabase.co';
-const SUPABASE_ANON_KEY =
-  process.env.VITE_SUPABASE_ANON_KEY ||
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aHljbHVjcm54cGxzYW5zcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5MTMyODQsImV4cCI6MjEwODQ4OTI4NH0.QFHdgQNNk8L-fSQ__cbKHK807QHXbGDhjk5Cxfs8csM';
-
+const PRODUCT_LINKS = [];
 try {
   const res = await fetch(
     `${SUPABASE_URL}/rest/v1/products?select=id,slug,name,description,price,image_url,tech_sheet_url,featured,category&is_active=eq.true`,
@@ -280,6 +283,7 @@ try {
       const desc = (product.description || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
       const slug = product.slug || product.id;
       slugMap[product.id] = slug;
+      PRODUCT_LINKS.push([`/productos/${slug}`, product.name]);
       addRoute({
         path: `/productos/${slug}`,
         title: `${product.name} | Climatizaciones Montaño, S.L.`,
@@ -301,6 +305,43 @@ try {
   console.log(`  Productos: error al cargar (${err.message})`);
 }
 
+// Artículos publicados desde el panel (viven en Supabase, no en el código).
+// Sin esta parte, /blog/<slug> respondería 404 en la primera carga y no
+// aparecería en el sitemap.
+try {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/blog_posts?select=slug,title,meta_title,meta_description,excerpt,date&status=eq.published`,
+    {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    },
+  );
+  if (res.ok) {
+    const posts = await res.json();
+    const staticSlugs = new Set(DATA.BLOG_POSTS.map((post) => post.slug));
+    const extra = posts.filter((post) => post.slug && !staticSlugs.has(post.slug));
+    for (const post of extra) {
+      addRoute({
+        path: `/blog/${post.slug}`,
+        title: post.meta_title || post.title,
+        description:
+          post.meta_description ||
+          post.excerpt ||
+          `Artículo sobre climatización: ${post.title}.`,
+        priority: 0.6,
+        lastmod: (post.date || '').slice(0, 10) || undefined,
+      });
+    }
+    console.log(`  Artículos del panel: ${extra.length}`);
+  } else {
+    console.log(`  Artículos del panel: no se pudieron cargar (${res.status})`);
+  }
+} catch (err) {
+  console.log(`  Artículos del panel: error al cargar (${err.message})`);
+}
+
 // ---------------------------------------------------------------------------
 // 3. Escribir un index.html por ruta
 // ---------------------------------------------------------------------------
@@ -318,6 +359,60 @@ const tag = (regex, replacement, html, label) => {
   }
   return html.replace(regex, replacement);
 };
+
+// --- Enlaces y texto de respaldo para navegadores sin JavaScript ------------
+// Google renderiza la SPA, pero Bing, los rastreadores de IA y los usuarios con
+// JS desactivado solo ven el HTML inicial. Antes ese HTML no tenía ni un enlace
+// interno; ahora cada página lleva su propio título, descripción y un mapa
+// completo del sitio.
+const SERVICE_LINKS = DATA.SERVICES.map((service) => [
+  `/servicios/${service.slug}`,
+  service.title,
+]);
+const CITY_LINKS = DATA.CITIES.map((city) => [`/ciudades/${city.slug}`, city.name]);
+const BRAND_LINKS = DATA.BRANDS.map((brand) => [`/marcas/${brand.slug}`, brand.name]);
+const BLOG_LINKS = DATA.BLOG_POSTS.map((post) => [`/blog/${post.slug}`, post.title]);
+const PAGE_LINKS = [
+  ['/', 'Inicio'],
+  ['/catalogo', 'Catálogo de productos'],
+  ['/blog', 'Blog de climatización'],
+  ['/calculadora-frigorias', 'Calculadora de frigorías'],
+  ['/codigos-de-errores', 'Códigos de errores'],
+  ['/empleo', 'Trabaja con nosotros'],
+  ['/aviso-legal', 'Aviso legal'],
+];
+
+function linkList(title, items) {
+  if (!items.length) return '';
+  const lis = items
+    .map(([href, label]) => `<li><a href="${escAttr(href)}">${escAttr(label)}</a></li>`)
+    .join('');
+  return `<h2 style="font-size:1.05rem;margin:1.4rem 0 .4rem;">${escAttr(title)}</h2><ul style="margin:0;padding-left:1.2rem;">${lis}</ul>`;
+}
+
+function seoFallback(route) {
+  const h1 = route.title.split(' | ')[0];
+  return `<noscript>
+      <div style="font-family:system-ui,-apple-system,'Segoe UI',sans-serif;max-width:840px;margin:40px auto;padding:24px;color:#1e293b;line-height:1.6;">
+        <h1 style="font-size:1.6rem;margin:0 0 .5rem;">${escAttr(h1)}</h1>
+        <p style="margin:0 0 1rem;">${escAttr(route.description)}</p>
+        <p style="margin:0;">
+          <strong>Teléfono:</strong> <a href="tel:+34676628348">676 628 348</a> ·
+          <strong>WhatsApp:</strong> <a href="tel:+34691680706">691 680 706</a> ·
+          <strong>Email:</strong> <a href="mailto:info@climont.es">info@climont.es</a>
+        </p>
+        ${linkList('Servicios', SERVICE_LINKS)}
+        ${linkList('Zonas de cobertura', CITY_LINKS)}
+        ${linkList('Marcas', BRAND_LINKS)}
+        ${linkList('Productos', PRODUCT_LINKS)}
+        ${linkList('Blog', BLOG_LINKS)}
+        ${linkList('Páginas', PAGE_LINKS)}
+        <p style="margin-top:1.6rem;font-size:.85rem;color:#64748b;">
+          Climatizaciones Montaño, S.L. · C/ Hacienda Guadalupe 35, Alcalá de Guadaíra (Sevilla)
+        </p>
+      </div>
+    </noscript>`;
+}
 
 function renderHtml(route) {
   const url = `${SITE}${route.path === '/' ? '/' : route.path}`;
@@ -408,6 +503,10 @@ function renderHtml(route) {
     'twitter:image',
   );
 
+  if (/<noscript>[\s\S]*?<\/noscript>/.test(html)) {
+    html = html.replace(/<noscript>[\s\S]*?<\/noscript>/, seoFallback(route));
+  }
+
   return { html, url };
 }
 
@@ -445,12 +544,13 @@ const indexable = routes.filter((route) => !route.noindex);
 const sitemapEntries = indexable
   .map((route) => {
     const url = `${SITE}${route.path === '/' ? '/' : route.path}`;
+    const lastmod = route.lastmod || today;
     const image = route.image
       ? `\n    <image:image>\n      <image:loc>${escXml(`${SITE}${route.image}`)}</image:loc>\n      <image:title>${escXml(route.title)}</image:title>\n    </image:image>`
       : '';
     return `  <url>
     <loc>${escXml(url)}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${escXml(lastmod)}</lastmod>
     <changefreq>${route.changefreq}</changefreq>
     <priority>${route.priority.toFixed(1)}</priority>${image}
   </url>`;

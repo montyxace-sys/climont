@@ -1,11 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Plus, Pencil, Trash2, X, Star, Eye, EyeOff, Euro, Save, Package, Upload, ImageIcon, Loader2, FileText, ArrowRight, Phone, MessageCircle, Mail, ShieldCheck } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Star, Eye, EyeOff, Euro, Save, Package, Upload, ImageIcon, Loader2, FileText, ArrowRight, Phone, MessageCircle, Mail, ShieldCheck, Link2 } from 'lucide-react';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { supabase } from '@/lib/supabase';
+import { slugify, uniqueSlug, SLUG_PATTERN } from '@/lib/slug';
 
 type Product = {
   id: string;
   name: string;
+  slug?: string | null;
   description: string;
   price: number;
   category: string;
@@ -27,6 +29,7 @@ type ProductImage = {
 
 type ProductForm = {
   name: string;
+  slug: string;
   description: string;
   price: string;
   category: string;
@@ -39,6 +42,7 @@ type ProductForm = {
 
 const EMPTY_FORM: ProductForm = {
   name: '',
+  slug: '',
   description: '',
   price: '',
   category: 'General',
@@ -64,6 +68,7 @@ export function Products() {
   const [uploadingImages, setUploadingImages] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [previewTab, setPreviewTab] = useState<'card' | 'page'>('card');
+  const [slugTouched, setSlugTouched] = useState(false);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [pdfName, setPdfName] = useState<string | null>(null);
 
@@ -91,6 +96,7 @@ export function Products() {
   const openNewForm = () => {
     setForm(EMPTY_FORM);
     setEditingId(null);
+    setSlugTouched(false);
     setShowForm(true);
     setImageFile(null);
     setImagePreview(null);
@@ -102,6 +108,7 @@ export function Products() {
   const openEditForm = (p: Product) => {
     setForm({
       name: p.name,
+      slug: p.slug || '',
       description: p.description,
       price: String(p.price),
       category: p.category,
@@ -112,6 +119,7 @@ export function Products() {
       sort_order: String(p.sort_order),
     });
     setEditingId(p.id);
+    setSlugTouched(!!p.slug);
     setShowForm(true);
     setImageFile(null);
     setImagePreview(p.image_url || null);
@@ -125,6 +133,7 @@ export function Products() {
   const closeForm = () => {
     setShowForm(false);
     setEditingId(null);
+    setSlugTouched(false);
     setForm(EMPTY_FORM);
     setError(null);
     if (imagePreview && imageFile) {
@@ -304,6 +313,16 @@ export function Products() {
       return;
     }
 
+    const baseSlug = slugify(form.slug || form.name);
+    if (!baseSlug) {
+      setError('No se ha podido generar la URL del producto. Revisa el nombre.');
+      return;
+    }
+    const takenSlugs = products
+      .filter((p) => p.id !== editingId && !!p.slug)
+      .map((p) => p.slug as string);
+    const finalSlug = uniqueSlug(baseSlug, takenSlugs);
+
     setSaving(true);
     setError(null);
 
@@ -355,6 +374,7 @@ export function Products() {
 
     const payload = {
       name: form.name.trim(),
+      slug: finalSlug,
       description: form.description.trim(),
       price: priceNum,
       category: form.category.trim() || 'General',
@@ -652,10 +672,43 @@ export function Products() {
                 <input
                   type="text"
                   value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  onChange={(e) => {
+                    const name = e.target.value;
+                    setForm((prev) => ({
+                      ...prev,
+                      name,
+                      slug: slugTouched ? prev.slug : slugify(name),
+                    }));
+                  }}
                   placeholder="Ej. Split Daikin 3500 frigorías"
                   className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-ink-700 mb-1.5">
+                  URL del producto
+                </label>
+                <div className="flex items-stretch overflow-hidden rounded-xl border border-ink-200 bg-ink-50 focus-within:ring-2 focus-within:ring-primary-500">
+                  <span className="flex items-center gap-1.5 border-r border-ink-200 px-3 text-xs text-ink-500 whitespace-nowrap">
+                    <Link2 className="w-3.5 h-3.5" /> climont.es/productos/
+                  </span>
+                  <input
+                    type="text"
+                    value={form.slug}
+                    onChange={(e) => {
+                      setSlugTouched(true);
+                      setForm({ ...form, slug: e.target.value });
+                    }}
+                    placeholder="split-daikin-3500-frigorias"
+                    className="w-full bg-transparent px-3 py-2.5 text-ink-900 placeholder:text-ink-400 focus:outline-none"
+                  />
+                </div>
+                <p className="mt-1.5 text-xs text-ink-400">
+                  {form.slug && !SLUG_PATTERN.test(form.slug)
+                    ? `Se guardará como “${slugify(form.slug)}” (minúsculas, sin acentos ni símbolos).`
+                    : 'Se genera sola a partir del nombre. Mejor corta, en minúsculas y con guiones.'}
+                </p>
               </div>
 
               <div>

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Check, FilePlus2, Import, Pencil, Save, Send, X } from 'lucide-react';
 import { BLOG_POSTS, type BlogPost } from '@/data/blog';
 import { supabase } from '@/lib/supabase';
+import { slugify } from '@/lib/slug';
 import type { BlogPostRow } from '@/lib/blog';
 
 const EMPTY_FORM = {
@@ -59,7 +60,7 @@ function formToRow(form: BlogForm) {
     .map(([label, href]) => ({ label, href }));
 
   return {
-    slug: form.slug.trim().toLowerCase(),
+    slug: slugify(form.slug || form.title),
     title: form.title.trim(),
     meta_title: form.meta_title.trim() || form.title.trim(),
     meta_description: form.meta_description.trim() || form.excerpt.trim(),
@@ -206,7 +207,7 @@ export function BlogEditor() {
           {editingId && <button type="button" onClick={startNew} className="inline-flex items-center gap-1 text-sm font-medium text-ink-500 hover:text-ink-900"><X className="w-4 h-4" /> Cancelar</button>}
         </div>
         <div className="grid md:grid-cols-2 gap-4">
-          <label className="text-sm font-medium text-ink-700">Título<input value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} className="mt-1.5 w-full rounded-xl border border-ink-200 px-3.5 py-3 text-ink-900" /></label>
+          <label className="text-sm font-medium text-ink-700">Título<input value={form.title} onChange={(event) => { const title = event.target.value; setForm((prev) => ({ ...prev, title, slug: prev.slug && prev.slug !== slugify(prev.title) ? prev.slug : slugify(title) })); }} className="mt-1.5 w-full rounded-xl border border-ink-200 px-3.5 py-3 text-ink-900" /></label>
           <label className="text-sm font-medium text-ink-700">Slug<input value={form.slug} onChange={(event) => setForm({ ...form, slug: event.target.value })} placeholder="mi-nuevo-articulo" className="mt-1.5 w-full rounded-xl border border-ink-200 px-3.5 py-3 text-ink-900" /></label>
           <label className="text-sm font-medium text-ink-700">Categoría<input value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })} className="mt-1.5 w-full rounded-xl border border-ink-200 px-3.5 py-3 text-ink-900" /></label>
           <label className="text-sm font-medium text-ink-700">Fecha<input type="date" value={form.date} onChange={(event) => setForm({ ...form, date: event.target.value })} className="mt-1.5 w-full rounded-xl border border-ink-200 px-3.5 py-3 text-ink-900" /></label>
