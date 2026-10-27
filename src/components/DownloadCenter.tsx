@@ -123,6 +123,19 @@ function LoginForm({ onSwitchView }: { onSwitchView: (v: View) => void }) {
     }
   };
 
+  const handleGoogle = async () => {
+    setError('');
+    setLoading(true);
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + '/centro-de-descargas' },
+    });
+    if (oauthError) {
+      setError('No se ha podido iniciar sesion con Google.');
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {error && (
@@ -155,6 +168,44 @@ function LoginForm({ onSwitchView }: { onSwitchView: (v: View) => void }) {
           {loading ? (<><Loader2 className="w-5 h-5 animate-spin" /> Accediendo...</>) : 'Acceder'}
         </button>
       </form>
+      <div className="my-5 flex items-center gap-3 text-xs text-ink-500">
+        <span className="h-px flex-1 bg-ink-700/60" />
+        o
+        <span className="h-px flex-1 bg-ink-700/60" />
+      </div>
+      <button
+        type="button"
+        onClick={handleGoogle}
+        disabled={loading}
+        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 border-2 border-ink-600 hover:border-ink-500 text-white font-semibold rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.07 5.07 0 0 1-2.19 3.32v2.76h3.56c2.08-1.92 3.28-4.75 3.28-8.09Z" fill="#4285F4" />
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.24 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23Z" fill="#34A853" />
+          <path d="M5.84 14.11A6.96 6.96 0 0 1 5.46 12c0-.74.13-1.46.38-2.11V7.05H2.18A11.96 11.96 0 0 0 0 12c0 1.93.47 3.75 1.31 5.35l3.32-2.6c.08-.14.14-.28.21-.64Z" fill="#FBBC05" />
+          <path d="M12 4.75c1.62 0 3.07.56 4.21 1.64l3.15-3.15C17.45 1.19 14.97 0 12 0 7.7 0 3.99 2.47 2.18 6.05l3.66 2.84C6.71 6.27 9.14 4.75 12 4.75Z" fill="#EA4335" />
+        </svg>
+        Continuar con Google
+      </button>
+      <div className="my-5 flex items-center gap-3 text-xs text-ink-500">
+        <span className="h-px flex-1 bg-ink-700/60" />
+        o
+        <span className="h-px flex-1 bg-ink-700/60" />
+      </div>
+      <button
+        type="button"
+        onClick={handleGoogle}
+        disabled={loading}
+        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 border-2 border-ink-600 hover:border-ink-500 text-white font-semibold rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.07 5.07 0 0 1-2.19 3.32v2.76h3.56c2.08-1.92 3.28-4.75 3.28-8.09Z" fill="#4285F4" />
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.24 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23Z" fill="#34A853" />
+          <path d="M5.84 14.11A6.96 6.96 0 0 1 5.46 12c0-.74.13-1.46.38-2.11V7.05H2.18A11.96 11.96 0 0 0 0 12c0 1.93.47 3.75 1.31 5.35l3.32-2.6c.08-.14.14-.28.21-.64Z" fill="#FBBC05" />
+          <path d="M12 4.75c1.62 0 3.07.56 4.21 1.64l3.15-3.15C17.45 1.19 14.97 0 12 0 7.7 0 3.99 2.47 2.18 6.05l3.66 2.84C6.71 6.27 9.14 4.75 12 4.75Z" fill="#EA4335" />
+        </svg>
+        Continuar con Google
+      </button>
       <div className="mt-5 flex flex-col gap-2 text-center">
         <button onClick={() => onSwitchView('forgot')} className="text-sm text-ink-400 hover:text-primary-400 transition-colors">
           ¿Olvidaste tu contraseña?
@@ -222,6 +273,19 @@ function RegisterForm({ onSwitchView }: { onSwitchView: (v: View) => void }) {
     );
   }
 
+  const handleGoogle = async () => {
+    setError('');
+    setLoading(true);
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + '/centro-de-descargas' },
+    });
+    if (oauthError) {
+      setError('No se ha podido registrarse con Google.');
+      setLoading(false);
+    }
+  };
+
   const inputClass = "w-full pl-11 pr-4 py-3 bg-ink-800/60 border border-ink-700 rounded-xl text-white placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all";
   const inputClassShort = "w-full px-4 py-3 bg-ink-800/60 border border-ink-700 rounded-xl text-white placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all";
 
@@ -285,6 +349,30 @@ function RegisterForm({ onSwitchView }: { onSwitchView: (v: View) => void }) {
         </button>
       </form>
       <div className="mt-5 text-center">
+        <button onClick={() => onSwitchView('login')} className="text-sm text-ink-400 hover:text-primary-400 transition-colors">
+          ¿Ya tienes cuenta? <span className="font-semibold text-primary-400">Inicia sesión</span>
+        </button>
+      </div>
+      <div className="my-4 flex items-center gap-3 text-xs text-ink-500">
+        <span className="h-px flex-1 bg-ink-700/60" />
+        o
+        <span className="h-px flex-1 bg-ink-700/60" />
+      </div>
+      <button
+        type="button"
+        onClick={handleGoogle}
+        disabled={loading}
+        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 border-2 border-ink-600 hover:border-ink-500 text-white font-semibold rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.07 5.07 0 0 1-2.19 3.32v2.76h3.56c2.08-1.92 3.28-4.75 3.28-8.09Z" fill="#4285F4" />
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.24 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23Z" fill="#34A853" />
+          <path d="M5.84 14.11A6.96 6.96 0 0 1 5.46 12c0-.74.13-1.46.38-2.11V7.05H2.18A11.96 11.96 0 0 0 0 12c0 1.93.47 3.75 1.31 5.35l3.32-2.6c.08-.14.14-.28.21-.64Z" fill="#FBBC05" />
+          <path d="M12 4.75c1.62 0 3.07.56 4.21 1.64l3.15-3.15C17.45 1.19 14.97 0 12 0 7.7 0 3.99 2.47 2.18 6.05l3.66 2.84C6.71 6.27 9.14 4.75 12 4.75Z" fill="#EA4335" />
+        </svg>
+        Registrarse con Google
+      </button>
+      <div className="mt-5 flex flex-col gap-2 text-center">
         <button onClick={() => onSwitchView('login')} className="text-sm text-ink-400 hover:text-primary-400 transition-colors">
           ¿Ya tienes cuenta? <span className="font-semibold text-primary-400">Inicia sesión</span>
         </button>
@@ -459,6 +547,26 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
         if (profileError) throw profileError;
 
         if (!profile) {
+          // Usuario que accede por primera vez con Google: se crea su perfil pendiente
+          // de aprobacion, igual que en el registro clasico con email.
+          const isGoogle = session.user.app_metadata?.provider === 'google';
+          if (isGoogle) {
+            const fullName = (session.user.user_metadata?.full_name as string | undefined)
+              || (session.user.user_metadata?.name as string | undefined)
+              || (session.user.email || '');
+            const { error: insertError } = await supabase.from('download_users').insert({
+              user_id: session.user.id,
+              full_name: fullName,
+              company: null,
+              phone: null,
+              status: 'pendiente',
+            });
+            if (!insertError) {
+              setUserProfile({ status: 'pendiente', full_name: fullName } as DownloadUser);
+              setLoading(false);
+              return;
+            }
+          }
           setUserProfile(null);
           setLoading(false);
           return;
