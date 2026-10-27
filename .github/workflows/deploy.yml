@@ -1,0 +1,47 @@
+name: Publicar web
+
+# Cada push a main compila y publica en los dos destinos:
+#   1. Netlify  -> https://climont.es        (hosting principal)
+#   2. GitHub Pages -> https://respaldo.climont.es (copia de respaldo)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: publicar-web
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar (Vite + prerender)
+        run: npm run build
+
+      - name: Publicar en Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: npx --yes netlify-cli@latest deploy --prod --dir=dist --message "GitHub ${GITHUB_SHA::7}"
+
+      - name: Publicar copia en GitHub Pages
+        env:
+          PAGES_TOKEN: ${{ secrets.PAGES_TOKEN }}
+        run: python3 scripts/deploy_pages.py
