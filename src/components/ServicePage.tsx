@@ -231,7 +231,7 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
 
           <div>
             <label htmlFor="service-contact-installation-type" className="block text-sm font-medium text-ink-700 mb-1.5">
-              Tipo de instalación <span className="text-ink-400 font-normal">(opcional)</span>
+              Tipo de instalación <span className="text-ink-500 font-normal">(opcional)</span>
             </label>
             <select id="service-contact-installation-type" value={form.installation_type} onChange={(e) => update('installation_type', e.target.value)}
               className={`w-full px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all ${!form.installation_type ? 'text-ink-300' : ''}`}>
@@ -243,7 +243,7 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
           </div>
 
           <div>
-            <label htmlFor="service-contact-message" className="block text-sm font-medium text-ink-700 mb-1.5">Mensaje <span className="text-ink-400 font-normal">(opcional)</span></label>
+            <label htmlFor="service-contact-message" className="block text-sm font-medium text-ink-700 mb-1.5">Mensaje <span className="text-ink-500 font-normal">(opcional)</span></label>
             <textarea id="service-contact-message" value={form.message} onChange={(e) => update('message', e.target.value)}
               rows={4} maxLength={5000}
               className="w-full px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder-ink-300 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all resize-none"
@@ -258,7 +258,7 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
               <><Send className="w-5 h-5" /> Solicitar presupuesto gratis</>
             )}
           </button>
-          <p className="text-xs text-ink-400 text-center">Al enviar aceptas nuestra política de privacidad. No compartimos tus datos.</p>
+          <p className="text-xs text-ink-500 text-center">Al enviar aceptas nuestra política de privacidad. No compartimos tus datos.</p>
         </form>
       )}
     </div>
@@ -328,7 +328,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
               <Snowflake className="w-6 h-6 text-white" />
             </div>
             <span className="font-display font-bold text-lg text-ink-900 hidden sm:inline">
-              Climatizaciones <span className="text-primary-500">Montaño</span>
+              Climatizaciones <span className="text-primary-700">Montaño</span>
             </span>
           </a>
           <a href="/#servicios" className="flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-primary-600 transition-colors">
@@ -338,6 +338,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
         </div>
       </div>
 
+      <main>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-12 pb-20 lg:pt-20 lg:pb-32">
         <div className="absolute inset-0">
@@ -627,7 +628,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
                           <CIcon className="w-5 h-5 text-primary-600 group-hover:text-white transition-colors" />
                         </div>
                         <div>
-                          <div className="text-xs text-ink-400 font-medium uppercase tracking-wide">{item.label}</div>
+                          <div className="text-xs text-ink-500 font-medium uppercase tracking-wide">{item.label}</div>
                           <div className="text-ink-800 font-semibold">{item.value}</div>
                         </div>
                       </a>
@@ -642,6 +643,8 @@ export function ServicePage({ service }: { service: ServiceData }) {
           </div>
         </div>
       </section>
+
+      </main>
 
       {/* Footer */}
       <footer className="bg-ink-950 py-8">

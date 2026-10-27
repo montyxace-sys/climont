@@ -37,8 +37,8 @@ export function LegalNotice() {
               <dt className="font-semibold text-ink-900">Titular</dt><dd>Climatizaciones Montaño, S.L.</dd>
               <dt className="font-semibold text-ink-900">NIF/CIF</dt><dd>B91310987</dd>
               <dt className="font-semibold text-ink-900">Domicilio</dt><dd>C/ Hacienda Guadalupe 35, 41500 Alcalá de Guadaíra, Sevilla</dd>
-              <dt className="font-semibold text-ink-900">Correo electrónico</dt><dd><a href="mailto:info@climont.es" className="text-primary-700 hover:underline">info@climont.es</a></dd>
-              <dt className="font-semibold text-ink-900">Teléfono</dt><dd><a href="tel:+34676628348" className="text-primary-700 hover:underline">676 628 348</a></dd>
+              <dt className="font-semibold text-ink-900">Correo electrónico</dt><dd><a href="mailto:info@climont.es" className="text-primary-700 underline underline-offset-2 hover:text-primary-800">info@climont.es</a></dd>
+              <dt className="font-semibold text-ink-900">Teléfono</dt><dd><a href="tel:+34676628348" className="text-primary-700 underline underline-offset-2 hover:text-primary-800">676 628 348</a></dd>
               <dt className="font-semibold text-ink-900">Sitio web</dt><dd>https://climont.es</dd>
             </dl>
           </section>
@@ -70,7 +70,7 @@ export function LegalNotice() {
 
           <section>
             <h2 className="font-display text-2xl font-bold text-ink-900 mb-3">7. Protección de datos y cookies</h2>
-            <p>El tratamiento de datos personales y el uso de cookies se explican en sus páginas específicas. Puedes consultar la <a href="/politica-de-cookies" className="text-primary-700 hover:underline">Política de Cookies</a> y contactar con la empresa en <a href="mailto:info@climont.es" className="text-primary-700 hover:underline">info@climont.es</a> para cualquier cuestión relacionada con la privacidad.</p>
+            <p>El tratamiento de datos personales y el uso de cookies se explican en sus páginas específicas. Puedes consultar la <a href="/politica-de-cookies" className="text-primary-700 underline underline-offset-2 hover:text-primary-800">Política de Cookies</a> y contactar con la empresa en <a href="mailto:info@climont.es" className="text-primary-700 underline underline-offset-2 hover:text-primary-800">info@climont.es</a> para cualquier cuestión relacionada con la privacidad.</p>
           </section>
 
           <section>

@@ -161,9 +161,10 @@ export function Services() {
                     </ul>
                     <a
                       href={`/servicios/${SERVICE_SLUGS[index]}`}
+                      aria-label={`Más información sobre ${service.title}`}
                       className="inline-flex items-center gap-1 text-sm font-semibold text-primary-600 hover:text-primary-700 group/link"
                     >
-                      Más información
+                      Más información<span className="sr-only"> sobre {service.title}</span>
                       <ArrowUpRight className="w-4 h-4 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
                     </a>
                   </div>

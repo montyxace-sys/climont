@@ -82,16 +82,16 @@ export function CookieConsent() {
             <label className="flex items-center justify-between gap-3 py-2">
               <div>
                 <span className="text-sm font-medium text-ink-800">Cookies técnicas (necesarias)</span>
-                <p className="text-xs text-ink-400">Imprescindibles para el funcionamiento del sitio.</p>
+                <p className="text-xs text-ink-500">Imprescindibles para el funcionamiento del sitio.</p>
               </div>
-              <span className="text-xs font-medium text-ink-400 bg-ink-100 px-3 py-1.5 rounded-lg">
+              <span className="text-xs font-medium text-ink-500 bg-ink-100 px-3 py-1.5 rounded-lg">
                 Siempre activas
               </span>
             </label>
             <label className="flex items-center justify-between gap-3 py-2 cursor-pointer">
               <div>
                 <span className="text-sm font-medium text-ink-800">Cookies analíticas</span>
-                <p className="text-xs text-ink-400">Nos ayudan a entender cómo usas la web para mejorarla.</p>
+                <p className="text-xs text-ink-500">Nos ayudan a entender cómo usas la web para mejorarla.</p>
               </div>
               <button
                 type="button"

@@ -200,7 +200,7 @@ export function Contact() {
                         <Icon className="w-5 h-5 text-primary-600 group-hover:text-white transition-colors" />
                       </div>
                       <div>
-                        <div className="text-xs text-ink-400 font-medium uppercase tracking-wide">
+                        <div className="text-xs text-ink-500 font-medium uppercase tracking-wide">
                           {item.label}
                         </div>
                         <div className="text-ink-800 font-semibold">{item.value}</div>
@@ -329,7 +329,7 @@ export function Contact() {
 
                   <div>
                     <label htmlFor="contact-installation-type" className="block text-sm font-medium text-ink-700 mb-1.5">
-                      Tipo de instalación <span className="text-ink-400 font-normal">(opcional)</span>
+                      Tipo de instalación <span className="text-ink-500 font-normal">(opcional)</span>
                     </label>
                     <select
                       id="contact-installation-type"
@@ -374,7 +374,7 @@ export function Contact() {
 
                   <div>
                     <label htmlFor="contact-message" className="block text-sm font-medium text-ink-700 mb-1.5">
-                      Mensaje <span className="text-ink-400 font-normal">(opcional)</span>
+                      Mensaje <span className="text-ink-500 font-normal">(opcional)</span>
                     </label>
                     <textarea
                       id="contact-message"
@@ -405,7 +405,7 @@ export function Contact() {
                     )}
                   </button>
 
-                  <p className="text-xs text-ink-400 text-center">
+                  <p className="text-xs text-ink-500 text-center">
                     Al enviar aceptas nuestra política de privacidad. No compartimos tus datos.
                   </p>
                 </form>

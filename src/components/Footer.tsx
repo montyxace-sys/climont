@@ -119,7 +119,7 @@ export function Footer() {
 
         {/* Social + bottom bar */}
         <div className="border-t border-white/10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-white/40 text-xs text-center sm:text-left">
+          <p className="text-white/60 text-xs text-center sm:text-left">
             © 2004–{new Date().getFullYear()} Climatizaciones Montaño, S.L. Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-2.5">

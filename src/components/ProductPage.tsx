@@ -270,20 +270,27 @@ export function ProductPage({ slug }: { slug: string }) {
                     <button
                       key={img.id}
                       onClick={() => setActiveImage(img.image_url)}
+                      aria-label={`Ver imagen ${idx + 1} de ${product.name}`}
+                      aria-pressed={activeImage === img.image_url}
                       className={`w-20 h-20 rounded-lg border-2 overflow-hidden flex-shrink-0 transition-all ${activeImage === img.image_url ? 'border-primary-600 ring-2 ring-primary-200' : 'border-ink-200 hover:border-primary-300'}`}
                     >
                       <img src={img.image_url} alt="" className="w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>
-                <div className="flex justify-center gap-1.5 mt-3">
+                <div className="flex justify-center gap-2 mt-3">
                   {images.map((img, idx) => (
                     <button
                       key={img.id}
                       onClick={() => setActiveImage(img.image_url)}
-                      className={`h-2 rounded-full transition-all ${activeIndex === idx ? 'bg-primary-600 w-6' : 'bg-ink-300 hover:bg-ink-400 w-2'}`}
                       aria-label={`Ir a imagen ${idx + 1}`}
-                    />
+                      aria-current={activeIndex === idx ? 'true' : undefined}
+                      className="group/dot flex h-6 w-6 items-center justify-center rounded-full"
+                    >
+                      <span
+                        className={`block rounded-full transition-all ${activeIndex === idx ? 'bg-primary-600 h-2 w-6' : 'bg-ink-300 h-2 w-2 group-hover/dot:bg-ink-400'}`}
+                      />
+                    </button>
                   ))}
                 </div>
               </>
@@ -336,7 +343,6 @@ export function ProductPage({ slug }: { slug: string }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={`Abrir la ficha técnica en PDF de ${product.name} (nueva pestaña)`}
-                  aria-label={`Abrir la ficha técnica en PDF de ${product.name}`}
                   className="group relative flex w-full items-center gap-4 overflow-hidden rounded-2xl bg-gradient-to-r from-primary-700 via-primary-600 to-primary-500 px-5 py-4 text-white shadow-lg shadow-primary-600/30 ring-1 ring-primary-700/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary-600/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 active:translate-y-0"
                 >
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
@@ -382,7 +388,7 @@ export function ProductPage({ slug }: { slug: string }) {
               </div>
             </div>
 
-            <div className="mt-auto pt-6 border-t border-ink-100 text-xs text-ink-400">
+            <div className="mt-auto pt-6 border-t border-ink-100 text-xs text-ink-500">
               Precios orientativos con instalación incluida. Contacta con nosotros para un presupuesto personalizado y sin compromiso.
             </div>
           </div>
@@ -410,8 +416,9 @@ export function ProductPage({ slug }: { slug: string }) {
               <form onSubmit={handleContactSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-ink-700 mb-1">Nombre *</label>
+                    <label htmlFor="pp-nombre" className="block text-sm font-medium text-ink-700 mb-1">Nombre *</label>
                     <input
+                      id="pp-nombre"
                       type="text"
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
@@ -420,8 +427,9 @@ export function ProductPage({ slug }: { slug: string }) {
                     {contactErrors.name && <p className="text-error-600 text-xs mt-1">{contactErrors.name}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-ink-700 mb-1">Email *</label>
+                    <label htmlFor="pp-email" className="block text-sm font-medium text-ink-700 mb-1">Email *</label>
                     <input
+                      id="pp-email"
                       type="email"
                       value={contactForm.email}
                       onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
@@ -430,8 +438,9 @@ export function ProductPage({ slug }: { slug: string }) {
                     {contactErrors.email && <p className="text-error-600 text-xs mt-1">{contactErrors.email}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-ink-700 mb-1">Teléfono *</label>
+                    <label htmlFor="pp-telefono" className="block text-sm font-medium text-ink-700 mb-1">Teléfono *</label>
                     <input
+                      id="pp-telefono"
                       type="tel"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
@@ -440,8 +449,9 @@ export function ProductPage({ slug }: { slug: string }) {
                     {contactErrors.phone && <p className="text-error-600 text-xs mt-1">{contactErrors.phone}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-ink-700 mb-1">Ciudad *</label>
+                    <label htmlFor="pp-ciudad" className="block text-sm font-medium text-ink-700 mb-1">Ciudad *</label>
                     <input
+                      id="pp-ciudad"
                       type="text"
                       value={contactForm.city}
                       onChange={(e) => setContactForm({ ...contactForm, city: e.target.value })}
@@ -451,8 +461,9 @@ export function ProductPage({ slug }: { slug: string }) {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-ink-700 mb-1">Mensaje</label>
+                  <label htmlFor="pp-mensaje" className="block text-sm font-medium text-ink-700 mb-1">Mensaje</label>
                   <textarea
+                    id="pp-mensaje"
                     value={contactForm.message}
                     onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                     rows={3}

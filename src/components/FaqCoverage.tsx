@@ -175,7 +175,7 @@ export function FaqCoverage() {
                   })}
                 </div>
                 <div className="mt-5 pt-5 border-t border-ink-100">
-                  <p className="text-sm text-ink-400">
+                  <p className="text-sm text-ink-500">
                     ¿No ves tu municipio? Estamos en continua expansión.
                     <a
                       href="#contacto"

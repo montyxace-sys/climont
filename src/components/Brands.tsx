@@ -97,7 +97,7 @@ export function Brands() {
                     <div className="font-display text-xl font-bold text-ink-900">
                       {item.value}
                     </div>
-                    <div className="text-xs text-ink-400 mt-1">{item.label}</div>
+                    <div className="text-xs text-ink-500 mt-1">{item.label}</div>
                   </div>
                 ))}
               </div>

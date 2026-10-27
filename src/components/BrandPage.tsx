@@ -71,7 +71,7 @@ export function BrandPage({ brand }: { brand: BrandData }) {
               <Snowflake className="w-6 h-6 text-white" />
             </div>
             <span className="font-display font-bold text-lg text-ink-900 hidden sm:inline">
-              Climatizaciones <span className="text-primary-500">Montaño</span>
+              Climatizaciones <span className="text-primary-700">Montaño</span>
             </span>
           </a>
           <a href="/#marcas" className="flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-primary-600 transition-colors">
@@ -81,6 +81,7 @@ export function BrandPage({ brand }: { brand: BrandData }) {
         </div>
       </div>
 
+      <main>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-12 pb-20 lg:pt-20 lg:pb-32">
         <div className="absolute inset-0">
@@ -237,7 +238,7 @@ export function BrandPage({ brand }: { brand: BrandData }) {
                     <CIcon className="w-5 h-5 text-primary-600 group-hover:text-white transition-colors" />
                   </div>
                   <div>
-                    <div className="text-xs text-ink-400 font-medium uppercase tracking-wide">{item.label}</div>
+                    <div className="text-xs text-ink-500 font-medium uppercase tracking-wide">{item.label}</div>
                     <div className="text-ink-800 font-semibold">{item.value}</div>
                   </div>
                 </a>
@@ -246,6 +247,8 @@ export function BrandPage({ brand }: { brand: BrandData }) {
           </div>
         </div>
       </section>
+
+      </main>
 
       <footer className="bg-ink-950 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">

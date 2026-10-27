@@ -163,7 +163,7 @@ export function CookiePolicy() {
                   href="https://support.google.com/chrome/answer/95647"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-600 hover:underline"
+                  className="text-primary-700 underline underline-offset-2 hover:text-primary-800"
                 >
                   Google Chrome
                 </a>
@@ -173,7 +173,7 @@ export function CookiePolicy() {
                   href="https://support.mozilla.org/es/kb/Borrar%20cookies"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-600 hover:underline"
+                  className="text-primary-700 underline underline-offset-2 hover:text-primary-800"
                 >
                   Mozilla Firefox
                 </a>
@@ -183,7 +183,7 @@ export function CookiePolicy() {
                   href="https://support.apple.com/es-es/guide/safari/sfri11471/mac"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-600 hover:underline"
+                  className="text-primary-700 underline underline-offset-2 hover:text-primary-800"
                 >
                   Safari
                 </a>
@@ -193,7 +193,7 @@ export function CookiePolicy() {
                   href="https://support.microsoft.com/es-es/microsoft-edge/eliminar-las-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-600 hover:underline"
+                  className="text-primary-700 underline underline-offset-2 hover:text-primary-800"
                 >
                   Microsoft Edge
                 </a>
@@ -227,7 +227,7 @@ export function CookiePolicy() {
               contactar con nosotros en{' '}
               <a
                 href="mailto:info@climont.es"
-                className="text-primary-600 hover:underline"
+                className="text-primary-700 underline underline-offset-2 hover:text-primary-800"
               >
                 info@climont.es
               </a>{' '}

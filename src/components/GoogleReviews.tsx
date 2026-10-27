@@ -138,7 +138,7 @@ export function GoogleReviews() {
           </div>
         ) : reviews.length === 0 ? (
           <div className="text-center py-10">
-            <p className="text-ink-400 mb-3 text-sm">Aún no hay reseñas publicadas en la web.</p>
+            <p className="text-ink-500 mb-3 text-sm">Aún no hay reseñas publicadas en la web.</p>
             <a
               href={mapsUrl}
               target="_blank"
@@ -174,7 +174,7 @@ export function GoogleReviews() {
                     </div>
                     <div className="min-w-0">
                       <p className="font-semibold text-ink-900 text-sm truncate">{review.author_name}</p>
-                      {review.review_date && <p className="text-ink-400 text-xs">{review.review_date}</p>}
+                      {review.review_date && <p className="text-ink-500 text-xs">{review.review_date}</p>}
                     </div>
                   </div>
                   {review.service_label && (

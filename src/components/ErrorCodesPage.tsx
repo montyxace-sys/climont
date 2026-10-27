@@ -151,8 +151,8 @@ export function ErrorCodesPage() {
           <div className="bg-white rounded-3xl border border-ink-100 shadow-sm p-4 sm:p-6 mb-8">
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-400" />
-                <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar marca, código o significado..." className="w-full pl-12 pr-4 py-3.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-500" />
+                <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar marca, código o significado..." className="w-full pl-12 pr-4 py-3.5 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-500 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
               </div>
               <div className="flex items-center gap-2 text-sm text-ink-500"><SlidersHorizontal className="w-4 h-4" /> Filtros</div>
               <select value={activeBrand} onChange={(event) => setActiveBrand(event.target.value)} className="px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-700 focus:outline-none focus:ring-2 focus:ring-primary-300">
@@ -175,17 +175,17 @@ export function ErrorCodesPage() {
               <div className="divide-y divide-ink-100">
                 {filteredCodes.map((item) => (
                   <article key={item.id} className="grid md:grid-cols-[1fr_1fr_1.3fr_3fr_1fr] gap-2 md:gap-4 px-5 sm:px-6 py-5 hover:bg-primary-50/40 transition-colors">
-                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-400">Marca</span><p className="font-display font-bold text-ink-900">{item.brand}</p></div>
-                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-400">Código</span><p className="font-mono font-bold text-primary-700">{item.code}</p></div>
-                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-400">Categoría</span><p className="text-ink-600 text-sm">{item.category}</p></div>
-                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-400">Significado</span><p className="text-ink-700 text-sm leading-relaxed">{item.meaning}</p></div>
-                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-400">Nivel</span><span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${item.level === 'Usuario' ? 'bg-success-100 text-success-800' : 'bg-primary-100 text-primary-800'}`}><Check className="w-3 h-3" />{item.level}</span></div>
+                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-500">Marca</span><p className="font-display font-bold text-ink-900">{item.brand}</p></div>
+                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-500">Código</span><p className="font-mono font-bold text-primary-700">{item.code}</p></div>
+                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-500">Categoría</span><p className="text-ink-600 text-sm">{item.category}</p></div>
+                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-500">Significado</span><p className="text-ink-700 text-sm leading-relaxed">{item.meaning}</p></div>
+                    <div><span className="md:hidden text-[11px] uppercase tracking-wide text-ink-500">Nivel</span><span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${item.level === 'Usuario' ? 'bg-success-100 text-success-800' : 'bg-primary-100 text-primary-800'}`}><Check className="w-3 h-3" />{item.level}</span></div>
                   </article>
                 ))}
               </div>
             </div>
           )}
-          <p className="text-center text-xs text-ink-400 mt-8">Fuente: guía «Códigos de error de aire acondicionado por marca», revisada el 16/10/2026. Los significados son orientativos y pueden cambiar según el modelo. Consulta siempre el manual oficial y deja las operaciones eléctricas o frigoríficas en manos de un técnico cualificado.</p>
+          <p className="text-center text-xs text-ink-500 mt-8">Fuente: guía «Códigos de error de aire acondicionado por marca», revisada el 16/10/2026. Los significados son orientativos y pueden cambiar según el modelo. Consulta siempre el manual oficial y deja las operaciones eléctricas o frigoríficas en manos de un técnico cualificado.</p>
         </section>
       </main>
     </div>

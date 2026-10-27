@@ -51,7 +51,7 @@ export function BlogPage({ post }: { post: BlogPost }) {
               <Snowflake className="w-6 h-6 text-white" />
             </div>
             <span className="font-display font-bold text-lg text-ink-900 hidden sm:inline">
-              Climatizaciones <span className="text-primary-500">Montaño</span>, S.L.
+              Climatizaciones <span className="text-primary-700">Montaño</span>, S.L.
             </span>
           </a>
           <a href="/blog" className="flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-primary-600 transition-colors">
@@ -61,6 +61,7 @@ export function BlogPage({ post }: { post: BlogPost }) {
         </div>
       </div>
 
+      <main>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-12 pb-16 lg:pt-16 lg:pb-24">
         <div className="absolute inset-0">
@@ -143,7 +144,7 @@ export function BlogPage({ post }: { post: BlogPost }) {
                   <Phone className="w-5 h-5" />
                   676 628 348
                 </a>
-                <a href="/#contacto" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-400 text-white font-semibold rounded-xl transition-all shadow-xl hover:-translate-y-0.5">
+                <a href="/#contacto" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all shadow-xl hover:-translate-y-0.5">
                   <ClipboardList className="w-5 h-5" />
                   Solicitar presupuesto
                 </a>
@@ -152,6 +153,8 @@ export function BlogPage({ post }: { post: BlogPost }) {
           </div>
         </div>
       </article>
+
+      </main>
 
       <footer className="bg-ink-950 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -186,7 +189,7 @@ export function BlogList({ posts }: { posts: BlogPost[] }) {
               <Snowflake className="w-6 h-6 text-white" />
             </div>
             <span className="font-display font-bold text-lg text-ink-900 hidden sm:inline">
-              Climatizaciones <span className="text-primary-500">Montaño</span>, S.L.
+              Climatizaciones <span className="text-primary-700">Montaño</span>, S.L.
             </span>
           </a>
           <a href="/" className="flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-primary-600 transition-colors">
@@ -196,6 +199,7 @@ export function BlogList({ posts }: { posts: BlogPost[] }) {
         </div>
       </div>
 
+      <main>
       <section className="relative overflow-hidden bg-ink-950 pt-16 pb-20">
         <div className="absolute inset-0">
           <img src="/office-cassette-ac.webp" alt="Blog de climatización" className="w-full h-full object-cover opacity-15" />
@@ -226,7 +230,7 @@ export function BlogList({ posts }: { posts: BlogPost[] }) {
                   <p className="text-ink-500 text-sm leading-relaxed mb-4">
                     {post.excerpt}
                   </p>
-                  <div className="flex items-center gap-3 text-xs text-ink-400">
+                  <div className="flex items-center gap-3 text-xs text-ink-500">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5" />
                       {new Date(post.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -246,6 +250,8 @@ export function BlogList({ posts }: { posts: BlogPost[] }) {
           </div>
         </div>
       </section>
+
+      </main>
 
       <footer className="bg-ink-950 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">

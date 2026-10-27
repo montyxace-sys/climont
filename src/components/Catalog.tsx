@@ -114,13 +114,13 @@ export function Catalog() {
           {/* Search + filters */}
           <div className="flex flex-col lg:flex-row gap-4 mb-8">
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-400" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-500" />
               <input
                 type="text"
                 placeholder="Buscar producto..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
               />
             </div>
             <div className="flex flex-wrap gap-2">
@@ -144,7 +144,7 @@ export function Catalog() {
           {loading && (
             <div className="flex flex-col items-center justify-center py-24">
               <div className="w-10 h-10 border-3 border-primary-200 border-t-primary-600 rounded-full animate-spin mb-4" />
-              <p className="text-ink-400 text-sm">Cargando productos...</p>
+              <p className="text-ink-500 text-sm">Cargando productos...</p>
             </div>
           )}
 

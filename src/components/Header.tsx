@@ -97,7 +97,7 @@ export function Header() {
                 scrolled || menuOpen ? 'text-ink-900' : 'text-white'
               }`}
             >
-              Climatizaciones <span className="text-primary-500">Montaño</span>, <span className="text-xs sm:text-sm font-medium opacity-80">S.L.</span>
+              Climatizaciones <span className="text-primary-700">Montaño</span>, <span className="text-xs sm:text-sm font-medium opacity-80">S.L.</span>
             </span>
           </a>
 

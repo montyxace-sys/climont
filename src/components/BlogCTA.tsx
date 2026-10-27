@@ -38,7 +38,7 @@ export function BlogCTA() {
                   <span className="px-3 py-1 bg-primary-50 text-primary-600 text-xs font-semibold rounded-full">
                     {post.category}
                   </span>
-                  <span className="flex items-center gap-1 text-ink-400 text-xs">
+                  <span className="flex items-center gap-1 text-ink-500 text-xs">
                     <Clock className="w-3.5 h-3.5" />
                     {post.readTime}
                   </span>
@@ -67,7 +67,7 @@ export function BlogCTA() {
             Ver todos los artículos
             <ArrowRight className="w-5 h-5" />
           </button>
-          <p className="text-ink-400 text-sm mt-4">
+          <p className="text-ink-500 text-sm mt-4">
             {BLOG_POSTS.length} artículos disponibles sobre instalación, mantenimiento, aerotermia y más
           </p>
         </Reveal>

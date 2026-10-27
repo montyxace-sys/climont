@@ -174,7 +174,7 @@ export function Careers() {
               <Snowflake className="w-6 h-6 text-white" />
             </div>
             <span className="font-display font-bold text-lg text-ink-900 hidden sm:inline">
-              Climatizaciones <span className="text-primary-500">Montaño</span>
+              Climatizaciones <span className="text-primary-700">Montaño</span>
             </span>
           </a>
           <a href="/" className="flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-primary-600 transition-colors">
@@ -184,6 +184,7 @@ export function Careers() {
         </div>
       </div>
 
+      <main>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-20 pb-32 lg:pt-32 lg:pb-40">
         <div className="absolute inset-0 opacity-30">
@@ -328,8 +329,9 @@ export function Careers() {
 
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-ink-700 mb-1.5">Nombre completo *</label>
+                      <label htmlFor="empleo-nombre" className="block text-sm font-medium text-ink-700 mb-1.5">Nombre completo *</label>
                       <input
+                        id="empleo-nombre"
                         type="text"
                         value={form.name}
                         onChange={(e) => update('name', e.target.value)}
@@ -339,8 +341,9 @@ export function Careers() {
                       {errors.name && <p className="mt-1 text-xs text-error-600">{errors.name}</p>}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-ink-700 mb-1.5">Teléfono *</label>
+                      <label htmlFor="empleo-telefono" className="block text-sm font-medium text-ink-700 mb-1.5">Teléfono *</label>
                       <input
+                        id="empleo-telefono"
                         type="tel"
                         value={form.phone}
                         onChange={(e) => update('phone', e.target.value)}
@@ -353,8 +356,9 @@ export function Careers() {
 
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-ink-700 mb-1.5">Email *</label>
+                      <label htmlFor="empleo-email" className="block text-sm font-medium text-ink-700 mb-1.5">Email *</label>
                       <input
+                        id="empleo-email"
                         type="email"
                         value={form.email}
                         onChange={(e) => update('email', e.target.value)}
@@ -364,8 +368,9 @@ export function Careers() {
                       {errors.email && <p className="mt-1 text-xs text-error-600">{errors.email}</p>}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-ink-700 mb-1.5">Puesto deseado *</label>
+                      <label htmlFor="empleo-puesto" className="block text-sm font-medium text-ink-700 mb-1.5">Puesto deseado *</label>
                       <select
+                        id="empleo-puesto"
                         value={form.position}
                         onChange={(e) => update('position', e.target.value)}
                         className={`${inputClass('position')} ${!form.position ? 'text-ink-300' : ''}`}
@@ -381,7 +386,7 @@ export function Careers() {
 
                   <div>
                     <label className="block text-sm font-medium text-ink-700 mb-1.5">
-                      Años de experiencia <span className="text-ink-400 font-normal">(opcional)</span>
+                      Años de experiencia <span className="text-ink-500 font-normal">(opcional)</span>
                     </label>
                     <input
                       type="number"
@@ -406,12 +411,12 @@ export function Careers() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-ink-800 truncate">{file.name}</p>
-                          <p className="text-xs text-ink-400">{(file.size / 1024).toFixed(0)} KB</p>
+                          <p className="text-xs text-ink-500">{(file.size / 1024).toFixed(0)} KB</p>
                         </div>
                         <button
                           type="button"
                           onClick={removeFile}
-                          className="p-2 rounded-lg text-ink-400 hover:bg-error-50 hover:text-error-600 transition-colors"
+                          className="p-2 rounded-lg text-ink-500 hover:bg-error-50 hover:text-error-600 transition-colors"
                         >
                           <X className="w-5 h-5" />
                         </button>
@@ -426,7 +431,7 @@ export function Careers() {
                         <span className="text-sm text-ink-500 font-medium">
                           Haz clic para subir tu CV
                         </span>
-                        <span className="text-xs text-ink-400">PDF, DOC o DOCX — máximo 5 MB</span>
+                        <span className="text-xs text-ink-500">PDF, DOC o DOCX — máximo 5 MB</span>
                         <input
                           type="file"
                           accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -441,7 +446,7 @@ export function Careers() {
 
                   <div>
                     <label className="block text-sm font-medium text-ink-700 mb-1.5">
-                      Cuéntanos sobre ti <span className="text-ink-400 font-normal">(opcional)</span>
+                      Cuéntanos sobre ti <span className="text-ink-500 font-normal">(opcional)</span>
                     </label>
                     <textarea
                       value={form.message}
@@ -464,7 +469,7 @@ export function Careers() {
                       <><Send className="w-5 h-5" /> Enviar candidatura</>
                     )}
                   </button>
-                  <p className="text-xs text-ink-400 text-center">
+                  <p className="text-xs text-ink-500 text-center">
                     Al enviar aceptas nuestra política de privacidad. Tus datos se usarán únicamente para el proceso de selección.
                   </p>
                 </form>
@@ -494,6 +499,7 @@ export function Careers() {
           </Reveal>
         </div>
       </section>
+      </main>
 
     </div>
   );

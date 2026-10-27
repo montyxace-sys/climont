@@ -159,11 +159,12 @@ export function FrigoriasCalculator() {
 
                 {/* Surface area */}
                 <div className="mb-6">
-                  <label className="flex items-center justify-between text-sm font-semibold text-ink-800 mb-2">
+                  <label htmlFor="calc-superficie" className="flex items-center justify-between text-sm font-semibold text-ink-800 mb-2">
                     Superficie del espacio
                     <span className="text-primary-600 font-bold text-base">{m2} m²</span>
                   </label>
                   <input
+                    id="calc-superficie"
                     type="range"
                     min="5"
                     max="200"
@@ -172,7 +173,7 @@ export function FrigoriasCalculator() {
                     onChange={(e) => setM2(Number(e.target.value))}
                     className="w-full accent-primary-600 cursor-pointer"
                   />
-                  <div className="flex justify-between text-xs text-ink-400 mt-1">
+                  <div className="flex justify-between text-xs text-ink-500 mt-1">
                     <span>5 m²</span>
                     <span>200 m²</span>
                   </div>
@@ -180,11 +181,12 @@ export function FrigoriasCalculator() {
 
                 {/* Ceiling height */}
                 <div className="mb-6">
-                  <label className="flex items-center justify-between text-sm font-semibold text-ink-800 mb-2">
+                  <label htmlFor="calc-altura" className="flex items-center justify-between text-sm font-semibold text-ink-800 mb-2">
                     Altura del techo
                     <span className="text-primary-600 font-bold text-base">{ceilingHeight.toFixed(1)} m</span>
                   </label>
                   <input
+                    id="calc-altura"
                     type="range"
                     min="2"
                     max="4.5"
@@ -242,7 +244,7 @@ export function FrigoriasCalculator() {
                           <span className={`block text-sm font-semibold ${active ? 'text-primary-700' : 'text-ink-600'}`}>
                             {insul.label}
                           </span>
-                          <span className="block text-xs text-ink-400 mt-0.5">{insul.hint}</span>
+                          <span className="block text-xs text-ink-500 mt-0.5">{insul.hint}</span>
                         </button>
                       );
                     })}
@@ -252,11 +254,12 @@ export function FrigoriasCalculator() {
                 {/* People & Windows */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="flex items-center justify-between text-sm font-semibold text-ink-800 mb-2">
+                    <label htmlFor="calc-personas" className="flex items-center justify-between text-sm font-semibold text-ink-800 mb-2">
                       Personas
                       <span className="text-primary-600 font-bold text-base">{people}</span>
                     </label>
                     <input
+                      id="calc-personas"
                       type="range"
                       min="0"
                       max="20"
@@ -267,11 +270,12 @@ export function FrigoriasCalculator() {
                     />
                   </div>
                   <div>
-                    <label className="flex items-center justify-between text-sm font-semibold text-ink-800 mb-2">
+                    <label htmlFor="calc-ventanas" className="flex items-center justify-between text-sm font-semibold text-ink-800 mb-2">
                       Ventanas
                       <span className="text-primary-600 font-bold text-base">{windows}</span>
                     </label>
                     <input
+                      id="calc-ventanas"
                       type="range"
                       min="0"
                       max="10"

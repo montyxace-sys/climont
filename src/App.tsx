@@ -383,14 +383,14 @@ function AppRoutes() {
     return (
       <>
       <div className="min-h-screen bg-ink-50 flex flex-col">
-        <div className="flex-1 flex items-center justify-center px-4">
+        <main className="flex-1 flex items-center justify-center px-4">
           <div className="max-w-lg text-center">
             <p className="text-primary-600 font-semibold mb-3">404</p>
             <h1 className="font-display text-3xl sm:text-4xl font-bold text-ink-900 mb-4">Esta página no existe</h1>
             <p className="text-ink-500 leading-relaxed mb-8">Puede que el enlace esté desactualizado o que la página se haya movido.</p>
             <a href="/" className="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">Volver al inicio</a>
           </div>
-        </div>
+        </main>
       </div>
       <Footer />
       </>
