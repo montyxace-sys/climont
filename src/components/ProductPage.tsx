@@ -335,6 +335,8 @@ export function ProductPage({ slug }: { slug: string }) {
                   href={product.tech_sheet_url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  title={`Abrir la ficha técnica en PDF de ${product.name} (nueva pestaña)`}
+                  aria-label={`Abrir la ficha técnica en PDF de ${product.name}`}
                   className="group relative flex w-full items-center gap-4 overflow-hidden rounded-2xl bg-gradient-to-r from-primary-700 via-primary-600 to-primary-500 px-5 py-4 text-white shadow-lg shadow-primary-600/30 ring-1 ring-primary-700/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary-600/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 active:translate-y-0"
                 >
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
@@ -342,9 +344,9 @@ export function ProductPage({ slug }: { slug: string }) {
                     <FileText className="h-6 w-6" />
                   </span>
                   <span className="flex flex-col text-left leading-tight">
-                    <span className="font-display text-base font-bold sm:text-lg">Descargar ficha técnica</span>
+                    <span className="font-display text-base font-bold sm:text-lg">Ficha técnica en PDF</span>
                     <span className="mt-0.5 text-xs font-medium text-primary-100 sm:text-[13px]">
-                      Especificaciones completas del producto
+                      Especificaciones completas · se abre en una pestaña nueva
                     </span>
                   </span>
                   <span className="ml-auto flex flex-shrink-0 items-center gap-2">

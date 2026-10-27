@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run check:encoding && vite build && npm run prerender",
+    "build:netlify": "npm run build && node scripts/netlify-prepare.mjs",
     "check:encoding": "node scripts/check-encoding.mjs",
     "prerender": "node scripts/prerender.mjs",
     "lint": "eslint .",

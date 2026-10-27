@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Package, Search, Euro, ImageIcon, ArrowLeft, Star, FileText } from 'lucide-react';
+import { Package, Search, Euro, ImageIcon, ArrowLeft, Star, FileText, ArrowRight, MessageCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Header } from '@/components/Header';
 
@@ -222,39 +222,42 @@ export function Catalog() {
                       </a>
                     </h3>
                     <p className="text-ink-500 text-sm leading-relaxed line-clamp-3 mb-4 flex-1" dangerouslySetInnerHTML={{ __html: product.description }} />
-                    <div className="flex items-center justify-between mt-auto pt-3 border-t border-ink-100">
-                      <div className="flex items-baseline gap-1">
-                        <Euro className="w-4 h-4 text-primary-600" />
-                        <span className="font-display font-bold text-xl text-ink-900">
-                          {formatPrice(product.price)}
-                        </span>
+                    <div className="mt-auto border-t border-ink-100 pt-3">
+                      <div className="mb-3 flex items-center justify-between gap-2">
+                        <div className="flex items-baseline gap-1">
+                          <Euro className="h-4 w-4 text-primary-600" />
+                          <span className="font-display text-xl font-bold text-ink-900">
+                            {formatPrice(product.price)}
+                          </span>
+                        </div>
+                        <a
+                          href={`/productos/${product.slug || product.id}`}
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-primary-700 transition-colors hover:text-primary-800"
+                        >
+                          Ver detalles <ArrowRight className="h-3.5 w-3.5" />
+                        </a>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap gap-2">
                         {product.tech_sheet_url && (
                           <a
                             href={product.tech_sheet_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            title="Descargar ficha técnica en PDF"
-                            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-primary-600 text-white text-xs font-semibold rounded-lg shadow-sm shadow-primary-500/20 hover:bg-primary-700 transition-colors"
+                            title={`Abrir la ficha técnica en PDF de ${product.name} (nueva pestaña)`}
+                            aria-label={`Abrir la ficha técnica en PDF de ${product.name}`}
+                            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white shadow-sm shadow-primary-500/20 transition-colors hover:bg-primary-700"
                           >
-                            <FileText className="w-3.5 h-3.5" /> Ficha PDF
+                            <FileText className="h-3.5 w-3.5" /> Ficha técnica PDF
                           </a>
                         )}
-                        <a
-                          href={`/productos/${product.slug || product.id}`}
-                          className="px-3.5 py-2 bg-primary-50 text-primary-700 text-xs font-semibold rounded-lg hover:bg-primary-100 transition-colors"
-                        >
-                          Ver detalles
-                        </a>
                         <button
                           onClick={() => {
                             navigate('/');
                             window.setTimeout(() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }), 0);
                           }}
-                          className="px-3.5 py-2 bg-primary-50 text-primary-700 text-xs font-semibold rounded-lg hover:bg-primary-100 transition-colors"
+                          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary-50 px-3 py-2 text-xs font-semibold text-primary-700 transition-colors hover:bg-primary-100"
                         >
-                          Consultar
+                          <MessageCircle className="h-3.5 w-3.5" /> Consultar
                         </button>
                       </div>
                     </div>

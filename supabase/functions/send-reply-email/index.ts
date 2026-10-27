@@ -131,7 +131,7 @@ Deno.serve(async (req: Request) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: `${COMPANY_NAME} <onboarding@resend.dev>`,
+        from: `${COMPANY_NAME} <no-reply@notificaciones.climont.es>`,
         to: [toEmail],
         reply_to: COMPANY_EMAIL,
         subject,
