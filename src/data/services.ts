@@ -94,6 +94,7 @@ description: 'Instalación de aire acondicionado con equipos de última generaci
       { src: '/images/servicios/instalacion/instalacion-20.jpg', alt: 'Trabajo de instalación de aire acondicionado realizado en Sevilla — foto 20', caption: '' },
       { src: '/images/servicios/instalacion/instalacion-21.jpg', alt: 'Trabajo de instalación de aire acondicionado realizado en Sevilla — foto 21', caption: '' },
       { src: '/images/servicios/instalacion/instalacion-22.jpg', alt: 'Trabajo de instalación de aire acondicionado realizado en Sevilla — foto 22', caption: '' },
+      { src: '/images/servicios/instalacion/instalacion-23.jpg', alt: 'Trabajo de instalación de aire acondicionado realizado en Sevilla — foto 23', caption: '' },
     ],
     faqs: [
       { question: '¿Cuánto tarda una instalación de aire acondicionado?', answer: 'Una instalación de split de pared suele completarse en 2-4 horas. Las instalaciones por conductos o proyectos más grandes pueden requerir 1-3 días según la complejidad. Siempre cumplimos los plazos acordados.' },
