@@ -157,7 +157,7 @@ description: 'Instalación de aire acondicionado con equipos de última generaci
 description: 'Si tu aire acondicionado falla, nuestro técnico aire acondicionado va lo antes posible. Reparamos todas las marcas: Daikin, Mitsubishi, Samsung, LG, Panasonic, Fujitsu, Hisense, Hitachi y Johnson. Te decimos qué tiene y cuánto va a costar antes de tocar nada, sin sorpresas.',
     heroImage: '/reparacion-mitsubishi-tecnico.webp',
 metaTitle: 'Reparación de Aire Acondicionado en Sevilla | Técnico Aire Acondicionado | Climatizaciones Montaño, S.L.',
-    metaDescription: 'Reparación y diagnóstico de aire acondicionado en Sevilla. Diagnóstico electrónico, repuestos originales y garantía de 6 meses. Reparamos todas las marcas. ¡Llámanos al 676 628 348!',
+    metaDescription: 'Reparación y diagnóstico de aire acondicionado en Sevilla. Diagnóstico electrónico, repuestos originales y garantía de 6 meses. Reparamos todas las marcas. ¡llámanos por teléfono!',
     keywords: 'reparación aire acondicionado Sevilla, reparar aire acondicionado Sevilla, técnico aire acondicionado Sevilla, diagnóstico aire acondicionado Sevilla, repuestos originales aire acondicionado Sevilla, avería aire acondicionado Sevilla, aire acondicionado no enfría Sevilla, reparación Daikin Sevilla, reparación Mitsubishi Sevilla, reparación Samsung Sevilla, reparación Panasonic Sevilla, reparación Fujitsu Sevilla, reparación Hitachi Sevilla, reparación Hisense Sevilla, reparación LG Sevilla, reparación máquinas de conductos Daikin Sevilla, reparación conductos Mitsubishi Sevilla, reparación cassette Samsung Sevilla, reparación split Panasonic Sevilla, reparación conductos Climaver Sevilla',
     features: ['Diagnóstico electrónico', 'Repuestos originales', 'Garantía de 6 meses'],
     serviceValue: 'reparacion',
@@ -174,7 +174,7 @@ metaTitle: 'Reparación de Aire Acondicionado en Sevilla | Técnico Aire Acondic
 { question: '¿Reparáis todas las marcas?', answer: 'Sí, reparamos todas las marcas. Reparación Hitachi, reparación Hisense, reparación Daikin, Mitsubishi, Samsung, LG, Panasonic y Fujitsu. Nuestro técnico aire acondicionado trabaja con repuestos originales de cada fabricante.' },
       { question: '¿Cuánto tarda una reparación?', answer: 'La mayoría de las reparaciones se resuelven en la misma visita. Si necesitamos pedir un repuesto especial, suele tardar 24-48 horas. Siempre te informamos del plazo antes de continuar.' },
       { question: '¿Mi aire acondicionado se puede reparar o hay que cambiarlo?', answer: 'Te damos una recomendación honesta. Si la reparación es sencilla y económica, la hacemos. Si el equipo tiene más de 10-12 años y la avería es grave, te aconsejamos qué equipos nuevos se adaptan mejor a tu presupuesto y necesidades.' },
-      { question: '¿Hacéis reparaciones en fin de semana?', answer: 'Sí, atendemos reparaciones fuera del horario habitual, incluyendo fines de semana. Llámanos al 676 628 348 y haremos todo lo posible por atenderte lo antes posible.' },
+      { question: '¿Hacéis reparaciones en fin de semana?', answer: 'Sí, atendemos reparaciones fuera del horario habitual, incluyendo fines de semana. llámanos por teléfono y haremos todo lo posible por atenderte lo antes posible.' },
     ],
     seoContent: [
       {
@@ -188,7 +188,7 @@ metaTitle: 'Reparación de Aire Acondicionado en Sevilla | Técnico Aire Acondic
         heading: 'Técnico aire acondicionado: reparación de todas las marcas',
         paragraphs: [
           'Nuestro técnico aire acondicionado ofrece servicio de reparación para aire acondicionado en hogares, oficinas y comercios. Reparación Hitachi, reparación Hisense, reparación Daikin, Mitsubishi, Samsung, LG, Panasonic, Fujitsu y todas las marcas con diagnóstico electrónico y repuestos originales.',
-          'Un técnico aire acondicionado profesional y certificado hace la diferencia entre una reparación que dura y una que vuelve a fallar. Por eso usamos solo repuestos originales del fabricante y damos 6 meses de garantía en todas nuestras reparaciones. Llámanos al 676 628 348 y te atendemos lo antes posible.',
+          'Un técnico aire acondicionado profesional y certificado hace la diferencia entre una reparación que dura y una que vuelve a fallar. Por eso usamos solo repuestos originales del fabricante y damos 6 meses de garantía en todas nuestras reparaciones. llámanos por teléfono y te atendemos lo antes posible.',
         ],
       },
     ],

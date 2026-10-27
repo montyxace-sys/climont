@@ -1,7 +1,7 @@
 export const COMPANY_INFO = {
   name: 'Climatizaciones Montaño, S.L.',
   shortName: 'Climatizaciones Montaño',
-  phone: '676 628 348',
+  phone: 'nuestro teléfono',
   whatsapp: '691 680 706',
   email: 'info@climont.es',
   address: 'C/ Hacienda Guadalupe 35, Alcalá de Guadaíra, Sevilla',

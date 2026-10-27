@@ -591,7 +591,7 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
             <XCircle className="w-8 h-8 text-error-600" />
           </div>
           <h1 className="font-display text-xl font-bold text-ink-900 mb-2">Acceso denegado</h1>
-          <p className="text-ink-500 mb-6">Tu solicitud de acceso al centro de descargas no ha sido aprobada. Si crees que es un error, contáctanos al 676 628 348.</p>
+          <p className="text-ink-500 mb-6">Tu solicitud de acceso al centro de descargas no ha sido aprobada. Si crees que es un error, contáctanos por teléfono.</p>
           <button onClick={onSignOut} className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">Cerrar sesión</button>
         </div>
       </div>

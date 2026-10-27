@@ -323,7 +323,7 @@ export function Careers() {
                   {status === 'error' && (
                     <div className="flex items-center gap-3 p-4 bg-error-50 border border-error-200 rounded-xl text-error-700 text-sm">
                       <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                      Ha ocurrido un error al enviar tu CV. Por favor, inténtalo de nuevo o llámanos al 676 628 348.
+                      Ha ocurrido un error al enviar tu CV. Por favor, inténtalo de nuevo o llámanos por teléfono.
                     </div>
                   )}
 
