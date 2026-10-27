@@ -142,7 +142,7 @@ export function BlogPage({ post }: { post: BlogPost }) {
                 </a>
                 <a href="tel:+34676628348" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-all shadow-xl hover:-translate-y-0.5">
                   <Phone className="w-5 h-5" />
-                  676 628 348
+                  Llamar
                 </a>
                 <a href="/#contacto" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all shadow-xl hover:-translate-y-0.5">
                   <ClipboardList className="w-5 h-5" />

@@ -41,7 +41,7 @@ const INSTALLATION_TYPES = [
 ];
 
 const CONTACT_INFO = [
-  { icon: Phone, label: 'Teléfono', value: '676 628 348', href: 'tel:+34676628348' },
+  { icon: Phone, label: 'Teléfono', value: 'Llamar', href: 'tel:+34676628348' },
   { icon: MessageCircle, label: 'WhatsApp', value: '691 680 706', href: 'https://wa.me/34691680706' },
   { icon: Mail, label: 'Email', value: 'info@climont.es', href: 'mailto:info@climont.es' },
   { icon: MapPin, label: 'Dirección', value: 'C/ Hacienda Guadalupe 35, Alcalá de Guadaíra, Sevilla', href: 'https://maps.google.com/?q=C/Hacienda+Guadalupe+35+Alcalá+de+Guadaíra+Sevilla' },

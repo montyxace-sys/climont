@@ -47,7 +47,7 @@ const TRUST_BADGES = [
 ];
 
 const CONTACT_INFO = [
-  { label: 'Teléfono', value: '676 628 348', href: 'tel:+34676628348', icon: Phone },
+  { label: 'Teléfono', value: 'Llamar', href: 'tel:+34676628348', icon: Phone },
   { label: 'WhatsApp', value: '691 680 706', href: 'https://wa.me/34691680706', icon: MessageCircle },
   { label: 'Zona', value: 'Sevilla y provincia', href: '/', icon: MapPin },
 ];
@@ -111,7 +111,7 @@ export function BrandPage({ brand }: { brand: BrandData }) {
               </a>
               <a href="tel:+34676628348" className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-semibold rounded-xl transition-all">
                 <Phone className="w-5 h-5" />
-                676 628 348
+                Llamar
               </a>
             </div>
           </div>

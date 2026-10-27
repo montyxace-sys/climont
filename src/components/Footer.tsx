@@ -78,7 +78,7 @@ export function Footer() {
             </p>
             <div className="space-y-2">
               <a href="tel:+34676628348" className="flex items-center gap-3 text-white/70 hover:text-white text-sm transition-colors">
-                <Phone className="w-4 h-4 text-primary-400" /> 676 628 348
+                <Phone className="w-4 h-4 text-primary-400" /> Llamar
               </a>
               <a href="https://wa.me/34691680706" className="flex items-center gap-3 text-white/70 hover:text-white text-sm transition-colors">
                 <MessageCircle className="w-4 h-4 text-primary-400" /> 691 680 706 (WhatsApp)

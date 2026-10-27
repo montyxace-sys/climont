@@ -231,7 +231,7 @@ export function CookiePolicy() {
               >
                 info@climont.es
               </a>{' '}
-              o en el teléfono 676 628 348.
+              o en el teléfono Llamar.
             </p>
           </section>
         </div>

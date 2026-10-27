@@ -487,7 +487,7 @@ export function Careers() {
             <p className="text-ink-500 text-sm mb-6">Llámanos o escríbenos y hablamos</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a href="tel:+34676628348" className="flex items-center gap-2 px-5 py-3 bg-ink-50 rounded-xl text-ink-700 hover:bg-primary-50 hover:text-primary-700 transition-colors">
-                <Phone className="w-4 h-4 text-primary-600" /> 676 628 348
+                <Phone className="w-4 h-4 text-primary-600" /> Llamar
               </a>
               <a href="mailto:info@climont.es" className="flex items-center gap-2 px-5 py-3 bg-ink-50 rounded-xl text-ink-700 hover:bg-primary-50 hover:text-primary-700 transition-colors">
                 <Mail className="w-4 h-4 text-primary-600" /> info@climont.es

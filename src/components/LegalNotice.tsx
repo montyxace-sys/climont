@@ -38,7 +38,7 @@ export function LegalNotice() {
               <dt className="font-semibold text-ink-900">NIF/CIF</dt><dd>B91310987</dd>
               <dt className="font-semibold text-ink-900">Domicilio</dt><dd>C/ Hacienda Guadalupe 35, 41500 Alcalá de Guadaíra, Sevilla</dd>
               <dt className="font-semibold text-ink-900">Correo electrónico</dt><dd><a href="mailto:info@climont.es" className="text-primary-700 underline underline-offset-2 hover:text-primary-800">info@climont.es</a></dd>
-              <dt className="font-semibold text-ink-900">Teléfono</dt><dd><a href="tel:+34676628348" className="text-primary-700 underline underline-offset-2 hover:text-primary-800">676 628 348</a></dd>
+              <dt className="font-semibold text-ink-900">Teléfono</dt><dd><a href="tel:+34676628348" className="text-primary-700 underline underline-offset-2 hover:text-primary-800">Llamar</a></dd>
               <dt className="font-semibold text-ink-900">Sitio web</dt><dd>https://climont.es</dd>
             </dl>
           </section>

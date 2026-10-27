@@ -62,12 +62,12 @@ const REPLY_TEMPLATES: { label: string; subject: string; body: string }[] = [
   {
     label: 'Confirmar visita',
     subject: 'Confirmación de visita técnica - Climatizaciones Montaño, S.L.',
-    body: 'Hola,\n\nConfirmamos nuestra visita técnica para el día acordado. Nuestro técnico pasará para evaluar la instalación y asesorarte sobre la mejor opción.\n\nSi necesitas cambiar la fecha o hora, contáctanos en el 676 628 348.\n\nUn saludo,\nEquipo de Climatizaciones Montaño, S.L.',
+    body: 'Hola,\n\nConfirmamos nuestra visita técnica para el día acordado. Nuestro técnico pasará para evaluar la instalación y asesorarte sobre la mejor opción.\n\nSi necesitas cambiar la fecha o hora, contáctanos en el Llamar.\n\nUn saludo,\nEquipo de Climatizaciones Montaño, S.L.',
   },
   {
     label: 'Seguimiento',
     subject: 'Seguimiento de tu solicitud - Climatizaciones Montaño, S.L.',
-    body: 'Hola,\n\nNos ponemos en contacto contigo para dar seguimiento a tu solicitud. ¿Tienes alguna duda o necesitas información adicional?\n\nEstamos a tu disposición en el 676 628 348 o respondiendo a este email.\n\nUn saludo,\nEquipo de Climatizaciones Montaño, S.L.',
+    body: 'Hola,\n\nNos ponemos en contacto contigo para dar seguimiento a tu solicitud. ¿Tienes alguna duda o necesitas información adicional?\n\nEstamos a tu disposición en el Llamar o respondiendo a este email.\n\nUn saludo,\nEquipo de Climatizaciones Montaño, S.L.',
   },
   {
     label: 'Cierre',
