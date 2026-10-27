@@ -1191,7 +1191,7 @@ export function ChatWidget() {
           setNudgeDismissed(true);
           setIsOpen(!isOpen);
         }}
-        className={`fixed bottom-6 right-[10.5rem] z-[80] flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all duration-300 hover:-translate-y-0.5 group ${isScrollingDown ? 'translate-y-24 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}
+        className={`fixed bottom-16 right-[10.5rem] z-[80] flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all duration-300 hover:-translate-y-0.5 group ${isScrollingDown ? 'translate-y-24 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}
         style={{ background: 'linear-gradient(135deg, #0891b2, #155e75)' }}
         aria-label="Abrir chat"
       >
@@ -1207,7 +1207,7 @@ export function ChatWidget() {
 
       {/* Nudge bubble */}
       {showNudge && !isOpen && (
-        <div className={`fixed bottom-8 right-[14.5rem] z-[79] flex items-center gap-3 transition-all duration-300 ${isScrollingDown ? 'translate-y-24 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
+        <div className={`fixed bottom-16 right-[14.5rem] z-[79] flex items-center gap-3 transition-all duration-300 ${isScrollingDown ? 'translate-y-24 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
           <div
             className="relative bg-white rounded-2xl shadow-2xl border border-ink-200 px-4 py-3 max-w-[240px] cursor-pointer"
             onClick={handleOpenChat}
@@ -1232,7 +1232,7 @@ export function ChatWidget() {
 
       {/* Chat window */}
       {isOpen && (
-        <div className={`fixed bottom-28 right-6 z-[80] w-[calc(100vw-3rem)] sm:w-[400px] max-h-[640px] bg-white rounded-2xl shadow-2xl border border-ink-200 flex flex-col overflow-hidden transition-all duration-300 ${isScrollingDown ? 'translate-y-24 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
+        <div className={`fixed bottom-36 right-6 z-[80] w-[calc(100vw-3rem)] sm:w-[400px] max-h-[640px] bg-white rounded-2xl shadow-2xl border border-ink-200 flex flex-col overflow-hidden transition-all duration-300 ${isScrollingDown ? 'translate-y-24 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
           {/* Header */}
           <div
             className="px-5 py-4 flex items-center gap-3 flex-shrink-0"
