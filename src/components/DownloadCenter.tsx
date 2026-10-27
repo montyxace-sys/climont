@@ -131,7 +131,7 @@ function LoginForm({ onSwitchView }: { onSwitchView: (v: View) => void }) {
       options: { redirectTo: window.location.origin + '/centro-de-descargas' },
     });
     if (oauthError) {
-      setError('No se ha podido iniciar sesion con Google.');
+      setError('No se ha podido iniciar sesion con Google: ' + (oauthError.message || 'error desconocido'));
       setLoading(false);
     }
   };
@@ -281,7 +281,7 @@ function RegisterForm({ onSwitchView }: { onSwitchView: (v: View) => void }) {
       options: { redirectTo: window.location.origin + '/centro-de-descargas' },
     });
     if (oauthError) {
-      setError('No se ha podido registrarse con Google.');
+      setError('No se ha podido registrarse con Google: ' + (oauthError.message || 'error desconocido'));
       setLoading(false);
     }
   };
