@@ -342,7 +342,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-12 pb-20 lg:pt-20 lg:pb-32">
         <div className="absolute inset-0">
-          <img src={service.heroImage} alt={`${service.shortTitle} — Climatizaciones Montaño`} className="w-full h-full object-cover opacity-20" fetchPriority="high" />
+          <img src={service.heroImage} alt={`${service.shortTitle} — Climatizaciones Montaño`} className="w-full h-full object-cover opacity-20" fetchPriority="high"  width={1184} height={896} />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-900/60" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -475,7 +475,7 @@ export function ServicePage({ service }: { service: ServiceData }) {
               {service.galleryImages.map((img, index) => (
                 <Reveal key={index} delay={index * 100}>
                   <div className="group relative rounded-2xl overflow-hidden shadow-lg">
-                    <img src={img.src} alt={img.alt} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500 ease-out" loading="lazy" />
+                    <img src={img.src} alt={img.alt} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500 ease-out" loading="lazy"  width={1184} height={896} />
                     <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 to-transparent pointer-events-none" />
                     {img.caption && (
                       <div className="absolute bottom-0 left-0 right-0 p-5">

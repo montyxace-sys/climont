@@ -647,7 +647,7 @@ export function Mega() {
               (() => {
                 const ext = viewingFile.name.split('.').pop()?.toLowerCase() || '';
                 if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'].includes(ext)) {
-                  return <img src={viewUrl} alt={viewingFile.name} className="max-w-full max-h-full rounded-lg shadow-2xl" />;
+                  return <img src={viewUrl} alt={viewingFile.name} className="max-w-full max-h-full rounded-lg shadow-2xl"  width={1184} height={896} />;
                 }
                 if (ext === 'pdf') {
                   return <PdfViewer url={viewUrl} fileName={viewingFile.name} onDownload={() => viewingFile && handleDownload(viewingFile)} />;

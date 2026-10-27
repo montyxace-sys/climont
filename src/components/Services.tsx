@@ -133,7 +133,7 @@ export function Services() {
                       alt={`${service.title} — Climatizaciones Montaño, S.L.`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
-                    />
+                     width={1184} height={896} />
                     <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 to-transparent" />
                     <div className="absolute top-4 left-4 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
                       <Icon className="w-6 h-6 text-primary-600" />

@@ -190,7 +190,7 @@ export function Catalog() {
                         src={product.image_url}
                         alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                       width={1184} height={896} />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <ImageIcon className="w-10 h-10 text-ink-300" />

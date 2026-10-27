@@ -224,7 +224,7 @@ export function ProductPage({ slug }: { slug: string }) {
                     transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
                   }}
                   draggable={false}
-                />
+                 width={1184} height={896} />
               ) : (
                 <ImageIcon className="w-20 h-20 text-ink-300" />
               )}
@@ -274,7 +274,7 @@ export function ProductPage({ slug }: { slug: string }) {
                       aria-pressed={activeImage === img.image_url}
                       className={`w-20 h-20 rounded-lg border-2 overflow-hidden flex-shrink-0 transition-all ${activeImage === img.image_url ? 'border-primary-600 ring-2 ring-primary-200' : 'border-ink-200 hover:border-primary-300'}`}
                     >
-                      <img src={img.image_url} alt="" className="w-full h-full object-cover" />
+                      <img src={img.image_url} alt="" className="w-full h-full object-cover"  width={1184} height={896} />
                     </button>
                   ))}
                 </div>

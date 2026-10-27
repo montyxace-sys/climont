@@ -508,7 +508,7 @@ export function Products() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-ink-100 flex items-center justify-center overflow-hidden flex-shrink-0">
                           {p.image_url ? (
-                            <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                            <img src={p.image_url} alt={p.name} className="w-full h-full object-cover"  width={1184} height={896} />
                           ) : (
                             <Package className="w-5 h-5 text-ink-300" />
                           )}
@@ -588,7 +588,7 @@ export function Products() {
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-12 h-12 rounded-lg bg-ink-100 flex items-center justify-center overflow-hidden flex-shrink-0">
                     {p.image_url ? (
-                      <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                      <img src={p.image_url} alt={p.name} className="w-full h-full object-cover"  width={1184} height={896} />
                     ) : (
                       <Package className="w-6 h-6 text-ink-300" />
                     )}
@@ -762,7 +762,7 @@ export function Products() {
                 <div className="flex items-start gap-4">
                   <div className="w-24 h-24 rounded-xl bg-ink-100 border border-ink-200 flex items-center justify-center overflow-hidden flex-shrink-0">
                     {imagePreview ? (
-                      <img src={imagePreview} alt="Vista previa" className="w-full h-full object-cover" />
+                      <img src={imagePreview} alt="Vista previa" className="w-full h-full object-cover"  width={1184} height={896} />
                     ) : (
                       <ImageIcon className="w-8 h-8 text-ink-300" />
                     )}
@@ -815,7 +815,7 @@ export function Products() {
                     <div className="flex flex-wrap gap-3 mb-3">
                       {productImages.map((img) => (
                         <div key={img.id} className="relative w-20 h-20 rounded-lg overflow-hidden border border-ink-200 bg-ink-100 group">
-                          <img src={img.image_url} alt="" className="w-full h-full object-cover" />
+                          <img src={img.image_url} alt="" className="w-full h-full object-cover"  width={1184} height={896} />
                           <button
                             type="button"
                             onClick={() => handleRemoveProductImage(img)}
@@ -990,7 +990,7 @@ export function Products() {
                   <article className="flex flex-col overflow-hidden rounded-2xl border border-ink-100 bg-white shadow-sm">
                     <div className="relative aspect-[4/3] overflow-hidden bg-ink-100">
                       {imagePreview || form.image_url ? (
-                        <img src={imagePreview || form.image_url} alt={form.name} className="h-full w-full object-cover" />
+                        <img src={imagePreview || form.image_url} alt={form.name} className="h-full w-full object-cover"  width={1184} height={896} />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
                           <ImageIcon className="h-10 w-10 text-ink-300" />
@@ -1054,7 +1054,7 @@ export function Products() {
                   <div>
                     <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl bg-ink-100">
                       {imagePreview || form.image_url ? (
-                        <img src={imagePreview || form.image_url} alt={form.name} className="h-full w-full object-contain" />
+                        <img src={imagePreview || form.image_url} alt={form.name} className="h-full w-full object-contain"  width={1184} height={896} />
                       ) : (
                         <ImageIcon className="h-12 w-12 text-ink-300" />
                       )}
@@ -1062,7 +1062,7 @@ export function Products() {
                     {productImages.length > 0 && (
                       <div className="mt-3 grid grid-cols-4 gap-2">
                         {productImages.slice(0, 4).map((img) => (
-                          <img key={img.id} src={img.image_url} alt="" className="aspect-square w-full rounded-lg object-cover" />
+                          <img key={img.id} src={img.image_url} alt="" className="aspect-square w-full rounded-lg object-cover"  width={1184} height={896} />
                         ))}
                       </div>
                     )}

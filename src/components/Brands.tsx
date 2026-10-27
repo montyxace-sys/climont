@@ -56,7 +56,7 @@ export function Brands() {
                   src={INTERIOR_IMAGE}
                   alt="Aire acondicionado Daikin, Mitsubishi, Samsung, LG, Panasonic, Fujitsu, Hisense y Hitachi instalados por Climatizaciones Montaño"
                   className="w-full h-[360px] lg:h-[440px] object-cover"
-                />
+                 width={1184} height={896} />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-950/30 to-transparent" />
               </div>
               {/* Floating card */}
@@ -128,7 +128,7 @@ export function Brands() {
                     src={brand.logo}
                     alt={`${brand.name} — Instalador autorizado | Climatizaciones Montaño, S.L.`}
                     className="h-12 lg:h-14 w-auto opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-                  />
+                   width={1184} height={896} />
                 </a>
               ) : (
                 <div
@@ -139,7 +139,7 @@ export function Brands() {
                     src={brand.logo}
                     alt={`${brand.name} — Instalador autorizado | Climatizaciones Montaño, S.L.`}
                     className="h-12 lg:h-14 w-auto opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-                  />
+                   width={1184} height={896} />
                 </div>
               );
               return card;

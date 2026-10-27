@@ -135,7 +135,7 @@ export function LogoDownload() {
                 src="/logo-hd.webp"
                 alt="Logo Climatizaciones Montaño"
                 className="w-full h-full object-cover"
-              />
+               width={1184} height={896} />
             </div>
             <div className="mt-4 flex items-center gap-2 text-ink-400 text-sm">
               <ImageIcon className="w-4 h-4" />

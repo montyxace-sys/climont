@@ -121,7 +121,7 @@ export function WhyUs() {
                   alt="Distintivos de calidad RITE-07, empresa instaladora certificada EIC e ISO 9001"
                   className="w-full h-auto rounded-2xl shadow-lg"
                   loading="lazy"
-                />
+                 width={1184} height={896} />
               </div>
             </div>
           </div>

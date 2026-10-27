@@ -65,7 +65,7 @@ export function BlogPage({ post }: { post: BlogPost }) {
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-12 pb-16 lg:pt-16 lg:pb-24">
         <div className="absolute inset-0">
-          <img src="/office-cassette-ac.webp" alt="Equipo de aire acondicionado tipo cassette instalado" className="w-full h-full object-cover opacity-15" />
+          <img src="/office-cassette-ac.webp" alt="Equipo de aire acondicionado tipo cassette instalado" className="w-full h-full object-cover opacity-15"  width={1184} height={896} />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-900/50" />
         </div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -202,7 +202,7 @@ export function BlogList({ posts }: { posts: BlogPost[] }) {
       <main>
       <section className="relative overflow-hidden bg-ink-950 pt-16 pb-20">
         <div className="absolute inset-0">
-          <img src="/office-cassette-ac.webp" alt="Blog de climatización" className="w-full h-full object-cover opacity-15" />
+          <img src="/office-cassette-ac.webp" alt="Blog de climatización" className="w-full h-full object-cover opacity-15"  width={1184} height={896} />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-900/50" />
         </div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

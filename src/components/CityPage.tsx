@@ -409,7 +409,7 @@ export function CityPage({ city }: { city: CityData }) {
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-12 pb-20 lg:pt-20 lg:pb-32">
         <div className="absolute inset-0 opacity-15">
-          <img src="/office-cassette-ac.webp" alt={`Instalación de aire acondicionado en ${city.name}`} className="w-full h-full object-cover" />
+          <img src="/office-cassette-ac.webp" alt={`Instalación de aire acondicionado en ${city.name}`} className="w-full h-full object-cover"  width={1184} height={896} />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-900/50" />
         <div className="absolute top-1/4 right-20 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl" />

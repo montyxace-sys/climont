@@ -71,7 +71,7 @@ function AssetCard({ item }: { item: AssetEntry & { description: string } }) {
           src={item.src}
           alt={item.description}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+         width={1184} height={896} />
         <span className="absolute top-2.5 right-2.5 px-2 py-0.5 bg-white/90 backdrop-blur text-ink-600 text-[10px] font-semibold rounded-full shadow-sm uppercase tracking-wide">
           {item.format}
         </span>
@@ -100,7 +100,7 @@ function BrandCard({ item }: { item: AssetEntry & { description: string } }) {
           src={item.src}
           alt={item.description}
           className="max-h-full max-w-full object-contain"
-        />
+         width={1184} height={896} />
       </div>
       <span className="text-xs font-medium text-ink-700 mb-0.5">{item.description}</span>
       <a

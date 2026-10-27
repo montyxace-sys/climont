@@ -118,7 +118,7 @@ export function Constructors() {
                   alt="Climatización Daikin instalada por Climatizaciones Montaño en el Edificio Europa 2 de Alcalá de Guadaíra"
                   className="w-full h-[340px] lg:h-[440px] object-cover"
                   loading="lazy"
-                />
+                 width={1184} height={896} />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 via-transparent to-transparent" />
               </div>
               <div className="absolute -bottom-6 -left-2 lg:-left-6 bg-white rounded-2xl shadow-xl p-5 max-w-[260px]">
@@ -140,13 +140,13 @@ export function Constructors() {
                   alt="Equipos de climatización Daikin en la cubierta del Edificio Europa 2"
                   className="w-full h-64 sm:h-80 lg:h-full min-h-[280px] object-cover rounded-2xl"
                   loading="lazy"
-                />
+                 width={1184} height={896} />
                 <img
                   src="/images/new-work/alcala-de-guadaira/edificio-europa-2/1791285345778.jpg"
                   alt="Técnico revisando la instalación de climatización del Edificio Europa 2"
                   className="w-full h-64 sm:h-80 lg:h-full min-h-[280px] object-cover rounded-2xl"
                   loading="lazy"
-                />
+                 width={1184} height={896} />
               </div>
               <div className="p-7 sm:p-9 lg:p-12 flex flex-col justify-center">
                 <span className="text-primary-300 text-sm font-semibold uppercase tracking-[0.16em]">Trabajo realizado</span>

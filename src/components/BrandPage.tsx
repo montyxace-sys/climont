@@ -85,13 +85,13 @@ export function BrandPage({ brand }: { brand: BrandData }) {
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-950 pt-12 pb-20 lg:pt-20 lg:pb-32">
         <div className="absolute inset-0">
-          <img src="/office-cassette-ac.webp" alt={`${brand.name} — Instalador autorizado | Climatizaciones Montaño`} className="w-full h-full object-cover opacity-20" />
+          <img src="/office-cassette-ac.webp" alt={`${brand.name} — Instalador autorizado | Climatizaciones Montaño`} className="w-full h-full object-cover opacity-20"  width={1184} height={896} />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-900/60" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500/10 border border-primary-500/20 rounded-full text-primary-300 text-sm font-medium mb-6">
-              <img src={brand.logo} alt={brand.name} className="h-4 w-auto" />
+              <img src={brand.logo} alt={brand.name} className="h-4 w-auto"  width={1184} height={896} />
               Instalador autorizado {brand.name}
             </div>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-6">
