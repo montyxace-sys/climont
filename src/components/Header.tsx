@@ -89,15 +89,23 @@ export function Header() {
             }}
             className="flex items-center gap-2 group flex-shrink-0 z-10"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:scale-105 transition-transform">
-              <Snowflake className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-400 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/40 ring-2 ring-white/20 group-hover:scale-105 transition-transform">
+              <Snowflake className="w-7 h-7 text-white" />
             </div>
             <span
-              className={`font-display font-bold text-sm sm:text-base lg:text-lg whitespace-nowrap transition-colors ${
+              className={`font-display font-bold text-base sm:text-lg lg:text-xl whitespace-nowrap transition-colors drop-shadow-sm ${
                 scrolled || menuOpen ? 'text-ink-900' : 'text-white'
               }`}
             >
-              Climatizaciones <span className="text-primary-700">Montaño</span>, <span className="text-xs sm:text-sm font-medium opacity-80">S.L.</span>
+              Climatizaciones{' '}
+              <span
+                className={
+                  scrolled || menuOpen ? 'text-primary-700' : 'text-primary-300'
+                }
+              >
+                Montaño
+              </span>
+              , <span className="text-xs sm:text-sm font-medium opacity-90">S.L.</span>
             </span>
           </a>
 
