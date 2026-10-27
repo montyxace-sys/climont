@@ -84,11 +84,11 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/30">
-                <Snowflake className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-400 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/30 ring-2 ring-white/10">
+                <Snowflake className="w-7 h-7 text-white" />
               </div>
               <span className="font-display font-bold text-xl text-white">
-                Climatizaciones <span className="text-primary-400">Montaño</span>, S.L.
+                Climatizaciones <span className="text-primary-300">Montaño</span>, S.L.
               </span>
             </div>
             <p className="text-white/60 text-sm leading-relaxed max-w-sm mb-6">
