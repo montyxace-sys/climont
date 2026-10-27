@@ -1,4 +1,6 @@
-import { Snowflake, Phone, Mail, MapPin, MessageCircle, Clock, Facebook, Instagram, Youtube, Twitter } from 'lucide-react';
+import { useState } from 'react';
+import { Snowflake, Phone, Mail, MapPin, MessageCircle, Clock, Facebook, Instagram, Youtube, Twitter, Send } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 const FOOTER_LINKS = {
   Servicios: [
@@ -56,6 +58,23 @@ const FOOTER_LINKS = {
 };
 
 export function Footer() {
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterState, setNewsletterState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubscribe = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (!newsletterEmail.trim()) return;
+    setNewsletterState('loading');
+    try {
+      const { error } = await supabase.from('newsletter_subscribers').insert({ email: newsletterEmail.trim() });
+      if (error && error.code !== '23505') throw error;
+      setNewsletterState('success');
+      setNewsletterEmail('');
+    } catch {
+      setNewsletterState('error');
+    }
+  };
+
   return (
     <footer className="bg-ink-950 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -115,6 +134,48 @@ export function Footer() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* Newsletter */}
+        <div className="border-t border-white/10 py-10">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div className="max-w-md">
+              <h2 className="font-display text-lg font-bold text-white mb-1">Boletín de ofertas y actualizaciones</h2>
+              <p className="text-white/60 text-sm leading-relaxed">
+                Suscríbete para recibir novedades, ofertas y consejos de climatización en tu email.
+              </p>
+            </div>
+            <form onSubmit={handleSubscribe} className="w-full lg:w-auto flex flex-col sm:flex-row gap-2 flex-shrink-0">
+              <label htmlFor="newsletter-email" className="sr-only">Correo electrónico</label>
+              <input
+                id="newsletter-email"
+                type="email"
+                required
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="tu@email.com"
+                className="flex-1 min-w-[220px] px-4 py-3 bg-ink-900/60 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all"
+              />
+              <button
+                type="submit"
+                disabled={newsletterState === 'loading'}
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors whitespace-nowrap"
+              >
+                {newsletterState === 'loading' ? (
+                  <span className="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+                {newsletterState === 'loading' ? 'Enviando...' : 'Suscribirse'}
+              </button>
+            </form>
+          </div>
+          {newsletterState === 'success' && (
+            <p className="mt-3 text-sm text-success-400">¡Gracias! Ya estás suscrito/a. Te avisaremos de las novedades.</p>
+          )}
+          {newsletterState === 'error' && (
+            <p className="mt-3 text-sm text-error-400">No se ha podido registrar. Inténtalo de nuevo.</p>
+          )}
         </div>
 
         {/* Social + bottom bar */}
