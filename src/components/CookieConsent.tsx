@@ -45,7 +45,7 @@ export function CookieConsent() {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-auto z-[60] px-3 pb-3 sm:bottom-4 sm:left-4 sm:px-0 sm:pb-0 max-w-[calc(100vw-5rem)] sm:max-w-[390px]"      role="dialog"
+      className="fixed bottom-20 left-0 right-auto z-[60] px-3 pb-3 sm:bottom-4 sm:left-4 sm:px-0 sm:pb-0 max-w-[calc(100vw-5rem)] sm:max-w-[390px]"      role="dialog"
       aria-label="Consentimiento de cookies"
       aria-live="polite"
     >
