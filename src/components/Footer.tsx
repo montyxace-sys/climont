@@ -12,7 +12,7 @@ const FOOTER_LINKS = {
     { label: 'Energía solar térmica', href: '/servicios/solar-termica' },
     { label: 'Climatización inteligente Airzone', href: '/servicios/airzone' },
     { label: 'Eficiencia energética', href: '/servicios/eficiencia' },
-    { label: 'Constructoras', href: '/servicios/constructoras' },
+    { label: 'Servicio para constructoras', href: '/servicios/constructoras' },
   ],
   Marcas: [
     { label: 'Daikin', href: '/marcas/daikin' },
