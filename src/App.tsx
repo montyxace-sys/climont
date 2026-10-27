@@ -155,19 +155,6 @@ function AppRoutes() {
   useHashScroll(path);
   useLinkInterceptor();
   const [blogPosts, setBlogPosts] = useState(BLOG_POSTS);
-  const [chatReady, setChatReady] = useState(false);
-
-  // Carga diferida del chat: cuando el navegador esta inactivo o pasados unos
-  // segundos, para no retrasar el render inicial de la pagina.
-  useEffect(() => {
-    const w = window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number };
-    if (typeof w.requestIdleCallback === 'function') {
-      w.requestIdleCallback(() => setChatReady(true), { timeout: 4000 });
-      return;
-    }
-    const timer = window.setTimeout(() => setChatReady(true), 2500);
-    return () => window.clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -450,11 +437,6 @@ function AppRoutes() {
       </main>
       <Footer />
       <CookieConsent />
-      {chatReady && (
-        <Suspense fallback={null}>
-          <ChatWidget />
-        </Suspense>
-      )}
       <FloatingPhoneButton />
     </div>
   );
@@ -469,9 +451,28 @@ function PageLoading() {
 }
 
 function App() {
+  const [chatReady, setChatReady] = useState(false);
+
+  // Carga diferida del chat en todas las paginas, para no retrasar el
+  // render inicial ni las metricas de rendimiento.
+  useEffect(() => {
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number };
+    if (typeof w.requestIdleCallback === 'function') {
+      w.requestIdleCallback(() => setChatReady(true), { timeout: 4000 });
+      return;
+    }
+    const timer = window.setTimeout(() => setChatReady(true), 2500);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
     <Suspense fallback={<PageLoading />}>
       <AppRoutes />
+      {chatReady && (
+        <Suspense fallback={null}>
+          <ChatWidget />
+        </Suspense>
+      )}
     </Suspense>
   );
 }
