@@ -1,5 +1,6 @@
 import { ArrowLeft } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { Contact } from '@/components/Contact';
 import { useSeo } from '@/hooks/useSeo';
 import { PROJECTS, type ProjectStatus } from '@/data/projects';
 
@@ -62,6 +63,7 @@ export function WorksPage({ status }: { status: ProjectStatus }) {
           </div>
         )}
       </main>
+      <Contact />
     </div>
   );
 }
