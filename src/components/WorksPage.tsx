@@ -37,13 +37,13 @@ export function WorksPage({ status }: { status: ProjectStatus }) {
             {projects.map((p, idx) => (
               <Reveal key={p.slug} delay={idx * 120}>
                 <article className="bg-white rounded-2xl overflow-hidden border border-ink-100 shadow-lg">
-                  <div className="grid sm:grid-cols-2 gap-1">
+                  <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
                     {p.gallery.map((img, i) => (
                       <img
                         key={i}
                         src={img.src}
                         alt={img.alt}
-                        className="w-full h-48 object-cover transition-transform duration-500 hover:scale-110"
+                        className="w-full h-40 sm:h-44 object-cover rounded-xl transition-transform duration-500 hover:scale-105"
                         loading="lazy"
                         width={1184}
                         height={896}
