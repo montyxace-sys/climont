@@ -128,7 +128,7 @@ function LoginForm({ onSwitchView }: { onSwitchView: (v: View) => void }) {
     setLoading(true);
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin + '/centro-de-descargas' },
+      options: { redirectTo: 'https://climont.es/centro-de-descargas' },
     });
     if (oauthError) {
       setError('No se ha podido iniciar sesion con Google: ' + (oauthError.message || 'error desconocido'));
@@ -260,7 +260,7 @@ function RegisterForm({ onSwitchView }: { onSwitchView: (v: View) => void }) {
     setLoading(true);
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin + '/centro-de-descargas' },
+      options: { redirectTo: 'https://climont.es/centro-de-descargas' },
     });
     if (oauthError) {
       setError('No se ha podido registrarse con Google: ' + (oauthError.message || 'error desconocido'));
