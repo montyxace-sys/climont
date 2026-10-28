@@ -38,11 +38,8 @@ export function CatalogosPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {MANUFACTURER_CATALOGS.filter((c) => c.brand === brand).map((c) => (
                 <Reveal key={c.url}>
-                  <a
-                    href={c.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group block bg-white border border-ink-100 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:border-primary-200 transition-all"
+                  <div
+                    className="group bg-white border border-ink-100 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:border-primary-200 transition-all"
                   >
                     <div className="flex items-center justify-between mb-3">
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary-50 text-primary-700 text-xs font-semibold rounded-lg">
@@ -73,7 +70,7 @@ export function CatalogosPage() {
                         <Download className="w-3.5 h-3.5" /> Descargar
                       </a>
                     </div>
-                  </a>
+                  </div>
                 </Reveal>
               ))}
             </div>
