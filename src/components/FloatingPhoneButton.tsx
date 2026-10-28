@@ -23,7 +23,7 @@ export function FloatingPhoneButton() {
     : 'translate-y-0 opacity-100';
 
   return (
-    <div className={`fixed bottom-16 right-6 z-[100] flex items-center gap-3 transition-all duration-300 ${visibilityClass}`}>
+    <div className={`fixed bottom-24 right-6 z-[100] flex items-center gap-3 transition-all duration-300 ${visibilityClass}`}>
       <a
         href="https://wa.me/34691680706"
         target="_blank"
