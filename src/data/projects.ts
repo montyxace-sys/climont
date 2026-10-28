@@ -61,16 +61,4 @@ export const PROJECTS: Project[] = [
       { src: '/images/obras/mr12/obra-mr12-10.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 10', caption: 'Obra MR12' },
     ],
   },
-  {
-    slug: 'proyecto-en-ejecucion-ejemplo',
-    status: 'en-ejecucion',
-    title: 'Proyecto en ejecución (ejemplo)',
-    location: 'Sevilla, provincia',
-    category: 'En curso',
-    summary:
-      'Obra en progreso. Añade aquí nombre, localización y fotos reales cuando tengas la referencia (architecture ready placeholder).',
-    gallery: [
-      { src: '/office-cassette-ac.webp', alt: 'Imagen temporal de proyecto en ejecución', caption: 'En ejecución' },
-    ],
-  },
 ];
