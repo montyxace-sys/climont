@@ -1,3 +1,4 @@
+import { ArrowLeft } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { useSeo } from '@/hooks/useSeo';
 import { PROJECTS, type ProjectStatus } from '@/data/projects';
@@ -16,6 +17,9 @@ export function WorksPage({ status }: { status: ProjectStatus }) {
     <div className="min-h-screen bg-white">
       <div className="bg-ink-950 text-white py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <a href="/" className="inline-flex items-center gap-1.5 text-primary-300 hover:text-white text-sm font-medium mb-4 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Volver al inicio
+          </a>
           <span className="inline-block px-4 py-1.5 bg-primary-500/10 border border-primary-500/20 rounded-full text-primary-300 text-sm font-medium mb-4">{meta.subtitle}</span>
           <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4">{meta.title}</h1>
           <p className="text-white/80 text-lg max-w-3xl">{meta.description}</p>
