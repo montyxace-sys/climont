@@ -47,6 +47,8 @@ const FOOTER_LINKS = {
     { label: 'Catálogo de productos', href: '/catalogo' },
     { label: 'Blog de climatización', href: '/blog' },
     { label: 'Catálogos de fabricantes', href: '/catalogos' },
+    { label: 'Obras terminadas', href: '/obras/terminadas' },
+    { label: 'Obras en ejecución', href: '/obras/en-ejecucion' },
     { label: 'Empleo', href: '/empleo' },
     { label: 'Preguntas frecuentes', href: '/#faq' },
     { label: 'Contacto', href: '/#contacto' },

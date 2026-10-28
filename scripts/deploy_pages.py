@@ -19,7 +19,7 @@ DIST = os.path.join(ROOT, "dist")
 OWNER = "montyxace-sys"
 REPO = "climont-web"
 CANONICAL = "climont.es"
-PAGES_DOMAIN = "respaldo.climont.es"
+PAGES_DOMAIN = "climont.es"
 EXCLUDE = {"_headers", "_redirects", "product-slugs.json"}
 
 REDIRECT_JS = """

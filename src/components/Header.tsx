@@ -18,6 +18,7 @@ const NAV_LINKS: NavLink[] = [
   { label: 'Códigos de errores', href: '/codigos-de-errores', primary: true },
   { label: 'Calculadora', href: '/calculadora-frigorias', primary: true },
   { label: 'Blog', href: '/blog', primary: true },
+  { label: 'Obras', href: '/obras/terminadas', primary: true },
   { label: 'Empleo', href: '/empleo', primary: true },
   { label: 'Descargas', href: '/centro-de-descargas', primary: false },
   { label: 'FAQ', href: '#faq', primary: false },

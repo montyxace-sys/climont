@@ -216,6 +216,20 @@ const STATIC_PAGES = [
     priority: 0.6,
   },
   {
+    path: '/obras/terminadas',
+    title: 'Obras terminadas de climatización | Climatizaciones Montaño, S.L.',
+    description:
+      'Ejemplos de obras de climatización terminadas por Climatizaciones Montaño: edificios residenciales, viviendas nuevas e instalaciones en Sevilla.',
+    priority: 0.7,
+  },
+  {
+    path: '/obras/en-ejecucion',
+    title: 'Obras en ejecución de climatización | Climatizaciones Montaño, S.L.',
+    description:
+      'Proyectos de climatización en curso en Sevilla: preinstalaciones, instalaciones completas y garantía de plazos.',
+    priority: 0.6,
+  },
+  {
     path: '/empleo',
     title:
       '¿Eres profesional del aire acondicionado? Trabaja con nosotros | Climatizaciones Montaño',

@@ -222,7 +222,7 @@ function RegisterForm({ onSwitchView }: { onSwitchView: (v: View) => void }) {
           full_name: form.fullName,
           company: form.company || null,
           phone: form.phone || null,
-          status: 'pendiente',
+          status: 'aprobado',
         });
         if (profileError) throw profileError;
         setSuccess(true);
@@ -528,44 +528,43 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
 
         if (profileError) throw profileError;
 
+        // Acceso directo: no se requiere aprobacion por el admin.
+        // Si el perfil no existe, se crea con estado 'aprobado'.
+        let finalProfile: DownloadUser;
         if (!profile) {
-          // Usuario que accede por primera vez con Google: se crea su perfil pendiente
-          // de aprobacion, igual que en el registro clasico con email.
-          const isGoogle = session.user.app_metadata?.provider === 'google';
-          if (isGoogle) {
-            const fullName = (session.user.user_metadata?.full_name as string | undefined)
-              || (session.user.user_metadata?.name as string | undefined)
-              || (session.user.email || '');
-            const { error: insertError } = await supabase.from('download_users').insert({
-              user_id: session.user.id,
-              full_name: fullName,
-              company: null,
-              phone: null,
-              status: 'pendiente',
-            });
-            if (!insertError) {
-              setUserProfile({ status: 'pendiente', full_name: fullName } as DownloadUser);
-              setLoading(false);
-              return;
-            }
+          const displayName = (session.user.user_metadata?.full_name as string | undefined)
+            || (session.user.user_metadata?.name as string | undefined)
+            || session.user.email
+            || '';
+          const { error: insertError } = await supabase.from('download_users').insert({
+            user_id: session.user.id,
+            full_name: displayName,
+            company: null,
+            phone: null,
+            status: 'aprobado',
+          });
+          if (insertError) throw insertError;
+          finalProfile = { status: 'aprobado', full_name: displayName } as DownloadUser;
+        } else {
+          finalProfile = profile as DownloadUser;
+          if (finalProfile.status !== 'aprobado') {
+            await supabase
+              .from('download_users')
+              .update({ status: 'aprobado' })
+              .eq('user_id', session.user.id);
+            finalProfile = { ...finalProfile, status: 'aprobado' };
           }
-          setUserProfile(null);
-          setLoading(false);
-          return;
         }
+        setUserProfile(finalProfile);
 
-        setUserProfile(profile);
+        const { data: fileList, error: filesError } = await supabase
+          .from('download_files')
+          .select('id, title, description, category, file_path, file_size, file_type, created_at')
+          .eq('is_active', true)
+          .order('created_at', { ascending: false });
 
-        if (profile.status === 'aprobado') {
-          const { data: fileList, error: filesError } = await supabase
-            .from('download_files')
-            .select('id, title, description, category, file_path, file_size, file_type, created_at')
-            .eq('is_active', true)
-            .order('created_at', { ascending: false });
-
-          if (filesError) throw filesError;
-          setFiles(fileList || []);
-        }
+        if (filesError) throw filesError;
+        setFiles(fileList || []);
       } catch {
         setError('Error al cargar los datos.');
       } finally {
