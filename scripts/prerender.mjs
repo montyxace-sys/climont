@@ -16,6 +16,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { build } from 'esbuild';
+// Cargar .env (si existe) sin arrojar error cuando no haya credenciales en CI.
+import dotenv from 'dotenv';
+try {
+  dotenv.config({
+    path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.env'),
+    quiet: true,
+  });
+} catch {
+  // ignorar: en CI pueden usarse secrets de entorno directamente.
+}
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, '..');
