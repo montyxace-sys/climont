@@ -1,4 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
+import { HumanCheck } from '@/components/HumanCheck';
 import {
   Snowflake,
   ArrowLeft,
@@ -68,6 +69,7 @@ export function Careers() {
     message: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [humanVerified, setHumanVerified] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
 
@@ -114,8 +116,8 @@ export function Careers() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    if (!humanVerified) { setErrors((prev) => ({ ...prev, human: 'Resuelve la verificación anti-spam para continuar' })); return; }
     setStatus('loading');
-
     let cvFilePath: string | null = null;
     if (file) {
       const ext = file.name.split('.').pop() || 'pdf';
@@ -457,6 +459,9 @@ export function Careers() {
                       placeholder="Experiencia, certificaciones, disponibilidad, zona de residencia..."
                     />
                   </div>
+
+                  <HumanCheck onVerified={setHumanVerified} className="mb-2" />
+                  {errors.human && <p className="text-xs text-error-600 -mt-1 mb-2">{errors.human}</p>}
 
                   <button
                     type="submit"

@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { HumanCheck } from '@/components/HumanCheck';
 import {
   Phone,
   Mail,
@@ -52,6 +53,7 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
 
 export function Contact() {
   const [status, setStatus] = useState<Status>('idle');
+  const [humanVerified, setHumanVerified] = useState(false);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -78,7 +80,7 @@ export function Contact() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-
+    if (!humanVerified) { setErrors((prev) => ({ ...prev, human: 'Resuelve la verificación anti-spam para continuar' })); return; }
     setStatus('loading');
     const { supabase } = await import('@/lib/supabase');
     const { error } = await supabase.from('contact_requests').insert({
@@ -386,6 +388,9 @@ export function Contact() {
                       placeholder="Cuéntanos qué necesitas: tipo de vivienda, número de habitaciones, etc."
                     />
                   </div>
+
+                  <HumanCheck onVerified={setHumanVerified} className="mb-2" />
+                  {errors.human && <p className="text-xs text-error-600 -mt-1 mb-2">{errors.human}</p>}
 
                   <button
                     type="submit"

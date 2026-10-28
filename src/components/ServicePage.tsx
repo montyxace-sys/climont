@@ -5,6 +5,7 @@ import {
   MessageCircle, Mail, MapPin, Link2,
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { HumanCheck } from '@/components/HumanCheck';
 import { useSeo } from '@/hooks/useSeo';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
@@ -109,7 +110,7 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
     installation_type: service.installationTypes?.[0]?.value || '', message: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const [humanVerified, setHumanVerified] = useState(false);
   const validate = () => {
     const next: Record<string, string> = {};
     if (!form.name.trim()) next.name = 'Introduce tu nombre';
@@ -124,6 +125,7 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    if (!humanVerified) { setErrors((prev) => ({ ...prev, human: 'Resuelve la verificación anti-spam para continuar' })); return; }
     setStatus('loading');
     const { error } = await supabase.from('contact_requests').insert({
       name: form.name.trim(),
@@ -249,6 +251,9 @@ function ServiceContactForm({ service }: { service: ServiceData }) {
               className="w-full px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder-ink-300 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all resize-none"
               placeholder="Cuéntanos qué necesitas..." />
           </div>
+
+          <HumanCheck onVerified={setHumanVerified} className="mb-2" />
+          {errors.human && <p className="text-xs text-error-600 -mt-1 mb-2">{errors.human}</p>}
 
           <button type="submit" disabled={status === 'loading'}
             className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-primary-600 hover:bg-primary-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-lg shadow-primary-500/30 hover:shadow-xl">
