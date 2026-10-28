@@ -43,15 +43,22 @@ export function DownloadCenter() {
   const [view, setView] = useState<View>('login');
 
   useEffect(() => {
+    const timer = window.setTimeout(() => { setSession(null); setLoading(false); }, 10000);
     supabase.auth.getSession().then(({ data }) => {
+      window.clearTimeout(timer);
       setSession(data.session);
+      setLoading(false);
+    }).catch(() => {
+      window.clearTimeout(timer);
+      setSession(null);
       setLoading(false);
     });
     const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      window.clearTimeout(timer);
       setSession(newSession);
       setLoading(false);
     });
-    return () => listener.subscription.unsubscribe();
+    return () => { window.clearTimeout(timer); listener.subscription.unsubscribe(); };
   }, []);
 
   const signOut = useCallback(async () => {
