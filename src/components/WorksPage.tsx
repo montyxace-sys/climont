@@ -1,4 +1,5 @@
-import { ArrowLeft } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowLeft, X, ZoomIn } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { Contact } from '@/components/Contact';
 import { useSeo } from '@/hooks/useSeo';
@@ -11,6 +12,15 @@ const LABELS: Record<ProjectStatus, { title: string; subtitle: string; descripti
 
 export function WorksPage({ status }: { status: ProjectStatus }) {
   const meta = LABELS[status];
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightbox(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
   useSeo({ title: meta.pathTitle, description: meta.description, canonicalPath: status === 'terminada' ? '/obras/terminadas' : '/obras/en-ejecucion' });
   const projects = PROJECTS.filter((p) => p.status === status);
 
@@ -57,16 +67,19 @@ export function WorksPage({ status }: { status: ProjectStatus }) {
                 <article className="bg-white rounded-2xl overflow-hidden border border-ink-100 shadow-lg">
                   <div className="grid gap-3 sm:grid-cols-3 md:grid-cols-4">
                     {p.gallery.map((img, i) => (
-                      <div key={i} className="group relative overflow-hidden rounded-2xl shadow-md ring-1 ring-ink-100">
+                      <div key={i} role="button" tabIndex={0} className="group relative overflow-hidden rounded-2xl shadow-md ring-1 ring-ink-100 cursor-zoom-in" onClick={() => setLightbox({ src: img.src, alt: img.alt })} onKeyDown={(e) => { if (e.key === 'Enter') setLightbox({ src: img.src, alt: img.alt }); }}>
                         <img
                           src={img.src}
                           alt={img.alt}
-                          className="w-full h-44 sm:h-48 object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                          className="w-full h-52 sm:h-56 object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                           loading="lazy"
                           width={1184}
                           height={896}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                        <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                          <ZoomIn className="w-4 h-4 text-white" />
+                        </div>
                         {img.caption && (
                           <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-1 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                             <span className="text-white text-xs font-semibold drop-shadow">{img.caption}</span>
@@ -89,6 +102,27 @@ export function WorksPage({ status }: { status: ProjectStatus }) {
         )}
       </main>
       <Contact />
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-[99] flex items-center justify-center bg-ink-950/90 backdrop-blur-sm p-4"
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            aria-label="Cerrar"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <img
+            src={lightbox.src}
+            alt={lightbox.alt}
+            className="max-w-full max-h-[88vh] object-contain rounded-xl shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }
