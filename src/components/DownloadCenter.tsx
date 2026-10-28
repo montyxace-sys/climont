@@ -568,7 +568,7 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
 
         const { data: fileList, error: filesError } = await supabase
           .from('download_files')
-          .select('id, title, description, category, file_path, file_size, file_type, created_at')
+          .select('id, title, description, category, file_path, file_size, file_type, created_at, external_url, thumbnail_url')
           .eq('is_active', true)
           .order('created_at', { ascending: false });
 
