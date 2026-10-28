@@ -26,8 +26,8 @@ type DownloadFile = {
   file_type: string | null;
   is_active: boolean;
   created_at: string;
+  external_url: string | null;
 };
-
 type AdminSubTab = 'users' | 'files';
 
 export function DownloadCenterAdmin() {
@@ -199,6 +199,9 @@ function FilesTab() {
   const [batchCategory, setBatchCategory] = useState('Certificados');
   const [batchProgress, setBatchProgress] = useState<{ current: number; total: number; name: string } | null>(null);
   const [batchResults, setBatchResults] = useState<{ ok: number; fail: number } | null>(null);
+  const [showExternal, setShowExternal] = useState(false);
+  const [extUploading, setExtUploading] = useState(false);
+  const [extForm, setExtForm] = useState({ title: '', description: '', category: 'Catalogos', url: '' });
 
   const loadFiles = async () => {
     setLoading(true);
@@ -295,6 +298,35 @@ function FilesTab() {
     }
   };
 
+  const handleExternalUpload = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!extForm.title.trim()) { setError('Introduce un titulo.'); return; }
+    if (!extForm.url.trim()) { setError('Introduce la URL del PDF.'); return; }
+    setError('');
+    setExtUploading(true);
+    try {
+      const { error: insertError } = await supabase.from('download_files').insert({
+        title: extForm.title.trim(),
+        description: extForm.description || null,
+        category: extForm.category,
+        file_path: extForm.url.trim(),
+        file_size: null,
+        file_type: 'PDF',
+        is_active: true,
+        external_url: extForm.url.trim(),
+      });
+      if (insertError) throw insertError;
+      setExtForm({ title: '', description: '', category: 'Catalogos', url: '' });
+      setShowExternal(false);
+      await loadFiles();
+    } catch (err) {
+      setError('No se ha podido guardar el enlace externo.');
+    } finally {
+      setExtUploading(false);
+    }
+  };
+
+
   const handleDelete = async (file: DownloadFile) => {
     if (!confirm(`¿Eliminar "${file.title}"?`)) return;
     try {
@@ -331,7 +363,50 @@ function FilesTab() {
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors">
           <Plus className="w-4 h-4" /> Subir archivo
         </button>
+        <button
+          type="button"
+          onClick={() => setShowExternal((v) => !v)}
+          className="ml-2 inline-flex items-center gap-2 px-4 py-2.5 bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold rounded-lg transition-colors"
+        >
+          Enlace externo
+        </button>
       </div>
+
+      {showExternal && (
+        <form onSubmit={handleExternalUpload} className="bg-white border border-ink-100 rounded-2xl p-6 mb-6 space-y-4">
+          <h3 className="font-display font-bold text-ink-900">Añadir enlace a PDF externo</h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm font-medium text-ink-700 mb-1.5">Título *</label>
+              <input type="text" value={extForm.title} onChange={(e) => setExtForm({ ...extForm, title: e.target.value })} placeholder="Ej: Tarifa LG 2026"
+                className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-sm text-ink-900 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-ink-700 mb-1.5">Categoría</label>
+              <input type="text" value={extForm.category} onChange={(e) => setExtForm({ ...extForm, category: e.target.value })} placeholder="Tarifas"
+                className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-sm text-ink-900 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-ink-700 mb-1.5">URL del PDF *</label>
+            <input type="url" value={extForm.url} onChange={(e) => setExtForm({ ...extForm, url: e.target.value })} placeholder="https://..."
+              className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-sm text-ink-900 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-ink-700 mb-1.5">Descripción</label>
+            <input type="text" value={extForm.description} onChange={(e) => setExtForm({ ...extForm, description: e.target.value })} placeholder="Opcional"
+              className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-sm text-ink-900 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all" />
+          </div>
+          <div className="flex gap-2 justify-end">
+            <button type="button" onClick={() => setShowExternal(false)} className="px-4 py-2.5 text-sm font-medium text-ink-600 hover:bg-ink-50 rounded-xl transition-colors">Cancelar</button>
+            <button type="submit" disabled={extUploading}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-60 text-white text-sm font-semibold rounded-lg transition-colors">
+              {extUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              Guardar enlace
+            </button>
+          </div>
+        </form>
+      )}
 
       {showUpload && (
         <div className="bg-white border border-ink-100 rounded-2xl p-6 mb-6">

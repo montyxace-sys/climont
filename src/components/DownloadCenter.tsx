@@ -582,6 +582,10 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
   };
 
   const handleDownload = async (file: DownloadFile) => {
+    if (file.external_url) {
+      window.open(file.external_url, '_blank', 'noopener,noreferrer');
+      return;
+    }
     setDownloading(file.id);
     try {
       const url = await getSignedUrl(file.file_path);
@@ -602,6 +606,7 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
   };
 
   const handlePreview = async (file: DownloadFile) => {
+    if (file.external_url) { window.open(file.external_url, '_blank', 'noopener,noreferrer'); return; }
     setPreviewLoading(true);
     setPreviewFile(file);
     setPreviewUrl(null);
