@@ -5,6 +5,7 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabaseConfig';
 import { Header } from '@/components/Header';
 import { navigate } from '@/lib/navigate';
 import { useSeo } from '@/hooks/useSeo';
+import { HumanCheck } from '@/components/HumanCheck';
 
 type ProductImage = {
   id: string;
@@ -37,6 +38,7 @@ export function ProductPage({ slug }: { slug: string }) {
   const imgContainerRef = useRef<HTMLDivElement>(null);
 
   const [contactStatus, setContactStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [contactHumanVerified, setContactHumanVerified] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', city: '', message: '' });
   const [contactErrors, setContactErrors] = useState<Record<string, string>>({});
 
@@ -124,6 +126,8 @@ export function ProductPage({ slug }: { slug: string }) {
     if (!contactForm.city.trim()) next.city = 'Introduce tu ciudad';
     setContactErrors(next);
     if (Object.keys(next).length > 0) return;
+
+    if (!contactHumanVerified) { setContactErrors((prev) => ({ ...prev, human: 'Resuelve la verificación anti-spam para continuar' })); return; }
 
     setContactStatus('loading');
     const { error } = await supabase.from('contact_requests').insert({
@@ -476,6 +480,9 @@ export function ProductPage({ slug }: { slug: string }) {
                     <AlertCircle className="w-4 h-4" /> Error al enviar. Inténtalo de nuevo.
                   </div>
                 )}
+                <HumanCheck onVerified={setContactHumanVerified} className="mb-2" />
+                {contactErrors.human && <p className="text-error-600 text-xs mt-1">{contactErrors.human}</p>}
+
                 <button
                   type="submit"
                   disabled={contactStatus === 'loading'}
