@@ -201,7 +201,7 @@ function FilesTab() {
   const [batchResults, setBatchResults] = useState<{ ok: number; fail: number } | null>(null);
   const [showExternal, setShowExternal] = useState(false);
   const [extUploading, setExtUploading] = useState(false);
-  const [extForm, setExtForm] = useState({ title: '', description: '', category: 'Catalogos', url: '' });
+  const [extForm, setExtForm] = useState({ title: '', description: '', category: 'Catalogos', url: '', thumb: '' });
 
   const loadFiles = async () => {
     setLoading(true);
@@ -314,9 +314,10 @@ function FilesTab() {
         file_type: 'PDF',
         is_active: true,
         external_url: extForm.url.trim(),
+        thumbnail_url: extForm.thumb.trim() || null,
       });
       if (insertError) throw insertError;
-      setExtForm({ title: '', description: '', category: 'Catalogos', url: '' });
+      setExtForm({ title: '', description: '', category: 'Catalogos', url: '', thumb: '' });
       setShowExternal(false);
       await loadFiles();
     } catch (err) {
@@ -390,6 +391,11 @@ function FilesTab() {
           <div>
             <label className="block text-sm font-medium text-ink-700 mb-1.5">URL del PDF *</label>
             <input type="url" value={extForm.url} onChange={(e) => setExtForm({ ...extForm, url: e.target.value })} placeholder="https://..."
+              className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-sm text-ink-900 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-ink-700 mb-1.5">Portada/thumbnail URL (opcional)</label>
+            <input type="url" value={extForm.thumb} onChange={(e) => setExtForm({ ...extForm, thumb: e.target.value })} placeholder="/downloads-covers/mi-catalogo.jpg o https://..."
               className="w-full px-4 py-2.5 bg-ink-50 border border-ink-200 rounded-xl text-sm text-ink-900 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition-all" />
           </div>
           <div>

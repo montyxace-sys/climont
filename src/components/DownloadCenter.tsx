@@ -20,6 +20,8 @@ type DownloadFile = {
   file_path: string;
   file_size: number | null;
   file_type: string | null;
+  external_url: string | null;
+  thumbnail_url: string | null;
   created_at: string;
 };
 
@@ -740,9 +742,13 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
                   {files.filter((f) => f.category === cat).map((file) => (
                     <div key={file.id} className="bg-white border border-ink-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
                       <div className="flex items-start gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
-                          <FileText className="w-6 h-6 text-primary-600" />
-                        </div>
+                        {file.thumbnail_url ? (
+                          <img src={file.thumbnail_url} alt={file.title} className="w-16 h-16 rounded-xl object-cover flex-shrink-0 ring-1 ring-ink-100" />
+                        ) : (
+                          <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
+                            <FileText className="w-6 h-6 text-primary-600" />
+                          </div>
+                        )}
                         <div className="flex-1 min-w-0">
                           <h3 className="font-semibold text-ink-900 text-sm mb-1">{file.title}</h3>
                           {file.description && <p className="text-ink-500 text-xs leading-relaxed mb-2">{file.description}</p>}
