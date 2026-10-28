@@ -5,7 +5,7 @@ interface HumanCheckProps {
   className?: string;
 }
 
-export function HumanCheck({ onAnswer, className }: HumanCheckProps) {
+export function HumanCheck({ onVerified, className }: HumanCheckProps) {
   const [a] = useState(() => Math.floor(Math.random() * 9) + 1);
   const [b] = useState(() => Math.floor(Math.random() * 9) + 1);
   const [input, setInput] = useState('');
