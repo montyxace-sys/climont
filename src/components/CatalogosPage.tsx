@@ -1,4 +1,4 @@
-import { Download, ArrowRight, BookOpen } from 'lucide-react';
+import { Download, ArrowRight, BookOpen, Eye } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { useSeo } from '@/hooks/useSeo';
 import { MANUFACTURER_CATALOGS } from '@/data/catalogs';
@@ -54,9 +54,24 @@ export function CatalogosPage() {
                       {c.title}
                     </h3>
                     {c.note && <p className="text-ink-500 text-xs leading-relaxed">{c.note}</p>}
-                    <div className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-primary-600 group-hover:text-primary-700">
-                      Abrir catálogo
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    <div className="mt-4 flex items-center gap-2">
+                      <a
+                        href={c.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
+                      >
+                        <Eye className="w-3.5 h-3.5" /> Ver
+                      </a>
+                      <a
+                        href={c.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download={c.title.replace(/[^\\w.-]+/g, '-') + '.pdf'}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-ink-700 bg-white border border-ink-200 hover:border-primary-300 hover:text-primary-700 rounded-lg transition-colors"
+                      >
+                        <Download className="w-3.5 h-3.5" /> Descargar
+                      </a>
                     </div>
                   </a>
                 </Reveal>
