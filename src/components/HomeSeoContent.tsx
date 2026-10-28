@@ -53,7 +53,7 @@ export function HomeSeoContent() {
             Además de la climatización tradicional, instalamos aerotermia para sustituir calderas
             de gas, sistemas de energía solar térmica para agua caliente sanitaria, y soluciones de
             ventilación y eficiencia energética. Todo con presupuesto gratis en 24 horas y respuesta
-            rápida para reparaciones. llámanos por teléfono, escríbenos por WhatsApp al 691 680 706 o envíanos un email a info@climont.es.
+            rápida para reparaciones. llámanos por teléfono, escríbenos por WhatsApp  o envíanos un email a info@climont.es.
           </p>
         </Reveal>
       </div>

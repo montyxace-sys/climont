@@ -48,7 +48,7 @@ const TRUST_BADGES = [
 
 const CONTACT_INFO = [
   { label: 'Teléfono', value: 'Llamar', href: 'tel:+34676628348', icon: Phone },
-  { label: 'WhatsApp', value: '691 680 706', href: 'https://wa.me/34691680706', icon: MessageCircle },
+  { label: 'WhatsApp', value: 'nuestro WhatsApp', href: 'https://wa.me/34691680706', icon: MessageCircle },
   { label: 'Zona', value: 'Sevilla y provincia', href: '/', icon: MapPin },
 ];
 

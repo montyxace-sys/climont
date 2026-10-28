@@ -103,7 +103,7 @@ export function Footer() {
                 <Phone className="w-4 h-4 text-primary-400" /> Llamar
               </a>
               <a href="https://wa.me/34691680706" className="flex items-center gap-3 text-white/70 hover:text-white text-sm transition-colors">
-                <MessageCircle className="w-4 h-4 text-primary-400" /> 691 680 706 (WhatsApp)
+                <MessageCircle className="w-4 h-4 text-primary-400" /> WhatsApp
               </a>
               <a href="mailto:info@climont.es" className="flex items-center gap-3 text-white/70 hover:text-white text-sm transition-colors">
                 <Mail className="w-4 h-4 text-primary-400" /> info@climont.es
