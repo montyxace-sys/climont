@@ -39,6 +39,28 @@ export const PROJECTS: Project[] = [
       { src: '/images/new-work/alcala-de-guadaira/calle-san-jose/modulo-zonificacion-mysair-ms201v.jpg', alt: 'Módulo de zonificación MysAir MS201V-V4', caption: 'Zonificación MysAir' },
     ],
   },
+
+  {
+    slug: 'obra-mr12-grupo-recio',
+    status: 'en-ejecucion',
+    title: 'Obra MR12 - Grupo Recio',
+    location: 'Alcalá de Guadaíra, Sevilla',
+    category: 'En ejecución · Viviendas',
+    summary:
+      'Climatización y ventilación para la promoción MR12 del Grupo Recio en Alcalá de Guadaíra: equipos Daikin y sistemas por zonas con control total vía WiFi desde la app del móvil (MysAir).',
+    gallery: [
+      { src: '/images/obras/mr12/obra-mr12-01.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 01', caption: 'Obra MR12' },
+      { src: '/images/obras/mr12/obra-mr12-02.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 02', caption: 'Obra MR12' },
+      { src: '/images/obras/mr12/obra-mr12-03.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 03', caption: 'Obra MR12' },
+      { src: '/images/obras/mr12/obra-mr12-04.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 04', caption: 'Obra MR12' },
+      { src: '/images/obras/mr12/obra-mr12-05.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 05', caption: 'Obra MR12' },
+      { src: '/images/obras/mr12/obra-mr12-06.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 06', caption: 'Obra MR12' },
+      { src: '/images/obras/mr12/obra-mr12-07.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 07', caption: 'Obra MR12' },
+      { src: '/images/obras/mr12/obra-mr12-08.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 08', caption: 'Obra MR12' },
+      { src: '/images/obras/mr12/obra-mr12-09.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 09', caption: 'Obra MR12' },
+      { src: '/images/obras/mr12/obra-mr12-10.jpg', alt: 'Obra MR12 Grupo Recio - Alcalá de Guadaíra, foto 10', caption: 'Obra MR12' },
+    ],
+  },
   {
     slug: 'proyecto-en-ejecucion-ejemplo',
     status: 'en-ejecucion',
