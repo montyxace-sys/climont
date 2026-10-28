@@ -20,8 +20,9 @@ export const PROJECTS: Project[] = [
     summary:
       'Climatización completa del edificio con equipos de conductos Daikin y control por zonas MysAir. Cada vivienda dispone de control independiente desde el móvil.',
     gallery: [
-      { src: '/images/new-work/alcala-de-guadaira/edificio-moderno-obra-nueva.webp', alt: 'Edificio Europa 2 de Alcalá de Guadaíra', caption: 'Edificio Europa 2' },
-    ].filter(Boolean),
+      { src: '/images/new-work/alcala-de-guadaira/edificio-europa-2/1791285280167.jpg', alt: 'Equipos de climatización Daikin en la cubierta del Edificio Europa 2 de Alcalá de Guadaíra', caption: 'Europa 2 - Cubierta' },
+      { src: '/images/new-work/alcala-de-guadaira/edificio-europa-2/1791285345778.jpg', alt: 'Técnico revisando la instalación de climatización del Edificio Europa 2', caption: 'Europa 2 - Interior' },
+    ],
   },
   {
     slug: 'calle-san-jose',
