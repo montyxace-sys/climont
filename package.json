@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run check:encoding && vite build && npm run prerender",
+    "build": "npm run check:encoding && vite build && npm run prerender && npm run sync:search",
     "build:netlify": "npm run build && node scripts/netlify-prepare.mjs",
     "check:encoding": "node scripts/check-encoding.mjs",
     "prerender": "node scripts/prerender.mjs",
+    "sync:search": "node scripts/sync-search-console.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
