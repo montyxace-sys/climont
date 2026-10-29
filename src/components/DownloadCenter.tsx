@@ -750,7 +750,7 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
                     <div key={file.id} className="bg-white border border-ink-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
                       <div className="flex items-start gap-3">
                         {file.thumbnail_url ? (
-                          <img src={file.thumbnail_url} alt={file.title} className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl object-cover flex-shrink-0 ring-1 ring-ink-100" />
+                          <img src={file.thumbnail_url} alt={file.title} className="w-16 h-16 rounded-xl object-cover flex-shrink-0 ring-1 ring-ink-100" />
                         ) : (
                           <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
                             <FileText className="w-6 h-6 text-primary-600" />
