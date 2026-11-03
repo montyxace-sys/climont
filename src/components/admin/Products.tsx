@@ -260,7 +260,7 @@ export function Products() {
       }
       // Sync primary image_url with first image
       await syncPrimaryImage(editingId);
-    } catch (err) {
+    } catch {
       setError('Error al subir una o más imágenes.');
     } finally {
       setUploadingImages(false);
@@ -343,7 +343,7 @@ export function Products() {
           .from('product-images')
           .getPublicUrl(filePath);
         imageUrl = pub.publicUrl;
-      } catch (err) {
+      } catch {
         setError('Error al subir la imagen.');
         setSaving(false);
         setUploadingImage(false);
@@ -365,7 +365,7 @@ export function Products() {
           .from('product-docs')
           .getPublicUrl(filePath);
         techSheetUrl = pub.publicUrl;
-      } catch (err) {
+      } catch {
         setError('Error al subir la ficha técnica.');
         setSaving(false);
         return;

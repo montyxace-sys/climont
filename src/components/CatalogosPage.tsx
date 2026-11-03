@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Download, ArrowRight, BookOpen, Eye, Lock, FileText } from 'lucide-react';
+import { Download, BookOpen, Eye, Lock, FileText } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { useSeo } from '@/hooks/useSeo';
 import { MANUFACTURER_CATALOGS } from '@/data/catalogs';

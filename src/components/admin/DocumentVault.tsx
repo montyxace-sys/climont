@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { Upload, Download, Trash2, FileText, FileSpreadsheet, File, Search, Filter, X, ShieldCheck, CloudUpload, FolderSync, RefreshCw, CheckCircle2, Pause, Play, CheckSquare, Square, Trash } from 'lucide-react';
+import { Download, Trash2, FileText, FileSpreadsheet, File, Search, X, ShieldCheck, CloudUpload, FolderSync, RefreshCw, CheckCircle2, Pause, Play, CheckSquare, Square } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 type DocCategory = 'factura' | 'presupuesto' | 'otro';

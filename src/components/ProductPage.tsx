@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { Package, ArrowLeft, Star, Euro, ImageIcon, Download, MessageCircle, ChevronLeft, ChevronRight, ZoomIn, Send, CheckCircle2, AlertCircle, Loader2, Phone, Mail, Tag, FileText, ShieldCheck } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { Package, Star, Euro, ImageIcon, Download, MessageCircle, ChevronLeft, ChevronRight, ZoomIn, Send, CheckCircle2, AlertCircle, Loader2, Phone, Mail, Tag, FileText, ShieldCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabaseConfig';
 import { Header } from '@/components/Header';

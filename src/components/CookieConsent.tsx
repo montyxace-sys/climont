@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Cookie, X, Check, ExternalLink } from 'lucide-react';
+import { Cookie, X, Check } from 'lucide-react';
 import { updateAnalyticsConsent } from '@/lib/analytics';
 
 const STORAGE_KEY = 'cookie-consent';

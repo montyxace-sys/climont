@@ -320,7 +320,7 @@ function FilesTab() {
       setExtForm({ title: '', description: '', category: 'Catalogos', url: '', thumb: '' });
       setShowExternal(false);
       await loadFiles();
-    } catch (err) {
+    } catch { 
       setError('No se ha podido guardar el enlace externo.');
     } finally {
       setExtUploading(false);
