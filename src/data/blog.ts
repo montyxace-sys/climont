@@ -501,8 +501,37 @@ export const BLOG_POSTS: BlogPost[] = [
       { heading: 'Disponibilidad', paragraph: 'En Climatizaciones Montaño seguimos de cerca los avances en refrigerantes naturales y trabajamos con marcas que ya ofrecen equipos con R290. Si quieres instalar aerotermia con el gas más limpio que existe en tu casa, llámanos y te informamos de las opciones disponibles. llámanos por teléfono, escríbenos por WhatsApp  o envíanos un email a info@climont.es.' },
     ],
   },
-];
+  {
+    slug: "actualidad-sector-climatizacion-2026",
+    title: "Actualidad del sector climatización 2026: tendencias, refrigerantes y marcas",
+    metaTitle: "Actualidad del sector climatización 2026: tendencias HVAC | Blog | Climatizaciones Montaño, S.L.",
+    metaDescription: "Resumen de la actualidad del sector HVAC en 2026: crecimiento de la aerotermia, nuevas normativas F-Gas, refrigerantes R32/R454B, fusiones empresariales y las tendencias que marcarán los próximos años.",
+    keywords: "actualidad climatización 2026, tendencias HVAC 2026, mercado climatización España, aerotermia tendencias, normativa F-Gas 2026, refrigerantes R32 R454B, Daikin Altherma 6, Bosch Johnson Controls, Samsung FlaktGroup, electrificación edificios",
+    excerpt: "Resumen de la actualidad del sector HVAC en 2026: crecimiento de la aerotermia, nuevos refrigerantes, fusiones de marcas y las tendencias que marcarán los próximos años en climatización.",
+    date: "2026-10-15",
+    readTime: "8 min",
+    category: "Actualidad",
+    relatedServices: [
+      { label: "Instalación de aire acondicionado", href: "/servicios/instalacion" },
+      { label: "Instalación de aerotermia", href: "/servicios/aerotermia" },
+      { label: "Auditoría de eficiencia energética", href: "/servicios/eficiencia" },
+    ],
+    content: [
+      { paragraph: "El año 2026 marca una fase decisiva en el sector del HVAC. Tras un 2025 de fuerte crecimiento (11,4% en España según AFEC), el mercado de la climatización avanza hacia la electrificación, la digitalización y una mayor presión por descarbonizar los edificios. En este artículo resumimos las tendencias, noticias relevantes y novedades de los fabricantes que más impactan en Sevilla y el sur de España." },
+      { heading: "1. Electrificación y descarbonización como eje estructural", paragraph: "La sustitución de calderas de gas y diésel por bombas de calor y aerotermia ya no es una tendencia: es la norma. La electrificación del parque edificado es la gran transformación del sector. Los equipos de bomba de calor crecieron un 6,5% en 2025, impulsados por la normativa F-Gas, la directiva de eficiencia energética EPBD y las ayudas a la rehabilitación energética." },
+      { heading: "2. Aerotermia, protagonista absoluta", paragraph: "La aerotermia se consolida como alternativa prioritaria. Con eficiencias de hasta el 400% (genera entre 3 y 4 kW por kW eléctrico) y ahorros de hasta el 70% frente a una caldera de gas, es ideal para obra nueva y rehabilitación. La estrategia híbrida de aerotermia + placas solares es una tendencia creciente en la provincia, gracias a más de 3.000 horas de sol al año." },
+      { heading: "3. Nuevas normativas F-Gas: R410A prohibido y R32 estándar", paragraph: "Desde enero de 2026, el Reglamento UE 2024/573 prohíbe el mantenimiento con gas virgen de PCA ≥ 2.500, lo que afecta al gas R410A. El nuevo estándar es el refrigerante R32 (PCA 675) y, para 2027, los fabricantes ya trabajan con R454B (PCA 466) y R454C (PCA 148). Daikin, Mitsubishi, Samsung, LG, Panasonic y Fujitsu ya han migrado todas sus gamas." },
+      { heading: "4. Fusiones y adquisiciones que cambian el mapa", paragraph: "El sector HVAC vive un proceso de consolidación. Bosch Group completó la adquisición de la división residencial y light commercial de Johnson Controls (aprox. 8.000 M$). Samsung Electronics compró FlaktGroup (~1.700 M$) para reforzar su posición en refrigeración comercial y centros de datos. Midea y Frigicoll han creado joint ventures en España y Francia. Esta concentración busca fortalecer redes de distribución y acelerar el desarrollo de productos de bajas emisiones." },
+      { heading: "5. Daikin y Mitsubishi: novedades recientes", paragraph: "Daikin lanzó su EWYK-QZ (heat pump modular con R-290 para instalaciones comerciales) en 2025 y avanza con su Altherma 6 (serie de aerotermia con R32 e interfaz smart grid). Mitsubishi Electric Trane HVAC (METUS) introdujo las unidades Premier Wall-mounted (MSZ-GS/MSY-GS) y gamas con refrigerantes de bajo GWP. También Panasonic presentó OASYS Residential Central AC (EE.UU.) para 2026. En el sur de España, las marcas premium siguen priorizando silencio, eficiencia y conectividad, mientras las de gama media (Samsung, LG, Hisense, Hitachi, Johnson) compiten por relación calidad-precio." },
+      { heading: "6. Inteligencia Artificial y domótica integradas", paragraph: "La digitalización es ahora un requisito. Equipos WiFi de serie, compatibilidad con Matter/Alexa/Google Home, programación inteligente y diagnóstico remoto (Daikin Flash Streamer, Panasonic nanoe-X, LG UVnano) mejoran la calidad del aire y la eficiencia. Soluciones de gestión de energía (LG OpenBlue, Samsung SmartThings) optimizan ahorro." },
+      { heading: "7. Formación profesional y retos del sector", paragraph: "Según AFEC, la falta de instaladores cualificados es el límite estructural principal. Programas de formación de Bosch (8.000 técnicos) y Daikin (10.000 instaladores) buscan reducir este cuello de botella. En climont.es, certificados RITE-07, mantenemos constante formación técnica." },
+      { heading: "8. Qué significa para el usuario", paragraph: "Para el consumidor, las recomendaciones son: elegir aerotermia/inverter actual, verificar el refrigerante R32 o superior, aprovechar ayudas y subvenciones, y asegurar el dimensionado profesional. Consulta a un instalador certificado para tu caso (obra nueva o rehabilitación) y planifica con antelación." },
+      { paragraph: "En Climatizaciones Montaño, S.L. estamos disponibles para asesoría profesional en Sevilla y provincia. Llámanos por teléfono, escríbenos por WhatsApp o envíanos un email a info@climont.es." },
+    ],
+  },
+]
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
   return BLOG_POSTS.find((p) => p.slug === slug);
 }
+
