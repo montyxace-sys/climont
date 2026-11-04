@@ -18,3 +18,6 @@
 # estático: Netlify sirve la SPA (200) solo si no existe el fichero, así que
 # las rutas ya prerenderizadas conservan su HTML propio.
 /blog/*        /index.html  200
+
+# Catch-all SPA fallback
+/*    /index.html    200
