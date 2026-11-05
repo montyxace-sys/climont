@@ -63,8 +63,12 @@ export default function PublicDownloads() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {files.map((file) => (
             <div key={file.id} className="bg-white rounded-2xl border border-ink-100 shadow-sm p-4">
-              {file.thumbnail_url && (
+              {file.thumbnail_url ? (
                 <img src={file.thumbnail_url} alt={file.title} className="w-full h-32 object-cover rounded-lg mb-3" loading="lazy" decoding="async" />
+              ) : (
+                <div className="w-full h-32 rounded-lg mb-3 flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-50 text-primary-600 font-bold uppercase text-xs">
+                  {file.title.slice(0, 18)}
+                </div>
               )}
               <h3 className="font-semibold text-ink-900 text-sm truncate">{file.title}</h3>
               {file.description && <p className="text-xs text-ink-500 mt-1 line-clamp-2">{file.description}</p>}
