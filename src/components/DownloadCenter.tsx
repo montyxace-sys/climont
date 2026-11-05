@@ -5,6 +5,7 @@ import {
   XCircle, Clock, KeyRound, LogOut, FolderOpen, Eye, X,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import PublicDownloads from './PublicDownloads';
 import type { Session } from '@supabase/supabase-js';
 import { useSeo } from '@/hooks/useSeo';
 import { navigate } from '@/lib/navigate';
@@ -73,9 +74,12 @@ export function DownloadCenter() {
     );
   }
 
-  if (session) {
-    return <DownloadCenterContent session={session} onSignOut={signOut} />;
-  }
+  // Public access: show files directly without login
+  return <PublicDownloads />;
+
+  // (login path kept below but no longer reached)
+  // Acceso público: no se requiere registro para ver/descargar los documentos que esté marcados como públicos.
+  return <PublicDownloads />;
 
   return (
     <div className="min-h-screen bg-ink-950 flex items-center justify-center px-4 py-12 relative overflow-hidden">
