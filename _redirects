@@ -1,0 +1,30 @@
+# Redirecciones de servidor (Netlify y, si se volviera a Cloudflare, Workers Assets).
+# Formato: origen  destino  código
+#
+# Las URLs heredadas del sitio antiguo (osCommerce) siguen apareciendo en
+# Search Console. Cada regla devuelve un 301 real, sin pasar por JavaScript.
+#
+# Nota: las redirecciones de producto /productos/<uuid> -> /productos/<slug>
+# se añaden solas en cada build desde scripts/prerender.mjs.
+
+/index.php     /catalogo   301
+/index.php/*   /catalogo   301
+/web/*         /catalogo   301
+/EUR/*         /catalogo   301
+/index.html    /            301
+/tel*          /            301
+
+# Entradas del blog publicadas desde el panel que todavía no tienen su HTML
+# estático: Netlify sirve la SPA (200) solo si no existe el fichero, así que
+# las rutas ya prerenderizadas conservan su HTML propio.
+/blog/*        /index.html  200
+
+# Catch-all SPA fallback
+/*    /index.html    200
+
+# URLs antiguas de producto (UUID) -> slug
+/productos/e7cd74da-6327-426b-abf7-c2ddc6dfa216  /productos/split-panasonic-3000-frg-h-kit-bz35-zke  301
+/productos/6b69894f-77bf-4029-a569-0171d238058d  /productos/split-panasonic-2000-frg-h-kit-bz25-zke  301
+/productos/8d903dfd-718b-4494-ad19-8f319c264dd5  /productos/split-haier-geos-r-plus-25-2000-frg-h  301
+/productos/77d5306a-af85-45a7-a60f-0af066bd698d  /productos/split-haier-geos-r-plus-35-3000-frg-h  301
+/productos/2f0a1794-36da-4e06-b3cf-b3061b62e927  /productos/split-jonhson-de-2-000-frg-h-modelo-liceo25k  301

@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://climont.es/</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://climont.es/og-image.webp</image:loc>
+      <image:title>Aire acondicionado en Sevilla | Climatizaciones Montaño</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/servicios/instalacion</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://climont.es/office-cassette-ac.webp</image:loc>
+      <image:title>Instalación de Aire Acondicionado en Sevilla | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/servicios/mantenimiento</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://climont.es/maintenance-filter-cleaning.webp</image:loc>
+      <image:title>Mantenimiento de Aire Acondicionado en Sevilla | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/servicios/reparacion</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://climont.es/reparacion-mitsubishi-tecnico.webp</image:loc>
+      <image:title>Reparación de Aire Acondicionado en Sevilla | Técnico Aire Acondicionado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/servicios/ventilacion</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://climont.es/energy-efficient-building.webp</image:loc>
+      <image:title>Ventilación y Extracción en Sevilla | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/servicios/eficiencia</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://climont.es/energy-efficiency-green-world.webp</image:loc>
+      <image:title>Eficiencia Energética en Sevilla | Auditoría Energética | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/servicios/airzone</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://climont.es/airzone-ducts-system.webp</image:loc>
+      <image:title>Climatización Inteligente Airzone en Sevilla | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/servicios/aerotermia</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://climont.es/aerotermia-daikin-installer.webp</image:loc>
+      <image:title>Aerotermia en Sevilla | Sustituir Caldera de Gas | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/servicios/solar-termica</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://climont.es/solar-thermosiphon-acs-installer.webp</image:loc>
+      <image:title>Energía Solar Térmica y ACS en Sevilla | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/servicios/constructoras</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://climont.es/edificio-moderno-obra-nueva.webp</image:loc>
+      <image:title>Preinstalaciones para Constructoras en Sevilla | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/alcala-de-guadaira</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/dos-hermanas</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/mairena-del-aljarafe</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/tomares</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/carmona</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/la-rinconada</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/ecija</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/utrera</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/sevilla-capital</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/los-palacios</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/mairena-del-alcor</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/ciudades/coria-del-rio</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/marcas/daikin</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://climont.es/brands/daikin.svg</image:loc>
+      <image:title>Aire Acondicionado Daikin en Sevilla | Instalador Autorizado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/marcas/mitsubishi</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://climont.es/brands/mitsubishi.svg</image:loc>
+      <image:title>Aire Acondicionado Mitsubishi en Sevilla | Instalador Autorizado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/marcas/samsung</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://climont.es/brands/samsung.svg</image:loc>
+      <image:title>Aire Acondicionado Samsung en Sevilla | Instalador Autorizado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/marcas/lg</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://climont.es/brands/lg.svg</image:loc>
+      <image:title>Aire Acondicionado LG en Sevilla | Instalador Autorizado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/marcas/panasonic</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://climont.es/brands/panasonic.svg</image:loc>
+      <image:title>Aire Acondicionado Panasonic en Sevilla | Instalador Autorizado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/marcas/fujitsu</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://climont.es/brands/fujitsu.svg</image:loc>
+      <image:title>Aire Acondicionado Fujitsu en Sevilla | Instalador Autorizado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/marcas/hisense</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://climont.es/brands/hisense.svg</image:loc>
+      <image:title>Aire Acondicionado Hisense en Sevilla | Instalador Autorizado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/marcas/johnson</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://climont.es/brands/johnson.svg</image:loc>
+      <image:title>Aire Acondicionado Johnson en Sevilla | Instalador Autorizado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/marcas/hitachi</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://climont.es/brands/hitachi.svg</image:loc>
+      <image:title>Aire Acondicionado Hitachi en Sevilla | Instalador Autorizado | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/cuanto-consume-un-aire-inverter</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/cada-cuanto-limpiar-filtros-aire-acondicionado</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/que-es-la-aerotermia</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/aire-acondicionado-por-conductos-o-split</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/mejor-marca-aire-acondicionado</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/subvenciones-aerotermia-sevilla</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/aire-acondicionado-sin-unidad-exterior</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/que-potencia-aire-acondicionado-elegir</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/ruido-aire-acondicionado-comunidad</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/mejor-epoca-instalar-aire-acondicionado</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/aire-acondicionado-bomba-de-calor-frio-calor</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/prohibicion-gas-r410a-nueva-normativa-refrigerantes</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/mercado-climatizacion-2026-tendencias-sector</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/aerotermia-suelo-radiante-ventajas-instalacion</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/aire-acondicionado-wifi-domotica-casa-inteligente</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/novedades-daikin-perfera-mitsubishi-samsung-2026</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/hisense-air-master-ia-ifa-2026</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/daikin-x-series-aerotermia-combinada</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/hitachi-air365-max-pro-vrf-r32</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/mitsubishi-ecodan-r32-aerotermia-eficiente</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/transicion-refrigerantes-r290-aerotermia-2026</loc>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog/actualidad-sector-climatizacion-2026</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/blog</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/catalogo</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/codigos-de-errores</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/calculadora-frigorias</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/catalogos</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/obras/terminadas</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/obras/en-ejecucion</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/empleo</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/aviso-legal</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://climont.es/productos/split-panasonic-3000-frg-h-kit-bz35-zke</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://climont.eshttps://xvhyclucrnxplsanspaj.supabase.co/storage/v1/object/public/product-images/1792925357129-mz22tv.jpg</image:loc>
+      <image:title>Split Panasonic de 3.000 frg/h Modelo KIT-BZ35-ZKE | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/productos/split-panasonic-2000-frg-h-kit-bz25-zke</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://climont.eshttps://xvhyclucrnxplsanspaj.supabase.co/storage/v1/object/public/product-images/1792927394561-66um76.jpg</image:loc>
+      <image:title>Split Panasonic de 2.000 frg/h Modelo KIT-BZ25-ZKE | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/productos/split-haier-geos-r-plus-25-2000-frg-h</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://climont.eshttps://xvhyclucrnxplsanspaj.supabase.co/storage/v1/object/public/product-images/1792928246179-5crzhf.webp</image:loc>
+      <image:title>Split Haier Geos R+ 25 de 2.000 frg/h. | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/productos/split-haier-geos-r-plus-35-3000-frg-h</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://climont.eshttps://xvhyclucrnxplsanspaj.supabase.co/storage/v1/object/public/product-images/1792928812456-qiim0c.webp</image:loc>
+      <image:title>Split Haier Geos R+ 35 de 3.000 frg/h. | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://climont.es/productos/split-jonhson-de-2-000-frg-h-modelo-liceo25k</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://climont.eshttps://xvhyclucrnxplsanspaj.supabase.co/storage/v1/object/public/product-images/1794042107011-gfo7m6.jpg</image:loc>
+      <image:title>Split Jonhson de 2.000 frg/h Modelo LICEO25K | Climatizaciones Montaño, S.L.</image:title>
+    </image:image>
+  </url>
+
+</urlset>
