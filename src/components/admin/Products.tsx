@@ -412,6 +412,50 @@ export function Products() {
     setSaving(false);
   };
 
+  const handleDuplicate = async (prod: Product) => {
+    setSaving(true);
+    setError(null);
+    try {
+      const baseSlug = slugify(((prod.slug || prod.name) ? (prod.slug || prod.name) : "producto") + " copia");
+      const takenSlugs = products.filter((x) => x.id !== prod.id && !!x.slug).map((x) => x.slug as string);
+      const finalSlug = uniqueSlug(baseSlug, takenSlugs);
+      const { data: inserted, error: insertErr } = await supabase
+        .from("products")
+        .insert({
+          name: prod.name ? prod.name + " (copia)" : "(copia)",
+          slug: finalSlug,
+          description: prod.description,
+          price: prod.price,
+          category: prod.category,
+          image_url: prod.image_url,
+          tech_sheet_url: prod.tech_sheet_url,
+          featured: prod.featured,
+          is_active: prod.is_active,
+          sort_order: prod.sort_order,
+        })
+        .select()
+        .single();
+      if (insertErr || !inserted) throw insertErr || new Error("No insert");
+      const { data: imgs } = await supabase
+        .from("product_images")
+        .select("image_url, sort_order")
+        .eq("product_id", prod.id);
+      if (imgs && imgs.length) {
+        await supabase.from("product_images").insert(
+          imgs.map((img: any) => ({ product_id: inserted.id, image_url: img.image_url, sort_order: img.sort_order }))
+        );
+      }
+      await loadProducts();
+      setEditingId(inserted.id);
+      const next = products.find((x) => x.id === inserted.id);
+      if (next) openEditForm(next);
+    } catch {
+      setError("No se pudo duplicar el producto.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleDelete = async (id: string) => {
     if (!confirm('¿Seguro que quieres eliminar este producto?')) return;
     const { error: err } = await supabase.from('products').delete().eq('id', id);
