@@ -566,6 +566,13 @@ export function Products() {
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
+                  <button
+                    onClick={() => handleDuplicate(p)}
+                    className="p-2 rounded-lg text-ink-500 hover:bg-primary-50 hover:text-primary-700"
+                    title="Duplicar"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </button>
                         <button
                           onClick={() => handleDelete(p.id)}
                           className="p-2 rounded-lg text-ink-500 hover:bg-error-50 hover:text-error-600 transition-colors"
