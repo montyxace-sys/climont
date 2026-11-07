@@ -109,6 +109,17 @@ export function Catalog() {
           </div>
         </section>
 
+        {/* Oferta Black Friday (válida hasta el 30/11) */}
+        <section className="mb-8 rounded-2xl border border-yellow-400/40 bg-black/90 px-4 py-3 text-white shadow-lg">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-wide text-yellow-300">Oferta Black Friday</p>
+              <p className="text-xs text-white/85">Promoción válida hasta el 30 de noviembre. Consulta las ofertas destacadas.</p>
+            </div>
+            <span className="rounded-full bg-yellow-400 px-2.5 py-1 text-xs font-bold text-black">Promo</span>
+          </div>
+        </section>
+
         {/* Catalog content */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
           {/* Search + filters */}
@@ -197,8 +208,8 @@ export function Catalog() {
                       </div>
                     )}
                     {product.featured && (
-                      <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 bg-warning-500 text-white text-xs font-semibold rounded-full shadow-lg">
-                        <Star className="w-3 h-3 fill-white" /> Destacado
+                      <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 bg-black text-yellow-400 text-xs font-bold rounded-full shadow-lg">
+                        <Star className="w-3 h-3 fill-yellow-400" /> BLACK FRIDAY
                       </span>
                     )}
                     <span className="absolute top-3 right-3 px-2.5 py-1 bg-white/90 backdrop-blur text-ink-700 text-xs font-medium rounded-full shadow-sm">
