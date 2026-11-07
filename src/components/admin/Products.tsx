@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Plus, Pencil, Trash2, X, Star, Eye, EyeOff, Euro, Save, Package, Upload, ImageIcon, Loader2, FileText, ArrowRight, Phone, MessageCircle, Mail, ShieldCheck, Link2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Star, Eye, EyeOff, Euro, Save, Package, Upload, ImageIcon, Loader2, FileText, ArrowRight, Copy, Phone, MessageCircle, Mail, ShieldCheck, Link2 } from 'lucide-react';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { supabase } from '@/lib/supabase';
 import { slugify, uniqueSlug, SLUG_PATTERN } from '@/lib/slug';
