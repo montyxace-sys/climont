@@ -1,7 +1,8 @@
 ﻿import { useState, useEffect } from 'react';
-import { Download } from 'lucide-react';
+import { Download, FileText, Eye, X, ArrowLeft, Loader2 } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { supabase } from '@/lib/supabase';
+import { navigate } from '@/lib/navigate';
 
 type FileRow = {
   id: string;
@@ -16,11 +17,26 @@ type FileRow = {
   created_at: string;
 };
 
+const isPdf = (file: FileRow) => {
+  const ext = (file.file_type || '').toUpperCase();
+  const path = file.file_path.toUpperCase();
+  return ext === 'PDF' || path.endsWith('.PDF');
+};
+
+const formatSize = (bytes: number | null) => {
+  if (!bytes) return '';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
+
 export default function PublicDownloads() {
   useSeo({ title: 'Centro de Descargas | Climatizaciones Montaño, S.L.', description: 'Descarga certificados, fichas técnicas y documentación profesional.', canonicalPath: '/centro-de-descargas/' });
   const [files, setFiles] = useState<FileRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [previewFile, setPreviewFile] = useState<FileRow | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -41,53 +57,134 @@ export default function PublicDownloads() {
     })();
   }, []);
 
-  const handleDownload = async (file: FileRow) => {
-    if (file.external_url) { window.open(file.external_url, '_blank', 'noopener,noreferrer'); return; }
-    try {
-      const { data } = supabase.storage.from('downloads').getPublicUrl(file.file_path);
-      if (data?.publicUrl) {
-        const a = document.createElement('a');
-        a.href = data.publicUrl; a.download = file.title; a.target = '_blank'; a.click(); return;
-      }
-      throw new Error('no signed url');
-    } catch { setError('No se pudo descargar el archivo.'); }
+  const getPublicUrl = (filePath: string): string => {
+    if (filePath.startsWith('http')) return filePath;
+    const { data } = supabase.storage.from('downloads').getPublicUrl(filePath);
+    return data?.publicUrl || filePath;
   };
 
+  const handleDownload = (file: FileRow) => {
+    if (file.external_url) { window.open(file.external_url, '_blank', 'noopener,noreferrer'); return; }
+    const url = getPublicUrl(file.file_path);
+    const a = document.createElement('a');
+    a.href = url; a.download = file.title; a.target = '_blank'; a.click();
+  };
+
+  const handlePreview = (file: FileRow) => {
+    if (file.external_url) { window.open(file.external_url, '_blank', 'noopener,noreferrer'); return; }
+    setPreviewFile(file);
+    setPreviewUrl(getPublicUrl(file.file_path));
+  };
+
+  const closePreview = () => { setPreviewFile(null); setPreviewUrl(null); };
+
+  const categories = [...new Set(files.map((f) => f.category))].sort();
+
   return (
-    <div className="min-h-screen bg-ink-50 px-4 py-12">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold text-ink-900 mb-6">Centro de descargas — acceso público</h1>
-        <p className="text-ink-500 mb-6">Todos los archivos están disponibles sin necesidad de registrarse.</p>
-        {loading && <p className="text-ink-500">Cargando…</p>}
-        {error && <p className="text-red-600 mb-4">{error}</p>}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {files.map((file) => (
-            <div key={file.id} className="bg-white rounded-2xl border border-ink-100 shadow-sm p-4">
-              {file.thumbnail_url ? (
-                <img src={file.thumbnail_url} alt={file.title} className="w-full h-32 object-cover rounded-lg mb-3" loading="lazy" decoding="async" />
-              ) : (
-                <div className="w-full h-32 rounded-lg mb-3 flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-50 text-primary-600 font-bold uppercase text-xs">
-                  {file.title.slice(0, 18)}
-                </div>
-              )}
-              <h3 className="font-semibold text-ink-900 text-sm truncate">{file.title}</h3>
-              {file.description && <p className="text-xs text-ink-500 mt-1 line-clamp-2">{file.description}</p>}
-              <div className="mt-3 flex items-center justify-between gap-2">
-                <span className="text-xs text-ink-400">
-                  {file.file_type || 'Archivo'}
-                  {file.file_size ? ` · ${Math.round(file.file_size / (1024 * 1024))} MB` : ''}
-                </span>
-                <button
-                  onClick={() => handleDownload(file)}
-                  className="rounded bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-700"
-                >
-                  Descargar
-                </button>
-              </div>
+    <div className="min-h-screen bg-ink-50">
+      <div className="bg-ink-900 text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+              <FileText className="w-6 h-6 text-white" />
             </div>
-          ))}
+            <div>
+              <h1 className="font-display font-bold text-sm sm:text-base">Centro de Descargas</h1>
+              <p className="text-ink-400 text-xs">Documentos públicos</p>
+            </div>
+          </div>
+          <button onClick={() => navigate('/')} className="flex items-center gap-2 px-3 py-2 bg-ink-800 hover:bg-ink-700 text-ink-300 hover:text-white text-sm font-medium rounded-lg transition-colors">
+            <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Volver al inicio</span>
+          </button>
         </div>
       </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        {loading && <p className="text-ink-500">Cargando…</p>}
+        {error && <p className="text-red-600 mb-4">{error}</p>}
+
+        {!loading && files.length === 0 && !error && (
+          <div className="text-center py-16">
+            <FileText className="w-12 h-12 text-ink-300 mx-auto mb-4" />
+            <h2 className="font-display text-lg font-bold text-ink-900 mb-2">Sin archivos disponibles</h2>
+            <p className="text-ink-500">Todavía no hay documentos públicos. Vuelve a consultar más tarde.</p>
+          </div>
+        )}
+
+        {categories.map((cat) => (
+          <div key={cat} className="mb-8">
+            <h2 className="font-display text-lg font-bold text-ink-900 mb-4 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-primary-600" />
+              {cat}
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {files.filter((f) => f.category === cat).map((file) => (
+                <div key={file.id} className="bg-white border border-ink-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-start gap-3">
+                    {file.thumbnail_url ? (
+                      <img src={file.thumbnail_url} alt={file.title} className="w-16 h-16 rounded-xl object-cover flex-shrink-0 ring-1 ring-ink-100" />
+                    ) : (
+                      <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
+                        <FileText className="w-6 h-6 text-primary-600" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-ink-900 text-sm mb-1">{file.title}</h3>
+                      {file.description && <p className="text-ink-500 text-xs leading-relaxed mb-2">{file.description}</p>}
+                      <div className="flex items-center gap-3 text-xs text-ink-400 mb-3">
+                        {file.file_type && <span>{file.file_type}</span>}
+                        {file.file_size && <span>{formatSize(file.file_size)}</span>}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {isPdf(file) && (
+                          <button onClick={() => handlePreview(file)}
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold rounded-lg transition-colors">
+                            <Eye className="w-4 h-4" /> Ver PDF
+                          </button>
+                        )}
+                        <button onClick={() => handleDownload(file)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors">
+                          <Download className="w-4 h-4" /> Descargar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {previewFile && (
+        <div className="fixed inset-0 z-[100] bg-ink-950/80 backdrop-blur-sm flex flex-col" onClick={closePreview}>
+          <div className="bg-white flex items-center justify-between px-4 py-3 border-b border-ink-100" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-2 min-w-0">
+              <FileText className="w-5 h-5 text-primary-600 flex-shrink-0" />
+              <span className="font-semibold text-ink-900 text-sm truncate">{previewFile.title}</span>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {previewUrl && (
+                <a href={previewUrl} download={previewFile.title} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors">
+                  <Download className="w-4 h-4" /> Descargar
+                </a>
+              )}
+              <button onClick={closePreview}
+                className="flex items-center justify-center w-10 h-10 bg-ink-100 hover:bg-ink-200 text-ink-700 rounded-lg transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 bg-ink-200 flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            {previewUrl ? (
+              <iframe src={previewUrl} title={previewFile.title} className="w-full h-full border-0" />
+            ) : (
+              <p className="text-ink-500 text-sm">No se pudo cargar el documento.</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

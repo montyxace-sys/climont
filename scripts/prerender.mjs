@@ -92,7 +92,8 @@ await build({
       import { CITIES } from './src/data/cities.ts';
       import { BRANDS } from './src/data/brands.ts';
       import { BLOG_POSTS } from './src/data/blog.ts';
-      export const DATA = { SERVICES, CITIES, BRANDS, BLOG_POSTS };
+      import { MANUFACTURER_CATALOGS } from './src/data/catalogs.ts';
+      export const DATA = { SERVICES, CITIES, BRANDS, BLOG_POSTS, MANUFACTURER_CATALOGS };
     `,
     resolveDir: projectRoot,
     loader: 'ts',
@@ -588,10 +589,53 @@ for (const route of routes) {
   fs.writeFileSync(path.join(distDir, '404.html'), html404, 'utf8');
 }
 
+// PDFs y catálogos externos (fabricantes) + documentos hospedados
+const today = new Date().toISOString().slice(0, 10);
+const extraPdfUrls = new Set();
+for (const c of (DATA.MANUFACTURER_CATALOGS || [])) {
+  if (c && c.url && /^https?:\/\//.test(c.url)) extraPdfUrls.add(c.url);
+}
+
+// Documentos hospedados en Supabase (download_files activos)
+const SUPABASE_URL_SITEMAP = process.env.VITE_SUPABASE_URL || 'https://xvhyclucrnxplsanspaj.supabase.co';
+const SUPABASE_ANON_KEY_SITEMAP =
+  process.env.VITE_SUPABASE_ANON_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aHljbHVjcm54cGxzYW5zcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5MTMyODQsImV4cCI6MjEwODQ4OTI4NH0.QFHdgQNNk8L-fSQ__cbKHK807QHXbGDhjk5Cxfs8csM';
+try {
+  const res = await fetch(
+    `${SUPABASE_URL_SITEMAP}/rest/v1/download_files?select=file_path,external_url,is_active&is_active=eq.true`,
+    { headers: { apikey: SUPABASE_ANON_KEY_SITEMAP, Authorization: `Bearer ${SUPABASE_ANON_KEY_SITEMAP}` } }
+  );
+  if (res.ok) {
+    const rows = await res.json();
+    for (const row of rows || []) {
+      if (row.external_url && /^https?:\/\//.test(row.external_url)) {
+        extraPdfUrls.add(row.external_url);
+      } else if (row.file_path) {
+        if (/^https?:\/\//.test(row.file_path)) {
+          extraPdfUrls.add(row.file_path);
+        } else {
+          extraPdfUrls.add(`${SUPABASE_URL_SITEMAP}/storage/v1/object/public/downloads/${encodeURIComponent(row.file_path).replace(/%2F/g, '/')}`);
+        }
+      }
+    }
+  }
+} catch (e) {
+  console.warn('No se pudieron leer download_files para el sitemap:', e && e.message);
+}
+
+const extraSitemapEntries = [...extraPdfUrls]
+  .map((u) => `  <url>
+    <loc>${escXml(u)}</loc>
+    <lastmod>${escXml(today)}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>`)
+  .join('\n\n');
+
 // ---------------------------------------------------------------------------
 // 4. Generar sitemap.xml solo con las rutas que existen de verdad
 // ---------------------------------------------------------------------------
-const today = new Date().toISOString().slice(0, 10);
 const indexable = routes.filter((route) => !route.noindex);
 
 const sitemapEntries = indexable
@@ -614,7 +658,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
-${sitemapEntries}
+${sitemapEntries}${extraSitemapEntries ? '\n\n' + extraSitemapEntries : ''}
 
 </urlset>
 `;
@@ -631,7 +675,7 @@ const countBy = (prefix) =>
 
 console.log('Prerender OK');
 console.log(`  Rutas con HTML propio : ${routes.length}`);
-console.log(`  URLs en el sitemap    : ${indexable.length}`);
+console.log(`  URLs en el sitemap    : ${indexable.length + extraPdfUrls.size}`);
 console.log(
   `  Servicios ${countBy('/servicios/')} | Ciudades ${countBy('/ciudades/')} | Marcas ${countBy('/marcas/')} | Blog ${countBy('/blog/')} | Productos ${countBy('/productos/')}`,
 );
