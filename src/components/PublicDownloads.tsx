@@ -1,82 +1,62 @@
 ﻿import { useState, useEffect } from 'react';
-import { Download, FileText, Eye, X, ArrowLeft, Loader2 } from 'lucide-react';
+import { Download, FileText, Eye, X, ArrowLeft } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
-import { supabase } from '@/lib/supabase';
 import { navigate } from '@/lib/navigate';
 
-type FileRow = {
-  id: string;
+type PdfItem = {
   title: string;
-  description: string | null;
-  category: string;
-  file_path: string;
-  file_size: number | null;
-  file_type: string | null;
-  external_url: string | null;
-  thumbnail_url: string | null;
-  created_at: string;
+  file: string;
+  description?: string | null;
+  category?: string;
+  size?: string;
+  thumbnail?: string | null;
 };
 
-const isPdf = (file: FileRow) => {
-  const ext = (file.file_type || '').toUpperCase();
-  const path = file.file_path.toUpperCase();
-  return ext === 'PDF' || path.endsWith('.PDF');
-};
-
-const formatSize = (bytes: number | null) => {
-  if (!bytes) return '';
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-};
+const isPdf = (file: string) => file.toLowerCase().endsWith('.pdf');
 
 export default function PublicDownloads() {
   useSeo({ title: 'Documentos y PDFs | Climatizaciones Montaño, S.L.', description: 'Descarga certificados, fichas técnicas, tarifas y documentación profesional en PDF.', canonicalPath: '/documentos' });
-  const [files, setFiles] = useState<FileRow[]>([]);
+  const [items, setItems] = useState<PdfItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [previewFile, setPreviewFile] = useState<FileRow | null>(null);
+  const [previewFile, setPreviewFile] = useState<PdfItem | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
       try {
-        const { data, error: e } = await supabase
-          .from('download_files')
-          .select('id, title, description, category, file_path, file_size, file_type, created_at, external_url, thumbnail_url')
-          .eq('is_active', true)
-          .order('created_at', { ascending: false });
-        if (e) throw e;
-        setFiles(data || []);
+        const res = await fetch('/documentos.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('no manifest');
+        const data = await res.json();
+        setItems(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error('[download center] public load failed', err);
-        setError('No se pudo cargar el centro de descargas. Inténtalo más tarde.');
+        console.error('[documentos] load failed', err);
+        setError('No se pudo cargar el listado de documentos.');
       } finally {
         setLoading(false);
       }
     })();
   }, []);
 
-  const getFileUrl = (file: FileRow): string => {
-    if (file.external_url) return file.external_url;
-    if (file.file_path.startsWith('http')) return file.file_path;
-    return `/descargas/${file.file_path}`;
+  const getFileUrl = (file: string) => {
+    if (/^https?:\/\//.test(file)) return file;
+    return `/descargas/${file}`;
   };
 
-  const handleDownload = (file: FileRow) => {
-    const url = getFileUrl(file);
+  const handleDownload = (item: PdfItem) => {
+    const url = getFileUrl(item.file);
     const a = document.createElement('a');
-    a.href = url; a.download = file.title; a.target = '_blank'; a.click();
+    a.href = url; a.download = item.title; a.target = '_blank'; a.click();
   };
 
-  const handlePreview = (file: FileRow) => {
-    setPreviewFile(file);
-    setPreviewUrl(getFileUrl(file));
+  const handlePreview = (item: PdfItem) => {
+    setPreviewFile(item);
+    setPreviewUrl(getFileUrl(item.file));
   };
 
   const closePreview = () => { setPreviewFile(null); setPreviewUrl(null); };
 
-  const categories = [...new Set(files.map((f) => f.category))].sort();
+  const categories = [...new Set(items.map((i) => i.category || 'General'))].sort();
 
   return (
     <div className="min-h-screen bg-ink-50">
@@ -87,8 +67,8 @@ export default function PublicDownloads() {
               <FileText className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="font-display font-bold text-sm sm:text-base">Centro de Descargas</h1>
-              <p className="text-ink-400 text-xs">Documentos públicos</p>
+              <h1 className="font-display font-bold text-sm sm:text-base">Documentos y PDFs</h1>
+              <p className="text-ink-400 text-xs">Climatizaciones Montaño, S.L.</p>
             </div>
           </div>
           <button onClick={() => navigate('/')} className="flex items-center gap-2 px-3 py-2 bg-ink-800 hover:bg-ink-700 text-ink-300 hover:text-white text-sm font-medium rounded-lg transition-colors">
@@ -98,14 +78,18 @@ export default function PublicDownloads() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        <p className="text-ink-500 text-sm mb-6">
+          Documentación técnica, tarifas y certificados en PDF. Pulsa "Ver PDF" para previsualizar o "Descargar" para guardar el archivo.
+        </p>
+
         {loading && <p className="text-ink-500">Cargando…</p>}
         {error && <p className="text-red-600 mb-4">{error}</p>}
 
-        {!loading && files.length === 0 && !error && (
+        {!loading && items.length === 0 && !error && (
           <div className="text-center py-16">
             <FileText className="w-12 h-12 text-ink-300 mx-auto mb-4" />
-            <h2 className="font-display text-lg font-bold text-ink-900 mb-2">Sin archivos disponibles</h2>
-            <p className="text-ink-500">Todavía no hay documentos públicos. Vuelve a consultar más tarde.</p>
+            <h2 className="font-display text-lg font-bold text-ink-900 mb-2">Sin documentos disponibles</h2>
+            <p className="text-ink-500">Todavía no hay PDFs publicados. Vuelve a consultar más tarde.</p>
           </div>
         )}
 
@@ -116,31 +100,28 @@ export default function PublicDownloads() {
               {cat}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
-              {files.filter((f) => f.category === cat).map((file) => (
-                <div key={file.id} className="bg-white border border-ink-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+              {items.filter((i) => (i.category || 'General') === cat).map((item, idx) => (
+                <div key={idx} className="bg-white border border-ink-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex items-start gap-3">
-                    {file.thumbnail_url ? (
-                      <img src={file.thumbnail_url} alt={file.title} className="w-16 h-16 rounded-xl object-cover flex-shrink-0 ring-1 ring-ink-100" />
+                    {item.thumbnail ? (
+                      <img src={item.thumbnail} alt={item.title} className="w-16 h-16 rounded-xl object-cover flex-shrink-0 ring-1 ring-ink-100" />
                     ) : (
                       <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
                         <FileText className="w-6 h-6 text-primary-600" />
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-ink-900 text-sm mb-1">{file.title}</h3>
-                      {file.description && <p className="text-ink-500 text-xs leading-relaxed mb-2">{file.description}</p>}
-                      <div className="flex items-center gap-3 text-xs text-ink-400 mb-3">
-                        {file.file_type && <span>{file.file_type}</span>}
-                        {file.file_size && <span>{formatSize(file.file_size)}</span>}
-                      </div>
+                      <h3 className="font-semibold text-ink-900 text-sm mb-1">{item.title}</h3>
+                      {item.description && <p className="text-ink-500 text-xs leading-relaxed mb-2">{item.description}</p>}
+                      {item.size && <div className="text-xs text-ink-400 mb-3">{item.size}</div>}
                       <div className="flex items-center gap-2">
-                        {isPdf(file) && (
-                          <button onClick={() => handlePreview(file)}
+                        {isPdf(item.file) && (
+                          <button onClick={() => handlePreview(item)}
                             className="inline-flex items-center gap-2 px-4 py-2 bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold rounded-lg transition-colors">
                             <Eye className="w-4 h-4" /> Ver PDF
                           </button>
                         )}
-                        <button onClick={() => handleDownload(file)}
+                        <button onClick={() => handleDownload(item)}
                           className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors">
                           <Download className="w-4 h-4" /> Descargar
                         </button>

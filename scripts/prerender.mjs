@@ -605,32 +605,23 @@ for (const c of (DATA.MANUFACTURER_CATALOGS || [])) {
   if (c && c.url && /^https?:\/\//.test(c.url)) extraPdfUrls.add(c.url);
 }
 
-// Documentos hospedados en Supabase (download_files activos)
-const SUPABASE_URL_SITEMAP = process.env.VITE_SUPABASE_URL || 'https://xvhyclucrnxplsanspaj.supabase.co';
-const SUPABASE_ANON_KEY_SITEMAP =
-  process.env.VITE_SUPABASE_ANON_KEY ||
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aHljbHVjcm54cGxzYW5zcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5MTMyODQsImV4cCI6MjEwODQ4OTI4NH0.QFHdgQNNk8L-fSQ__cbKHK807QHXbGDhjk5Cxfs8csM';
+// Documentos hospedados (manifest public/documentos.json)
 try {
-  const res = await fetch(
-    `${SUPABASE_URL_SITEMAP}/rest/v1/download_files?select=file_path,external_url,is_active&is_active=eq.true`,
-    { headers: { apikey: SUPABASE_ANON_KEY_SITEMAP, Authorization: `Bearer ${SUPABASE_ANON_KEY_SITEMAP}` } }
-  );
-  if (res.ok) {
-    const rows = await res.json();
-    for (const row of rows || []) {
-      if (row.external_url && /^https?:\/\//.test(row.external_url)) {
-        extraPdfUrls.add(row.external_url);
-      } else if (row.file_path) {
-        if (/^https?:\/\//.test(row.file_path)) {
-          extraPdfUrls.add(row.file_path);
+  const manifestPath = path.join(projectRoot, 'public', 'documentos.json');
+  if (fs.existsSync(manifestPath)) {
+    const rows = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    for (const row of (Array.isArray(rows) ? rows : [])) {
+      if (row && row.file) {
+        if (/^https?:\/\//.test(row.file)) {
+          extraPdfUrls.add(row.file);
         } else {
-          extraPdfUrls.add(`https://climont.es/descargas/${row.file_path}`);
+          extraPdfUrls.add(`https://climont.es/descargas/${row.file}`);
         }
       }
     }
   }
 } catch (e) {
-  console.warn('No se pudieron leer download_files para el sitemap:', e && e.message);
+  console.warn('No se pudo leer documentos.json para el sitemap:', e && e.message);
 }
 
 const extraSitemapEntries = [...extraPdfUrls]
