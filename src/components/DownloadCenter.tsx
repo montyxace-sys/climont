@@ -5,7 +5,6 @@ import {
   XCircle, Clock, KeyRound, LogOut, FolderOpen, Eye, X,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import PublicDownloads from './PublicDownloads';
 import type { Session } from '@supabase/supabase-js';
 import { useSeo } from '@/hooks/useSeo';
 import { navigate } from '@/lib/navigate';
@@ -74,13 +73,12 @@ export function DownloadCenter() {
     );
   }
 
-  // Public access: show files directly without login
-  return <PublicDownloads />;
+  // Clientes registrados: muestran los documentos y pueden previsualizarlos/descargarlos.
+  if (session) {
+    return <DownloadCenterContent session={session} onSignOut={signOut} />;
+  }
 
-  // (login path kept below but no longer reached)
-  // Acceso público: no se requiere registro para ver/descargar los documentos que esté marcados como públicos.
-  return <PublicDownloads />;
-
+  // Visitantes sin sesión: pantalla de acceso.
   return (
     <div className="min-h-screen bg-ink-950 flex items-center justify-center px-4 py-12 relative overflow-hidden">
       <div className="absolute inset-0 opacity-30">
@@ -108,7 +106,7 @@ export function DownloadCenter() {
             className="mt-6 w-full flex items-center justify-center gap-2 text-sm text-ink-500 hover:text-ink-300 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Volver a la web
+            Volver al inicio
           </button>
         </div>
       </div>
@@ -669,6 +667,9 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
           <h1 className="font-display text-xl font-bold text-ink-900 mb-2">No tienes perfil de descargas</h1>
           <p className="text-ink-500 mb-6">Tu cuenta no está vinculada al centro de descargas. Contacta con nosotros para más información.</p>
           <button onClick={onSignOut} className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">Cerrar sesión</button>
+          <button onClick={() => navigate('/')} className="mt-4 flex items-center justify-center gap-2 mx-auto text-sm text-ink-500 hover:text-primary-700 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Volver al inicio
+          </button>
         </div>
       </div>
     );
@@ -685,6 +686,9 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
           <p className="text-ink-500 mb-2">Hola, {userProfile.full_name}.</p>
           <p className="text-ink-500 mb-6">Tu solicitud de acceso está pendiente de aprobación. Nuestro equipo la revisará y te notificará por email cuando sea aprobada. Este proceso suele tardar 24-48 horas laborables.</p>
           <button onClick={onSignOut} className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">Cerrar sesión</button>
+          <button onClick={() => navigate('/')} className="mt-4 flex items-center justify-center gap-2 mx-auto text-sm text-ink-500 hover:text-primary-700 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Volver al inicio
+          </button>
         </div>
       </div>
     );
@@ -700,6 +704,9 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
           <h1 className="font-display text-xl font-bold text-ink-900 mb-2">Acceso denegado</h1>
           <p className="text-ink-500 mb-6">Tu solicitud de acceso al centro de descargas no ha sido aprobada. Si crees que es un error, contáctanos por teléfono.</p>
           <button onClick={onSignOut} className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">Cerrar sesión</button>
+          <button onClick={() => navigate('/')} className="mt-4 flex items-center justify-center gap-2 mx-auto text-sm text-ink-500 hover:text-primary-700 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Volver al inicio
+          </button>
         </div>
       </div>
     );
@@ -721,9 +728,14 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
               <p className="text-ink-400 text-xs">Bienvenido, {userProfile.full_name}</p>
             </div>
           </div>
-          <button onClick={onSignOut} className="flex items-center gap-2 px-3 py-2 bg-ink-800 hover:bg-ink-700 text-ink-300 hover:text-white text-sm font-medium rounded-lg transition-colors">
-            <LogOut className="w-4 h-4" /> <span className="hidden sm:inline">Cerrar sesión</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button onClick={() => navigate('/')} className="flex items-center gap-2 px-3 py-2 bg-ink-800 hover:bg-ink-700 text-ink-300 hover:text-white text-sm font-medium rounded-lg transition-colors">
+              <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Volver al inicio</span>
+            </button>
+            <button onClick={onSignOut} className="flex items-center gap-2 px-3 py-2 bg-ink-800 hover:bg-ink-700 text-ink-300 hover:text-white text-sm font-medium rounded-lg transition-colors">
+              <LogOut className="w-4 h-4" /> <span className="hidden sm:inline">Cerrar sesión</span>
+            </button>
+          </div>
         </div>
       </div>
 
