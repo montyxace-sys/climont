@@ -1,8 +1,8 @@
 name: Publicar web
 
 # Cada push a main compila y publica en los dos destinos:
-#   1. Netlify  -> https://climont.es        (hosting principal)
-#   2. GitHub Pages -> https://respaldo.climont.es (copia de respaldo)
+#   1. GitHub Pages -> https://climont.es (hosting principal, rama gh-pages)
+#   2. Netlify      -> copia de respaldo
 
 on:
   push:
@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   publicar:
@@ -44,8 +44,9 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: npx --yes netlify-cli@latest deploy --prod --dir=dist --message "GitHub ${GITHUB_SHA::7}"
 
-      - name: Publicar copia en GitHub Pages
+      - name: Publicar en GitHub Pages (climont.es)
         if: always()
         env:
           PAGES_TOKEN: ${{ secrets.PAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 scripts/deploy_pages.py

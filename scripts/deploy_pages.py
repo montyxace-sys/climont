@@ -1,4 +1,4 @@
-"""Publica dist/ en la copia de respaldo de GitHub Pages (respaldo.climont.es).
+"""Publica dist/ en la copia de respaldo de GitHub Pages (climont.es).
 
 Se usa desde GitHub Actions (secreto PAGES_TOKEN) y también en local:
 
@@ -17,7 +17,8 @@ import tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIST = os.path.join(ROOT, "dist")
 OWNER = "montyxace-sys"
-REPO = "climont-web"
+REPO = "climont"
+BRANCH = "gh-pages"
 CANONICAL = "climont.es"
 PAGES_DOMAIN = "climont.es"
 EXCLUDE = {"_headers", "_redirects", "product-slugs.json"}
@@ -45,16 +46,17 @@ REDIRECT_JS = """
 
 
 def token():
-    env = os.environ.get("PAGES_TOKEN", "").strip()
-    if env:
-        return env
+    for env_name in ("PAGES_TOKEN", "GITHUB_TOKEN"):
+        value = os.environ.get(env_name, "").strip()
+        if value:
+            return value
     path = os.path.join(os.environ.get("TEMP", tempfile.gettempdir()), "opencode", "gh_token.txt")
     if os.path.exists(path):
         with open(path, encoding="ascii") as f:
             value = f.read().strip()
         if value:
             return value
-    raise SystemExit("Falta PAGES_TOKEN (o %TEMP%/opencode/gh_token.txt)")
+    raise SystemExit("Falta PAGES_TOKEN/GITHUB_TOKEN (o %TEMP%/opencode/gh_token.txt)")
 
 
 TOKEN = token()
@@ -117,5 +119,5 @@ run("git", "config", "user.email", "web@climont.es")
 run("git", "config", "user.name", "Climont deploy")
 run("git", "add", "-A")
 run("git", "commit", "-q", "-m", "web compilada")
-run("git", "push", "-q", "-f", f"https://x-access-token:{TOKEN}@github.com/{OWNER}/{REPO}.git", "main")
+run("git", "push", "-q", "-f", f"https://x-access-token:{TOKEN}@github.com/{OWNER}/{REPO}.git", f"main:{BRANCH}")
 print("push OK ->", f"{OWNER}/{REPO}", "->", PAGES_DOMAIN)
