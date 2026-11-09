@@ -584,47 +584,30 @@ function DownloadCenterContent({ session, onSignOut }: { session: import('@supab
     })();
   }, [session]);
 
-  const getSignedUrl = async (filePath: string): Promise<string | null> => {
-    const { data, error: urlError } = await supabase.storage
-      .from('downloads')
-      .createSignedUrl(filePath, 300);
-    if (urlError || !data?.signedUrl) return null;
-    return data.signedUrl;
+  const getFileUrl = (file: DownloadFile): string => {
+    if (file.external_url) return file.external_url;
+    if (file.file_path.startsWith('http')) return file.file_path;
+    return `/descargas/${file.file_path}`;
   };
 
   const handleDownload = async (file: DownloadFile) => {
-    if (file.external_url) {
-      window.open(file.external_url, '_blank', 'noopener,noreferrer');
-      return;
-    }
-    setDownloading(file.id);
-    try {
-      const url = await getSignedUrl(file.file_path);
-      if (!url) throw new Error('No URL');
-
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = file.title;
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch {
-      setError('No se pudo descargar el archivo.');
-    } finally {
-      setDownloading(null);
-    }
+    const url = getFileUrl(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = file.title;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handlePreview = async (file: DownloadFile) => {
-    if (file.external_url) { window.open(file.external_url, '_blank', 'noopener,noreferrer'); return; }
+    if (!isPdf(file)) return;
     setPreviewLoading(true);
     setPreviewFile(file);
     setPreviewUrl(null);
     try {
-      const url = await getSignedUrl(file.file_path);
-      if (!url) throw new Error('No URL');
-      setPreviewUrl(url);
+      setPreviewUrl(getFileUrl(file));
     } catch {
       setError('No se pudo abrir el archivo para visualización.');
       setPreviewFile(null);
