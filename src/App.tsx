@@ -39,6 +39,7 @@ const LogoDownload = lazy(() => import('@/components/LogoDownload').then((m) => 
 const Careers = lazy(() => import('@/components/Careers').then((m) => ({ default: m.Careers })));
 const ErrorCodesPage = lazy(() => import('@/components/ErrorCodesPage').then((m) => ({ default: m.ErrorCodesPage })));
 const DownloadCenter = lazy(() => import('@/components/DownloadCenter').then((m) => ({ default: m.DownloadCenter })));
+const PublicDownloads = lazy(() => import('@/components/PublicDownloads'));
 const FrigoriasCalculator = lazy(() => import('@/components/FrigoriasCalculator').then((m) => ({ default: m.FrigoriasCalculator })));
 const CookiePolicy = lazy(() => import('@/components/CookiePolicy').then((m) => ({ default: m.CookiePolicy })));
 const LegalNotice = lazy(() => import('@/components/LegalNotice').then((m) => ({ default: m.LegalNotice })));
@@ -201,8 +202,9 @@ function AppRoutes() {
   const isLogoDownload = path === '/descargar-logo';
   const isErrorCodes = path === '/codigos-de-errores';
   const isDownloadCenter = path === '/centro-de-descargas';
+const isDocumentos = path === '/documentos';
   const isFrigorias = path === '/calculadora-frigorias';
-  const isNotFound = !isAdmin && !isServicePage && !isCityPage && !isBrandPage && !isBlogPost && !isBlogList && !isCatalog && !isCatalogos && !isObrasTerminadas && !isObrasEnEjecucion && !isCareers && !isCookiePolicy && !isLegalNotice && !isLogoDownload && !isErrorCodes && !isDownloadCenter && !isFrigorias && !isProductPage && path !== '/' && path !== '/index.html';
+  const isNotFound = !isAdmin && !isServicePage && !isCityPage && !isBrandPage && !isBlogPost && !isBlogList && !isCatalog && !isCatalogos && !isObrasTerminadas && !isObrasEnEjecucion && !isCareers && !isCookiePolicy && !isLegalNotice && !isLogoDownload && !isErrorCodes && !isDownloadCenter && !isDocumentos && !isFrigorias && !isProductPage && path !== '/' && path !== '/index.html';
 
   useSeo({
     title: isCookiePolicy
@@ -395,6 +397,10 @@ function AppRoutes() {
 
   if (isCatalogos) {
     return <><CatalogosPage /><Footer /><FloatingPhoneButton /></>;
+  }
+
+  if (isDocumentos) {
+    return <><PublicDownloads /><Footer /><FloatingPhoneButton /></>;
   }
 
   if (isObrasTerminadas) {

@@ -227,6 +227,13 @@ const STATIC_PAGES = [
     priority: 0.6,
   },
   {
+    path: '/documentos',
+    title: 'Documentos y PDFs | Climatizaciones Montaño, S.L.',
+    description:
+      'Descarga certificados, fichas técnicas, tarifas y documentación profesional en PDF. Archivos subidos por Climatizaciones Montaño.',
+    priority: 0.6,
+  },
+  {
     path: '/obras/terminadas',
     title: 'Obras terminadas de climatización | Climatizaciones Montaño, S.L.',
     description:
@@ -429,6 +436,8 @@ const BLOG_LINKS = DATA.BLOG_POSTS.map((post) => [`/blog/${post.slug}`, post.tit
 const PAGE_LINKS = [
   ['/', 'Inicio'],
   ['/catalogo', 'Catálogo de productos'],
+  ['/catalogos', 'Catálogos y tarifas'],
+  ['/documentos', 'Documentos y PDFs'],
   ['/blog', 'Blog de climatización'],
   ['/calculadora-frigorias', 'Calculadora de frigorías'],
   ['/codigos-de-errores', 'Códigos de errores'],
@@ -615,7 +624,7 @@ try {
         if (/^https?:\/\//.test(row.file_path)) {
           extraPdfUrls.add(row.file_path);
         } else {
-          extraPdfUrls.add(`${SUPABASE_URL_SITEMAP}/storage/v1/object/public/downloads/${encodeURIComponent(row.file_path).replace(/%2F/g, '/')}`);
+          extraPdfUrls.add(`https://climont.es/descargas/${row.file_path}`);
         }
       }
     }

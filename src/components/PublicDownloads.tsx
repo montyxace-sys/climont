@@ -31,7 +31,7 @@ const formatSize = (bytes: number | null) => {
 };
 
 export default function PublicDownloads() {
-  useSeo({ title: 'Centro de Descargas | Climatizaciones Montaño, S.L.', description: 'Descarga certificados, fichas técnicas y documentación profesional.', canonicalPath: '/centro-de-descargas/' });
+  useSeo({ title: 'Documentos y PDFs | Climatizaciones Montaño, S.L.', description: 'Descarga certificados, fichas técnicas, tarifas y documentación profesional en PDF.', canonicalPath: '/documentos' });
   const [files, setFiles] = useState<FileRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -57,23 +57,21 @@ export default function PublicDownloads() {
     })();
   }, []);
 
-  const getPublicUrl = (filePath: string): string => {
-    if (filePath.startsWith('http')) return filePath;
-    const { data } = supabase.storage.from('downloads').getPublicUrl(filePath);
-    return data?.publicUrl || filePath;
+  const getFileUrl = (file: FileRow): string => {
+    if (file.external_url) return file.external_url;
+    if (file.file_path.startsWith('http')) return file.file_path;
+    return `/descargas/${file.file_path}`;
   };
 
   const handleDownload = (file: FileRow) => {
-    if (file.external_url) { window.open(file.external_url, '_blank', 'noopener,noreferrer'); return; }
-    const url = getPublicUrl(file.file_path);
+    const url = getFileUrl(file);
     const a = document.createElement('a');
     a.href = url; a.download = file.title; a.target = '_blank'; a.click();
   };
 
   const handlePreview = (file: FileRow) => {
-    if (file.external_url) { window.open(file.external_url, '_blank', 'noopener,noreferrer'); return; }
     setPreviewFile(file);
-    setPreviewUrl(getPublicUrl(file.file_path));
+    setPreviewUrl(getFileUrl(file));
   };
 
   const closePreview = () => { setPreviewFile(null); setPreviewUrl(null); };
