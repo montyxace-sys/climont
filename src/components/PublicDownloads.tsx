@@ -6,6 +6,7 @@ import { navigate } from '@/lib/navigate';
 type PdfItem = {
   title: string;
   file: string;
+  external_url?: string | null;
   description?: string | null;
   category?: string;
   size?: string;
@@ -44,14 +45,23 @@ export default function PublicDownloads() {
   };
 
   const handleDownload = (item: PdfItem) => {
-    const url = getFileUrl(item.file);
+    const url = getFileUrl(item.external_url || item.file);
+    if (item.external_url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+      return;
+    }
     const a = document.createElement('a');
     a.href = url; a.download = item.title; a.target = '_blank'; a.click();
   };
 
   const handlePreview = (item: PdfItem) => {
+    const url = getFileUrl(item.external_url || item.file);
+    if (item.external_url || !isPdf(item.file)) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+      return;
+    }
     setPreviewFile(item);
-    setPreviewUrl(getFileUrl(item.file));
+    setPreviewUrl(url);
   };
 
   const closePreview = () => { setPreviewFile(null); setPreviewUrl(null); };

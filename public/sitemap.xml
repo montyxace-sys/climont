@@ -827,13 +827,6 @@
   </url>
 
   <url>
-    <loc>https://climont.es/descargas/MITSUBISHI HEAVY_SERIE FDs.pdf</loc>
-    <lastmod>2026-11-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-
-  <url>
     <loc>https://climont.es/descargas/MITSUBISHI_ELECTRIC_Lista_de_Precios_2026_compressed.pdf</loc>
     <lastmod>2026-11-09</lastmod>
     <changefreq>monthly</changefreq>
@@ -996,6 +989,13 @@
 
   <url>
     <loc>https://climont.es/descargas/TARIFA_TCL_2026.pdf</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://mega.nz/file/2y4UgA4a#XFGdOmrKU-19ubqaROvXgluV8LmJ7q5xF2TRdIBByrA</loc>
     <lastmod>2026-11-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
