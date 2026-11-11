@@ -58,41 +58,54 @@
         "@context": "https://schema.org",
         "@graph": [
           {
-            "@type": "HVACBusiness",
+            "@type": "LocalBusiness",
             "@id": "https://climont.es/#business",
-            "name": "Climatizaciones Montaño, S.L.",
-            "alternateName": "Climont",
-            "url": "https://climont.es/",
-            "logo": "https://climont.es/favicon.svg",
-            "image": "https://climont.es/og-image.webp",
-            "description": "Instalación, mantenimiento y reparación de aire acondicionado, climatización, aerotermia y ventilación en Sevilla y provincia.",
-            "telephone": "+34676628348",
+            "name": "climatizaciones montaño, s.l.u.",
+            "telephone": "+34 691 680 706",
             "email": "info@climont.es",
-            "priceRange": "€€",
-            "foundingDate": "2001",
+            "url": "https://climont.es",
+            "logo": "https://climont.es/assets/logo.png",
+            "image": "https://climont.es/assets/hero-image.jpg",
+            "description": "Empresa de climatización y servicios técnicos para el hogar",
+            "priceRange": "300€ - 3000€",
+            "servesArea": [
+              {"@type": "Place", "name": "Sevilla"},
+              {"@type": "Place", "name": "Alcalá de Guadaira"}
+            ],
+            "areaServed": "ES-Sevilla",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "C/ Hacienda Guadalupe 35",
-              "addressLocality": "Alcalá de Guadaíra",
+              "streetAddress": "Calle Hacienda Guadalupe 35",
+              "addressLocality": "Alcalá de Guadaira",
               "addressRegion": "Sevilla",
               "postalCode": "41500",
               "addressCountry": "ES"
             },
-            "geo": { "@type": "GeoCoordinates", "latitude": 37.3386, "longitude": -5.8789 },
-            "areaServed": { "@type": "AdministrativeArea", "name": "Sevilla y provincia" },
-            "openingHoursSpecification": [
-              { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "18:00" },
-              { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" }
-            ],
-            "sameAs": ["https://www.facebook.com/climont", "https://www.instagram.com/climont"]
+            "openingHours": "Mo-Fr 08:00-18:00",
+            "makesOffer": {
+              "@type": "Offer",
+              "name": "Servicio de Climatización",
+              "price": "300€",
+              "priceCurrency": "EUR"
+            }
           },
           {
             "@type": "Organization",
             "@id": "https://climont.es/#organization",
-            "name": "Climatizaciones Montaño, S.L.",
-            "url": "https://climont.es/",
-            "logo": "https://climont.es/favicon.svg",
-            "contactPoint": { "@type": "ContactPoint", "telephone": "+34676628348", "email": "info@climont.es", "contactType": "customer service", "availableLanguage": "Spanish" }
+            "name": "climatizaciones montaño, s.l.u.",
+            "url": "https://climont.es",
+            "logo": "https://climont.es/assets/logo.png",
+            "sameAs": [
+              "https://www.facebook.com/ClimatizacionesMontano",
+              "https://www.linkedin.com/company/climatizaciones-montaño-s-l-u"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+34 691 680 706",
+              "contactType": "customer service",
+              "areaServed": "ES-Sevilla",
+              "availableLanguage": "Spanish"
+            }
           },
           {
             "@type": "WebSite",
