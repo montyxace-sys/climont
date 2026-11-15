@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /sitemap.xml
+Allow: /robots.txt
+Allow: /favicon.svg
+Allow: /site.webmanifest
+
+Disallow: /admin
+Disallow: /descargar-logo
+Disallow: /politica-de-cookies
+
+Sitemap: https://climont.es/sitemap.xml

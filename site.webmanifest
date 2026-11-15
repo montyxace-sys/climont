@@ -1,0 +1,21 @@
+{
+  "name": "Climatizaciones Montaño, S.L. — Aire Acondicionado en Sevilla",
+  "short_name": "Climont",
+  "description": "Instalación, mantenimiento y reparación de aire acondicionado en Sevilla y provincia. Certificados RITE-07.",
+  "start_url": "https://climont.es/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0c4a6e",
+  "theme_color": "#0891b2",
+  "lang": "es-ES",
+  "scope": "/",
+  "categories": ["business", "utilities", "lifestyle"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
