@@ -45,7 +45,7 @@ const ROOT_DESCRIPTIONS: Record<string, string> = {
   'reparacion-mitsubishi-tecnico.webp': 'Técnico reparando equipo',
   'energy-efficiency-green-world.webp': 'Auditoría de eficiencia energética',
   'energy-efficient-building.webp': 'Edificio con sistema de ventilación',
-  'aerotermia-daikin-installer.webp': 'Instalación de aerotermia Daikin',
+  'aerotermia-daikin-installer.jpg': 'Instalación de aerotermia Daikin',
   'solar-thermosiphon-acs-installer.webp': 'Instalación solar térmica para ACS',
   'conductos-climaver-plus-obra-nueva.webp': 'Conductos Climaver en obra nueva',
   'conductos-climaver-constructora.webp': 'Conductos para constructoras',
@@ -71,7 +71,7 @@ function AssetCard({ item }: { item: AssetEntry & { description: string } }) {
           src={item.src}
           alt={item.description}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-         width={1184} height={896} />
+        />
         <span className="absolute top-2.5 right-2.5 px-2 py-0.5 bg-white/90 backdrop-blur text-ink-600 text-[10px] font-semibold rounded-full shadow-sm uppercase tracking-wide">
           {item.format}
         </span>
@@ -100,7 +100,7 @@ function BrandCard({ item }: { item: AssetEntry & { description: string } }) {
           src={item.src}
           alt={item.description}
           className="max-h-full max-w-full object-contain"
-         width={1184} height={896} />
+        />
       </div>
       <span className="text-xs font-medium text-ink-700 mb-0.5">{item.description}</span>
       <a
